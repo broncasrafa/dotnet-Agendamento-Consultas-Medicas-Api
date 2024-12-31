@@ -1,0 +1,54 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.12.35527.113
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "01 - Presentation", "01 - Presentation", "{D7355464-6CA1-4475-ADF7-AA3B30A316A3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "02 - Core", "02 - Core", "{8063C058-68A8-4700-A6A0-B676C7CF3310}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "03 - Infra", "03 - Infra", "{26C51A3F-0826-4791-BFE6-32A3DC49AB34}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "98 - Tests", "98 - Tests", "{911CAC9C-F16B-4697-A391-D8618F0A4AE9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RSF.AgendamentoConsultas.Domain", "src\RSF.AgendamentoConsultas.Domain\RSF.AgendamentoConsultas.Domain.csproj", "{35DBB00D-2528-4497-8071-6430F8348174}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RSF.AgendamentoConsultas.Application", "src\RSF.AgendamentoConsultas.Application\RSF.AgendamentoConsultas.Application.csproj", "{D9EA27D6-4A17-466E-891D-331B7189097E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RSF.AgendamentoConsultas.Data", "src\RSF.AgendamentoConsultas.Data\RSF.AgendamentoConsultas.Data.csproj", "{5C85E277-499F-43E6-9BFB-9B560DB15EC8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RSF.AgendamentoConsultas.Api", "src\RSF.AgendamentoConsultas.Api\RSF.AgendamentoConsultas.Api.csproj", "{7DB7570D-37E9-41AF-B341-79AFC9DF52D7}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{35DBB00D-2528-4497-8071-6430F8348174}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{35DBB00D-2528-4497-8071-6430F8348174}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{35DBB00D-2528-4497-8071-6430F8348174}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{35DBB00D-2528-4497-8071-6430F8348174}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D9EA27D6-4A17-466E-891D-331B7189097E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D9EA27D6-4A17-466E-891D-331B7189097E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D9EA27D6-4A17-466E-891D-331B7189097E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D9EA27D6-4A17-466E-891D-331B7189097E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5C85E277-499F-43E6-9BFB-9B560DB15EC8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5C85E277-499F-43E6-9BFB-9B560DB15EC8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5C85E277-499F-43E6-9BFB-9B560DB15EC8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5C85E277-499F-43E6-9BFB-9B560DB15EC8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7DB7570D-37E9-41AF-B341-79AFC9DF52D7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7DB7570D-37E9-41AF-B341-79AFC9DF52D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7DB7570D-37E9-41AF-B341-79AFC9DF52D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7DB7570D-37E9-41AF-B341-79AFC9DF52D7}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{35DBB00D-2528-4497-8071-6430F8348174} = {8063C058-68A8-4700-A6A0-B676C7CF3310}
+		{D9EA27D6-4A17-466E-891D-331B7189097E} = {8063C058-68A8-4700-A6A0-B676C7CF3310}
+		{5C85E277-499F-43E6-9BFB-9B560DB15EC8} = {26C51A3F-0826-4791-BFE6-32A3DC49AB34}
+		{7DB7570D-37E9-41AF-B341-79AFC9DF52D7} = {D7355464-6CA1-4475-ADF7-AA3B30A316A3}
+	EndGlobalSection
+EndGlobal
