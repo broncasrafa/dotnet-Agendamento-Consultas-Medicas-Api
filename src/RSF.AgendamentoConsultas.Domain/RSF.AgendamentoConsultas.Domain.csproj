@@ -3,11 +3,11 @@
 	<PropertyGroup>
 		<TargetFramework>net9.0</TargetFramework>
 		<ImplicitUsings>enable</ImplicitUsings>
-		<Nullable>disabke</Nullable>
+		<Nullable>disable</Nullable>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<Folder Include="Entities\" />
+		<PackageReference Include="Slugify.Core" Version="4.0.1" />
 	</ItemGroup>
 
 </Project>
