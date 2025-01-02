@@ -1,4 +1,4 @@
-﻿using RSF.AgendamentoConsultas.Domain.Utils;
+﻿using RSF.AgendamentoConsultas.Shareable.Helpers;
 using RSF.AgendamentoConsultas.Domain.Validation;
 
 namespace RSF.AgendamentoConsultas.Domain.Entities;
@@ -40,7 +40,7 @@ public class Especialista
     public Especialista(string tipo, string nome, string licenca, string foto, string sharedUrl, bool? agendaOnline, bool? perfilVerificado, bool? permitirPergunta, bool? telemedicinaOnline, bool? telemedicinaAtivo, string telemedicinaPreco, decimal? telemedicinaPrecoNumber, decimal? avaliacao, string experienciaProfissional, string formacaoAcademica, string genero, string tratamento)
     {
         Tipo = tipo;
-        Code = DomainUtil.GenerateSlugifyString(nome);
+        Code = Utilitarios.GenerateSlugifyString(nome);
         CodeId = Guid.NewGuid().ToString();
         EspecCodeId = $"{Code}-{CodeId}";
         Nome = nome;
@@ -67,7 +67,7 @@ public class Especialista
     public void Update(string tipo, string nome, string licenca, string foto, string sharedUrl, bool? agendaOnline, bool? perfilVerificado, bool? permitirPergunta, bool? telemedicinaOnline, bool? telemedicinaAtivo, string telemedicinaPreco, decimal? telemedicinaPrecoNumber, decimal? avaliacao, string experienciaProfissional, string formacaoAcademica, string genero, string tratamento)
     {
         Tipo = tipo;
-        Code = DomainUtil.GenerateSlugifyString(nome);
+        Code = Utilitarios.GenerateSlugifyString(nome);
         EspecCodeId = $"{Code}-{CodeId}";
         Nome = nome;
         Licenca = licenca;

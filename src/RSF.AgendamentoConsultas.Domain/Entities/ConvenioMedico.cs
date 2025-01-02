@@ -1,5 +1,5 @@
-﻿using RSF.AgendamentoConsultas.Domain.Utils;
-using RSF.AgendamentoConsultas.Domain.Validation;
+﻿using RSF.AgendamentoConsultas.Domain.Validation;
+using RSF.AgendamentoConsultas.Shareable.Helpers;
 
 namespace RSF.AgendamentoConsultas.Domain.Entities;
 
@@ -15,8 +15,8 @@ public class ConvenioMedico
     public ConvenioMedico(string nome)
     {
         Nome = nome;
-        Code = DomainUtil.GenerateSlugifyString(nome);
-        CodeOld = DomainUtil.GenerateSlugifyString(nome);
+        Code = Utilitarios.GenerateSlugifyString(nome);
+        CodeOld = Utilitarios.GenerateSlugifyString(nome);
 
         Validate();
     }
@@ -24,8 +24,8 @@ public class ConvenioMedico
     public void Update(string nome)
     {
         Nome = nome;
-        Code = DomainUtil.GenerateSlugifyString(nome);
-        CodeOld = DomainUtil.GenerateSlugifyString(nome);
+        Code = Utilitarios.GenerateSlugifyString(nome);
+        CodeOld = Utilitarios.GenerateSlugifyString(nome);
 
         Validate();
     }

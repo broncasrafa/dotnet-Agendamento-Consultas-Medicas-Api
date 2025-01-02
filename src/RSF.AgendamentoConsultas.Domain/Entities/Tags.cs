@@ -1,4 +1,4 @@
-﻿using RSF.AgendamentoConsultas.Domain.Utils;
+﻿using RSF.AgendamentoConsultas.Shareable.Helpers;
 using RSF.AgendamentoConsultas.Domain.Validation;
 
 namespace RSF.AgendamentoConsultas.Domain.Entities;
@@ -12,7 +12,7 @@ public class Tags
     public Tags(string descricao)
     {
         Descricao = descricao;
-        Code = DomainUtil.GenerateSlugifyString(descricao);
+        Code = Utilitarios.GenerateSlugifyString(descricao);
 
         Validate();
     }
@@ -20,7 +20,7 @@ public class Tags
     public void Update(string descricao)
     {
         Descricao = descricao;
-        Code = DomainUtil.GenerateSlugifyString(descricao);
+        Code = Utilitarios.GenerateSlugifyString(descricao);
 
         Validate();
     }

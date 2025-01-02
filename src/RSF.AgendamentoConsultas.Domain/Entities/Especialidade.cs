@@ -1,4 +1,4 @@
-﻿using RSF.AgendamentoConsultas.Domain.Utils;
+﻿using RSF.AgendamentoConsultas.Shareable.Helpers;
 using RSF.AgendamentoConsultas.Domain.Validation;
 
 namespace RSF.AgendamentoConsultas.Domain.Entities;
@@ -19,9 +19,9 @@ public class Especialidade
     {
         Nome = nome;
         NomePlural = nomePlural;
-        Term = DomainUtil.GenerateSlugifyString(nome);
-        Code = DomainUtil.GenerateSlugifyString(nome);
-        CodeOld = DomainUtil.GenerateSlugifyString(nome);
+        Term = Utilitarios.GenerateSlugifyString(nome);
+        Code = Utilitarios.GenerateSlugifyString(nome);
+        CodeOld = Utilitarios.GenerateSlugifyString(nome);
         EspecialidadeGrupoId = especialidadeGrupoId;
 
         Validate();
@@ -31,9 +31,9 @@ public class Especialidade
     {
         Nome = nome;
         NomePlural = nomePlural;
-        Term = DomainUtil.GenerateSlugifyString(nome);
-        Code = DomainUtil.GenerateSlugifyString(nome);
-        CodeOld = DomainUtil.GenerateSlugifyString(nome);
+        Term = Utilitarios.GenerateSlugifyString(nome);
+        Code = Utilitarios.GenerateSlugifyString(nome);
+        CodeOld = Utilitarios.GenerateSlugifyString(nome);
         EspecialidadeGrupoId = especialidadeGrupoId;
 
         Validate();

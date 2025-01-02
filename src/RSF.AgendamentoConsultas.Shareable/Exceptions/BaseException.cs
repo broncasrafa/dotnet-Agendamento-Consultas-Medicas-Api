@@ -1,7 +1,7 @@
 ﻿using System.Net;
 using System.Diagnostics.CodeAnalysis;
 
-namespace RSF.AgendamentoConsultas.Domain.Exceptions;
+namespace RSF.AgendamentoConsultas.Shareable.Exceptions;
 
 [ExcludeFromCodeCoverage]
 public class BaseException : Exception
