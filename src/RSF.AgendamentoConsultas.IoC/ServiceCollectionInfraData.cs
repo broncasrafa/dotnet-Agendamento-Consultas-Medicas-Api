@@ -4,7 +4,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using RSF.AgendamentoConsultas.Data.Context;
+using RSF.AgendamentoConsultas.Data.Repositories;
 using RSF.AgendamentoConsultas.Data.Repositories.Common;
+using RSF.AgendamentoConsultas.Domain.Interfaces;
 using RSF.AgendamentoConsultas.Domain.Interfaces.Common;
 
 namespace RSF.AgendamentoConsultas.IoC;
@@ -33,5 +35,8 @@ public static class ServiceCollectionInfraData
     private static void AddRepositories(this IServiceCollection services)
     {
         services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
+        services.AddScoped<IRegiaoRepository, RegiaoRepository>();
+        services.AddScoped<IEstadoRepository, EstadoRepository>();
+        services.AddScoped<ICidadeRepository, CidadeRepository>();
     }
 }

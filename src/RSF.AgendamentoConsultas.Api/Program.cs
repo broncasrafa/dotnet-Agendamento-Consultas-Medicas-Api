@@ -1,28 +1,12 @@
-using RSF.AgendamentoConsultas.IoC;
+using RSF.AgendamentoConsultas.Api.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
-builder.Services.RegisterInfraDataServices(builder.Configuration);
-
-builder.Services.RegisterApplicationServices(builder.Configuration);
-
-
+builder.Services.ConfigureServices(builder.Configuration);
 
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+app.Configure();
 
-app.UseHttpsRedirection();
-
-app.Run();
+await app.RunAsync();

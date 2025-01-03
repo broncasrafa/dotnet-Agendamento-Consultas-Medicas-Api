@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace RSF.AgendamentoConsultas.Shareable.Extensions;
 
-public static class IQueryableExtension
+public static class IQueryableExtensions
 {
     public static IQueryable<T> IncludeMultiple<T>(this IQueryable<T> query, params Expression<Func<T, object?>>[] includes) where T : class
     {
