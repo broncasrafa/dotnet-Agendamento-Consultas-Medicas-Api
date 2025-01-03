@@ -112,8 +112,14 @@ dotnet_style_prefer_inferred_tuple_names = true:suggestion
 dotnet_sort_member_declarations = access
 
 
+# CS8618: Non-nullable variable must contain a non-null value when exiting constructor. Consider declaring it as nullable.
+dotnet_diagnostic.CS8618.severity = none 
+
 # CS8632: The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
 dotnet_diagnostic.CS8632.severity = none
+
+# CA1031: Não capturar tipos de exceção geral
+dotnet_diagnostic.CA1031.severity = none
 
 # CA1032: Implement standard exception constructors
 dotnet_diagnostic.CA1032.severity = none
@@ -139,11 +145,21 @@ dotnet_diagnostic.CA1310.severity = none
 # CA1707: Identificadores não devem conter sublinhados
 dotnet_diagnostic.CA1707.severity = none
 
+# CA1810: Inicializar campos estáticos de tipo de referência em linha
+dotnet_diagnostic.CA1810.severity = none
+
 # CA1812: Evitar classes internas sem instâncias
 dotnet_diagnostic.CA1812.severity = none
 
+# CA1823: Evitar campos particulares não utilizados
+dotnet_diagnostic.CA1823.severity = none
+
 # CA1848: Usar os delegados LoggerMessage
 dotnet_diagnostic.CA1848.severity = none
+
+# CA1849: Chamar métodos assíncronos quando em um método assíncrono
+dotnet_diagnostic.CA1849.severity = none
+
 
 # CA2007: não aguardar diretamente uma tarefa
 dotnet_diagnostic.CA2007.severity = none
@@ -151,5 +167,9 @@ dotnet_diagnostic.CA2007.severity = none
 # CA2227: Propriedades de coleção devem ser somente leitura
 dotnet_diagnostic.CA2227.severity = none
 
+
+
+# IDE0051: Remover membro particular não utilizado
+dotnet_diagnostic.IDE0051.severity = none
 
 

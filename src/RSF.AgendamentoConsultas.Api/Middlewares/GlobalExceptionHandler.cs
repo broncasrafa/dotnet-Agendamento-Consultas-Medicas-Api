@@ -6,7 +6,7 @@ using RSF.AgendamentoConsultas.Shareable.Exceptions;
 namespace RSF.AgendamentoConsultas.Api.Middlewares;
 
 [ExcludeFromCodeCoverage]
-internal class GlobalExceptionHandler(ILogger<GlobalExceptionHandler> _logger) : IExceptionHandler
+internal sealed class GlobalExceptionHandler(ILogger<GlobalExceptionHandler> _logger) : IExceptionHandler
 {
     public async ValueTask<bool> TryHandleAsync(HttpContext httpContext, Exception exception, CancellationToken cancellationToken)
     {

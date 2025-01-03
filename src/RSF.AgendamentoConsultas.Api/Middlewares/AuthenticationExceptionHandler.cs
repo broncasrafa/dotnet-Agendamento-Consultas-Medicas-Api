@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace RSF.AgendamentoConsultas.Api.Middlewares;
 
 [ExcludeFromCodeCoverage]
-internal class AuthenticationExceptionHandler
+internal sealed class AuthenticationExceptionHandler
 {
     public static async Task HandleAuthError(HttpContext httpContext, int statusCode)
     {

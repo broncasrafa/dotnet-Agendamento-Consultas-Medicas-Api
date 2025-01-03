@@ -6,7 +6,7 @@ using RSF.AgendamentoConsultas.Shareable.Filters;
 namespace RSF.AgendamentoConsultas.Api.Filters;
 
 [ExcludeFromCodeCoverage]
-internal class ValidationFilter : IEndpointFilter
+internal sealed class ValidationFilter : IEndpointFilter
 {
     private readonly IServiceProvider _serviceProvider;
 
