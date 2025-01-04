@@ -41,9 +41,9 @@ internal static class AppConfigureExtension
     public static IApplicationBuilder MapEndpoints(this WebApplication app)
     {
         app.MapRegiaoEndpoints();
-        //app.MapEstadoEndpoints();
-        //app.MapCiadadeEndpoints();
-
+        app.MapEstadoEndpoints();
+        app.MapCidadeEndpoints();
+        
         return app;
     }
 }

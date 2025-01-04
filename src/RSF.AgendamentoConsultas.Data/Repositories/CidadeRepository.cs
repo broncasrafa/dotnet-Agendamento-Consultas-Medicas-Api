@@ -9,7 +9,21 @@ public class CidadeRepository(AppDbContext context) : ICidadeRepository
 {
     private readonly AppDbContext _context = context;
 
-    public async ValueTask<IReadOnlyList<Cidade>> GetAllAsync() => await _context.Cidades.ToListAsync();
-
-    public async ValueTask<Cidade> GetByIdAsync(Guid id) => await _context.Cidades.FindAsync(id);
+    public async ValueTask<Cidade> GetByIdAsync(int id) 
+        => await _context.Cidades
+                    .AsNoTracking()
+                    .Include(e => e.Estado)
+                    .Select(c => new Cidade
+                    {
+                        CidadeId = c.CidadeId,
+                        Descricao = c.Descricao,
+                        EstadoId = c.EstadoId,
+                        Estado = new Estado
+                        {
+                            EstadoId = c.Estado.EstadoId,
+                            Descricao = c.Estado.Descricao,
+                            Sigla = c.Estado.Sigla
+                        }
+                    })
+                    .FirstOrDefaultAsync(e => e.CidadeId == id);
 }

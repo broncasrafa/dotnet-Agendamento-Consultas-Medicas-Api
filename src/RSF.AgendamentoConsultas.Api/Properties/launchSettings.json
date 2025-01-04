@@ -9,6 +9,16 @@
     }
   },
   "profiles": {
+    "RSF.AgendamentoConsultas.Api": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "launchUrl": "",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "dotnetRunMessages": true,
+      "applicationUrl": "https://localhost:7008;http://localhost:5045"
+    },
     "IIS Express": {
       "commandName": "IISExpress",
       "launchBrowser": true,

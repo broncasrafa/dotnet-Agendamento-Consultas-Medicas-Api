@@ -87,6 +87,7 @@ internal static class ConfigureServicesExtension
 
         services.Configure<JsonOptions>(options =>
         {
+            options.SerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
             options.SerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
         });
     }

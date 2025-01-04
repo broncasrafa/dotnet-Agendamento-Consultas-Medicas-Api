@@ -1,4 +1,4 @@
-﻿using RSF.AgendamentoConsultas.Application.Handlers.Features.Estado.Response;
+﻿using RSF.AgendamentoConsultas.Application.Handlers.Features.Estado.GetAll;
 
 namespace RSF.AgendamentoConsultas.Application.Handlers.Features.Regiao.GetAll;
 
