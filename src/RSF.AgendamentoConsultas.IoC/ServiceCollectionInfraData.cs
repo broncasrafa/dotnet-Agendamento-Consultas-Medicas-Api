@@ -22,12 +22,13 @@ public static class ServiceCollectionInfraData
         return services;
     }
 
-    private static void AddDatabase(this IServiceCollection services, IConfiguration configuration) 
+    private static void AddDatabase(this IServiceCollection services, IConfiguration configuration)
         => services.AddDbContext<AppDbContext>(options =>
             {
                 options.UseLoggerFactory(LoggerFactory.Create(builder => builder.AddConsole()));
                 options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"),
                             b => b.MigrationsAssembly(typeof(AppDbContext).Assembly.FullName))
+                                    .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking)
                                     .EnableSensitiveDataLogging()
                                     .EnableDetailedErrors();
             });
@@ -38,5 +39,6 @@ public static class ServiceCollectionInfraData
         services.AddScoped<IRegiaoRepository, RegiaoRepository>();
         services.AddScoped<IEstadoRepository, EstadoRepository>();
         services.AddScoped<ICidadeRepository, CidadeRepository>();
+        services.AddScoped<IConvenioMedicoRepository, ConvenioMedicoRepository>();
     }
 }

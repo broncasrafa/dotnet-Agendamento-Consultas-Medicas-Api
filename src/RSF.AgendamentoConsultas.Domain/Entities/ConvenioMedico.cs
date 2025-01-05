@@ -20,6 +20,15 @@ public class ConvenioMedico
 
         Validate();
     }
+    public ConvenioMedico(int id, string nome)
+    {
+        ConvenioMedicoId = id;
+        Nome = nome;
+        Code = Utilitarios.GenerateSlugifyString(nome);
+        CodeOld = Utilitarios.GenerateSlugifyString(nome);
+
+        Validate();
+    }
 
     public void Update(string nome)
     {

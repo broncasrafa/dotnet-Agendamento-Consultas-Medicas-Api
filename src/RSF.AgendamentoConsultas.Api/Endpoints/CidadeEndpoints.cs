@@ -3,6 +3,7 @@ using RSF.AgendamentoConsultas.Api.Models;
 using RSF.AgendamentoConsultas.Api.Extensions;
 using RSF.AgendamentoConsultas.Application.Handlers.Features.Cidade.GetById;
 using MediatR;
+using RSF.AgendamentoConsultas.Application.Handlers.Features.Cidade.Response;
 
 namespace RSF.AgendamentoConsultas.Api.Endpoints;
 
@@ -14,7 +15,7 @@ internal static class CidadeEndpoints
 
         routes.MapGet("/{id:int}", static async (IMediator mediator, [FromRoute] int id, CancellationToken cancellationToken) => await mediator.SendCommand(new SelectCidadeByIdRequest(id), cancellationToken: cancellationToken))
             .WithName("GetOneCidade")
-            .Produces<ApiListResponse<SelectCidadeResponse>>(StatusCodes.Status200OK)
+            .Produces<ApiListResponse<CidadeResponse>>(StatusCodes.Status200OK)
             .Produces<ProblemDetails>(StatusCodes.Status404NotFound)
             .WithDescription("Obter a cidade pelo ID especificado")
             .WithSummary("Obter a cidade pelo ID especificado")

@@ -111,6 +111,8 @@ dotnet_style_prefer_inferred_tuple_names = true:suggestion
 # Ordenar membros da classe (prioriza propriedades antes dos métodos e construtores)
 dotnet_sort_member_declarations = access
 
+# CS8604: Possible null reference argument for parameter.
+dotnet_diagnostic.CS8604.severity = suggestion
 
 # CS8618: Non-nullable variable must contain a non-null value when exiting constructor. Consider declaring it as nullable.
 dotnet_diagnostic.CS8618.severity = none 

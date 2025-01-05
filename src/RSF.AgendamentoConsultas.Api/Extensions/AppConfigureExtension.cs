@@ -43,7 +43,8 @@ internal static class AppConfigureExtension
         app.MapRegiaoEndpoints();
         app.MapEstadoEndpoints();
         app.MapCidadeEndpoints();
-        
+        app.MapConvenioMedicoEndpoints();
+
         return app;
     }
 }
