@@ -1,7 +1,8 @@
 ﻿using RSF.AgendamentoConsultas.Domain.Interfaces;
+using RSF.AgendamentoConsultas.Application.Handlers.Features.Estado.Responses;
+using RSF.AgendamentoConsultas.Shareable.Exceptions;
 using MediatR;
 using OperationResult;
-using RSF.AgendamentoConsultas.Application.Handlers.Features.Estado.Response;
 
 namespace RSF.AgendamentoConsultas.Application.Handlers.Features.Estado.GetByIdWithCidades;
 
@@ -14,6 +15,7 @@ public class SelectEstadoByIdWithCidadesRequestHandler : IRequestHandler<SelectE
     public async Task<Result<EstadoResponse>> Handle(SelectEstadoByIdWithCidadesRequest request, CancellationToken cancellationToken)
     {
         var estados = await _repository.GetByIdWithCidadesAsync(request.Id);
+        NotFoundException.ThrowIfNull(estados, $"Estado com o ID: '{request.Id}' não encontrado");
         return await Task.FromResult(EstadoResponse.MapFromEntity(estados));
     }
 }

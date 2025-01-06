@@ -1,6 +1,6 @@
-﻿using RSF.AgendamentoConsultas.Application.Handlers.Features.Estado.Response;
+﻿using RSF.AgendamentoConsultas.Application.Handlers.Features.Estado.Responses;
 
-namespace RSF.AgendamentoConsultas.Application.Handlers.Features.Cidade.Response;
+namespace RSF.AgendamentoConsultas.Application.Handlers.Features.Cidade.Responses;
 
 public class CidadeResponse(int cidadeId, string descricao, int estadoId, string? estado = null)
 {

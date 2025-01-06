@@ -1,8 +1,6 @@
-﻿using MediatR;
-
+﻿using RSF.AgendamentoConsultas.Application.Handlers.Features.Estado.Responses;
+using MediatR;
 using OperationResult;
-
-using RSF.AgendamentoConsultas.Application.Handlers.Features.Estado.Response;
 
 namespace RSF.AgendamentoConsultas.Application.Handlers.Features.Estado.GetById;
 

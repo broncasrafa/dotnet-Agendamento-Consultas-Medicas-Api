@@ -1,6 +1,6 @@
-﻿using RSF.AgendamentoConsultas.Application.Handlers.Features.Cidade.Response;
+﻿using RSF.AgendamentoConsultas.Application.Handlers.Features.Cidade.Responses;
 
-namespace RSF.AgendamentoConsultas.Application.Handlers.Features.ConvenioMedico.Response;
+namespace RSF.AgendamentoConsultas.Application.Handlers.Features.ConvenioMedico.Responses;
 
 public class ConvenioMedicoResponse
 {

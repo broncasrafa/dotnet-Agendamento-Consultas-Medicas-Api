@@ -1,5 +1,6 @@
-﻿using RSF.AgendamentoConsultas.Application.Handlers.Features.ConvenioMedico.Response;
+﻿using RSF.AgendamentoConsultas.Application.Handlers.Features.ConvenioMedico.Responses;
 using RSF.AgendamentoConsultas.Domain.Interfaces;
+using RSF.AgendamentoConsultas.Shareable.Exceptions;
 using MediatR;
 using OperationResult;
 
@@ -14,6 +15,7 @@ public class SelectConvenioMedicoByIdWithCidadesAtendidasRequestHandler : IReque
     public async Task<Result<ConvenioMedicoResponse>> Handle(SelectConvenioMedicoByIdWithCidadesAtendidasRequest request, CancellationToken cancellationToken)
     {
         var convenioMedico = await _repository.GetByIdWithCidadesAtendidasAsync(request.Id);
+        NotFoundException.ThrowIfNull(convenioMedico, $"Convênio Médico com o ID: '{request.Id}' não encontrado");
         return await Task.FromResult(ConvenioMedicoResponse.MapFromEntity(convenioMedico));
     }
 }

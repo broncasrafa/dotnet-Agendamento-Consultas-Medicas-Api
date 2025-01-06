@@ -1,4 +1,4 @@
-﻿using RSF.AgendamentoConsultas.Application.Handlers.Features.ConvenioMedico.Response;
+﻿using RSF.AgendamentoConsultas.Application.Handlers.Features.ConvenioMedico.Responses;
 using MediatR;
 using OperationResult;
 

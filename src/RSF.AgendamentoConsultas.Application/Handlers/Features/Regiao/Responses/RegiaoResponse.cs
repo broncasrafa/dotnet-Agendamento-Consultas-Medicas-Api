@@ -1,6 +1,6 @@
-﻿using RSF.AgendamentoConsultas.Application.Handlers.Features.Estado.Response;
+﻿using RSF.AgendamentoConsultas.Application.Handlers.Features.Estado.Responses;
 
-namespace RSF.AgendamentoConsultas.Application.Handlers.Features.Regiao.Response;
+namespace RSF.AgendamentoConsultas.Application.Handlers.Features.Regiao.Responses;
 
 public class RegiaoResponse
 {

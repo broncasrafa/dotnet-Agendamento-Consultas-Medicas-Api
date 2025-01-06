@@ -1,8 +1,8 @@
-﻿using RSF.AgendamentoConsultas.Domain.Interfaces;
+﻿using RSF.AgendamentoConsultas.Application.Handlers.Features.Regiao.Responses;
+using RSF.AgendamentoConsultas.Domain.Interfaces;
 using RSF.AgendamentoConsultas.Shareable.Exceptions;
 using MediatR;
 using OperationResult;
-using RSF.AgendamentoConsultas.Application.Handlers.Features.Regiao.Response;
 
 namespace RSF.AgendamentoConsultas.Application.Handlers.Features.Regiao.GetById;
 

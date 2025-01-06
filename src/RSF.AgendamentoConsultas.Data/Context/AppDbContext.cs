@@ -15,6 +15,7 @@ public class AppDbContext : DbContext
     public DbSet<Estado> Estados { get; set; }
     public DbSet<Cidade> Cidades { get; set; }
     public DbSet<ConvenioMedico> ConveniosMedicos { get; set; }
+    public DbSet<Tags> Tags { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
         => modelBuilder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);

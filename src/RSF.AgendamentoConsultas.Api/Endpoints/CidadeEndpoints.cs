@@ -2,8 +2,8 @@
 using RSF.AgendamentoConsultas.Api.Models;
 using RSF.AgendamentoConsultas.Api.Extensions;
 using RSF.AgendamentoConsultas.Application.Handlers.Features.Cidade.GetById;
+using RSF.AgendamentoConsultas.Application.Handlers.Features.Cidade.Responses;
 using MediatR;
-using RSF.AgendamentoConsultas.Application.Handlers.Features.Cidade.Response;
 
 namespace RSF.AgendamentoConsultas.Api.Endpoints;
 

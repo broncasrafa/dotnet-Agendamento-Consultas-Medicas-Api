@@ -5,7 +5,7 @@ using RSF.AgendamentoConsultas.Application.Handlers.Features.ConvenioMedico.GetA
 using RSF.AgendamentoConsultas.Application.Handlers.Features.ConvenioMedico.GetById;
 using RSF.AgendamentoConsultas.Application.Handlers.Features.ConvenioMedico.GetByIdWithCidadesAtendidas;
 using RSF.AgendamentoConsultas.Application.Handlers.Features.ConvenioMedico.GetByIdWithCidadesAtendidasPorEstado;
-using RSF.AgendamentoConsultas.Application.Handlers.Features.ConvenioMedico.Response;
+using RSF.AgendamentoConsultas.Application.Handlers.Features.ConvenioMedico.Responses;
 using MediatR;
 
 namespace RSF.AgendamentoConsultas.Api.Endpoints;
@@ -40,7 +40,7 @@ internal static class ConvenioMedicoEndpoints
             .WithSummary("Obter as cidades atendidas pelo Convenio Medico pelo ID especificado")
             .WithOpenApi();
 
-        routes.MapGet("/{id:int}/cidades/{idEstado:int}", static async (IMediator mediator, [FromRoute] int id, [FromRoute] int idEstado, CancellationToken cancellationToken) => await mediator.SendCommand(new SelectConvenioMedicoByIdWithCidadesAtendidasPorEstadoRequest(id, idEstado), cancellationToken: cancellationToken))
+        routes.MapGet("/{id:int}/estado/{idEstado:int}/cidades", static async (IMediator mediator, [FromRoute] int id, [FromRoute] int idEstado, CancellationToken cancellationToken) => await mediator.SendCommand(new SelectConvenioMedicoByIdWithCidadesAtendidasPorEstadoRequest(id, idEstado), cancellationToken: cancellationToken))
             .WithName("GetOneConvenioMedicoWithCidadesAtendidasPorEstado")
             .Produces<ApiListResponse<ConvenioMedicoResponse>>(StatusCodes.Status200OK)
             .Produces<ProblemDetails>(StatusCodes.Status404NotFound)
