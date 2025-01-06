@@ -15,7 +15,7 @@ internal static class TagsEndpoints
         var routes = builder.MapGroup("api/tags").WithTags("Tags");
 
         routes.MapGet("/", static async (IMediator mediator, CancellationToken cancellationToken) => await mediator.SendCommand(new SelectTagsRequest(), cancellationToken: cancellationToken))
-            .WithName("GetAll")
+            .WithName("GetAllTags")
             .Produces<ApiListResponse<IReadOnlyList<TagsResponse>>>(StatusCodes.Status200OK)
             .Produces<ProblemDetails>(StatusCodes.Status404NotFound)
             .WithDescription("Obter a lista de Tags")
@@ -23,7 +23,7 @@ internal static class TagsEndpoints
             .WithOpenApi();
 
         routes.MapGet("/{id:int}", static async (IMediator mediator, [FromRoute] int id, CancellationToken cancellationToken) => await mediator.SendCommand(new SelectTagsByIdRequest(id), cancellationToken: cancellationToken))
-            .WithName("GetOneById")
+            .WithName("GetOneTagById")
             .Produces<ApiListResponse<TagsResponse>>(StatusCodes.Status200OK)
             .Produces<ProblemDetails>(StatusCodes.Status404NotFound)
             .WithDescription("Obter a Tag pelo ID especificado")

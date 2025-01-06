@@ -40,5 +40,6 @@ public static class ServiceCollectionInfraData
         services.AddScoped<IEstadoRepository, EstadoRepository>();
         services.AddScoped<ICidadeRepository, CidadeRepository>();
         services.AddScoped<IConvenioMedicoRepository, ConvenioMedicoRepository>();
+        services.AddScoped<IEspecialidadeRepository, EspecialidadeRepository>();
     }
 }
