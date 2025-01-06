@@ -18,6 +18,20 @@ internal static class AppConfigureExtension
         app.MapEndpoints();
     }
 
+    public static IApplicationBuilder MapEndpoints(this WebApplication app)
+    {
+        app.MapRegiaoEndpoints();
+        app.MapEstadoEndpoints();
+        app.MapCidadeEndpoints();
+        app.MapConvenioMedicoEndpoints();
+        app.MapTagsEndpoints();
+        app.MapEspecialidadesEndpoints();
+        app.MapTipoConsultaEndpoints();
+        app.MapTipoStatusConsultaEndpoints();
+        app.MapEspecialistaEndpoints();
+
+        return app;
+    }
 
     private static void ConfigureSwaggerUI(this WebApplication app)
     {
@@ -36,19 +50,5 @@ internal static class AppConfigureExtension
                 //c.InjectStylesheet("/css/swagger-ui/swagger-dark.css");
             });
         }
-    }
-
-    public static IApplicationBuilder MapEndpoints(this WebApplication app)
-    {
-        app.MapRegiaoEndpoints();
-        app.MapEstadoEndpoints();
-        app.MapCidadeEndpoints();
-        app.MapConvenioMedicoEndpoints();
-        app.MapTagsEndpoints();
-        app.MapEspecialidadesEndpoints();
-        app.MapTipoConsultaEndpoints();
-        app.MapTipoStatusConsultaEndpoints();
-
-        return app;
     }
 }
