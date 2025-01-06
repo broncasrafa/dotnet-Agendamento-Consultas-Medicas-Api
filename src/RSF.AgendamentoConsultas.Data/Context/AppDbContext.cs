@@ -18,6 +18,8 @@ public class AppDbContext : DbContext
     public DbSet<Tags> Tags { get; set; }
     public DbSet<Especialidade> Especialidades { get; set; }
     public DbSet<EspecialidadeGrupo> EspecialidadesGrupos { get; set; }
+    public DbSet<TipoConsulta> TiposConsulta { get; set; }
+    public DbSet<TipoStatusConsulta> TiposStatusConsulta { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
         => modelBuilder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);
