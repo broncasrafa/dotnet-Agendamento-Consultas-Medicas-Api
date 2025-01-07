@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using RSF.AgendamentoConsultas.Api.Extensions;
 using RSF.AgendamentoConsultas.Api.Models;
+using RSF.AgendamentoConsultas.Shareable.Results;
 using RSF.AgendamentoConsultas.Application.Handlers.Features.Especialista.Responses;
 using RSF.AgendamentoConsultas.Application.Handlers.Features.Especialista.GetById;
 using RSF.AgendamentoConsultas.Application.Handlers.Features.Especialista.GetByIdWithEspecialidades;
@@ -9,6 +10,8 @@ using RSF.AgendamentoConsultas.Application.Handlers.Features.Especialista.GetByI
 using RSF.AgendamentoConsultas.Application.Handlers.Features.Especialista.GetByIdWithLocaisAtendimento;
 using RSF.AgendamentoConsultas.Application.Handlers.Features.Especialista.GetByIdWithPerguntasRespostas;
 using RSF.AgendamentoConsultas.Application.Handlers.Features.Especialista.GetByIdWithTags;
+using RSF.AgendamentoConsultas.Application.Handlers.Features.Especialista.GetByNamePaged;
+using RSF.AgendamentoConsultas.Application.Handlers.Features.Especialista.GetAllPaged;
 using MediatR;
 
 namespace RSF.AgendamentoConsultas.Api.Endpoints;
@@ -18,6 +21,23 @@ internal static class EspecialistaEndpoints
     public static IEndpointRouteBuilder MapEspecialistaEndpoints(this IEndpointRouteBuilder builder)
     {
         var routes = builder.MapGroup("api/especialistas").WithTags("Especialistas");
+
+        routes.MapGet("/", static async (IMediator mediator, [FromQuery] int page, [FromQuery] int items, CancellationToken cancellationToken) => await mediator.SendCommand(new SelectEspecialistaPagedRequest(items, page), cancellationToken: cancellationToken))
+            .WithName("GetOneEspecialistaPaged")
+            .Produces<PagedResult<EspecialistaResponse>>(StatusCodes.Status200OK)
+            .Produces<ProblemDetails>(StatusCodes.Status404NotFound)
+            .WithDescription("Obter a lista paginada de Especialistas")
+            .WithSummary("Obter a lista paginada de Especialistas")
+            .WithOpenApi();
+
+        routes.MapGet("/search", static async (IMediator mediator, [FromQuery] int page, [FromQuery] int items, [FromQuery] string name, CancellationToken cancellationToken) => await mediator.SendCommand(new SelectEspecialistaByNamePagedRequest(name, items, page), cancellationToken: cancellationToken))
+            .WithName("GetOneEspecialistaByNamePaged")
+            .Produces<PagedResult<EspecialistaResponse>>(StatusCodes.Status200OK)
+            .Produces<ProblemDetails>(StatusCodes.Status404NotFound)
+            .WithDescription("Obter a lista paginada de Especialistas pelo Nome especificado")
+            .WithSummary("Obter a lista paginada de Especialistas pelo Nome especificado")
+            .WithOpenApi();
+
 
         routes.MapGet("/{id:int}", static async (IMediator mediator, [FromRoute] int id, CancellationToken cancellationToken) => await mediator.SendCommand(new SelectEspecialistaByIdRequest(id), cancellationToken: cancellationToken))
             .WithName("GetOneEspecialistaById")

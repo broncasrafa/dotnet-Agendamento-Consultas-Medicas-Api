@@ -1,4 +1,6 @@
-﻿namespace RSF.AgendamentoConsultas.Application.Handlers.Features.Especialista.Responses;
+﻿using RSF.AgendamentoConsultas.Shareable.Results;
+
+namespace RSF.AgendamentoConsultas.Application.Handlers.Features.Especialista.Responses;
 
 public class EspecialistaResponse
 {
@@ -57,5 +59,21 @@ public class EspecialistaResponse
             Avaliacoes = EspecialistaAvaliacaoResponse.MapFromEntity(entity.Avaliacoes),
             PerguntasRespostas = EspecialistaPerguntaResponse.MapFromEntity(entity.Perguntas)
         };
+    }
+
+    internal static PagedResult<EspecialistaResponse> MapFromEntityPaged(PagedResult<Domain.Entities.Especialista> pagedResult, int pageNumber, int pageSize)
+    {
+        if (pagedResult.Results is null || !pagedResult.Results.Any())
+            pagedResult.Results = [];
+
+        var lista = pagedResult.Results.Select(c => MapFromEntity(c));
+        return new PagedResult<EspecialistaResponse>(lista, pagedResult.Total, pageNumber, pageSize);
+        //{
+        //    Results = lista,
+        //    Total = pagedResult.Total,
+        //    EndPage = pagedResult.EndPage,
+        //    HasNextPage = pagedResult.HasNextPage,
+        //    NextPage = pagedResult.NextPage
+        //};
     }
 }

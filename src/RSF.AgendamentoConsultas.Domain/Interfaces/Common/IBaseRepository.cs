@@ -1,4 +1,5 @@
 ﻿using System.Linq.Expressions;
+using RSF.AgendamentoConsultas.Shareable.Results;
 
 namespace RSF.AgendamentoConsultas.Domain.Interfaces.Common;
 
