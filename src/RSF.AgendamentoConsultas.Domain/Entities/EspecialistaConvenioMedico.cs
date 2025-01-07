@@ -11,6 +11,10 @@ public class EspecialistaConvenioMedico
     public Especialista Especialista { get; set; }
     public ConvenioMedico ConvenioMedico { get; set; }
 
+    protected EspecialistaConvenioMedico()
+    {
+    }
+
     public EspecialistaConvenioMedico(int especialistaId, int convenioMedicoId)
     {
         EspecialistaId = especialistaId;

@@ -16,4 +16,8 @@
     <ProjectReference Include="..\RSF.AgendamentoConsultas.Domain\RSF.AgendamentoConsultas.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Handlers\Features\Paciente\" />
+  </ItemGroup>
+
 </Project>

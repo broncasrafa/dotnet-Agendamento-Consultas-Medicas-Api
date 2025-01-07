@@ -13,7 +13,11 @@ public class PacientePlanoMedico
 
     public Paciente Paciente { get; set; }
     public ConvenioMedico ConvenioMedico { get; set; }
-    
+
+
+    public PacientePlanoMedico()
+    {        
+    }
 
     public PacientePlanoMedico(string nomePlano, string numCartao, int pacienteId, int pacienteDependenteId, int convenioMedicoId)
     {

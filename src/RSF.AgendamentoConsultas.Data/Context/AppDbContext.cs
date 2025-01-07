@@ -20,6 +20,8 @@ public class AppDbContext : DbContext
     public DbSet<EspecialidadeGrupo> EspecialidadesGrupos { get; set; }
     public DbSet<TipoConsulta> TiposConsulta { get; set; }
     public DbSet<TipoStatusConsulta> TiposStatusConsulta { get; set; }
+    public DbSet<Paciente> Pacientes { get; set; }
+    public DbSet<Especialista> Especialistas { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
         => modelBuilder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);

@@ -21,6 +21,6 @@ public class ConvenioMedicoResponse
         return new ConvenioMedicoResponse(convenio.ConvenioMedicoId, convenio.Nome, cidadesAtendidas);
     }
 
-    public static IReadOnlyList<ConvenioMedicoResponse> MapFromEntity(IReadOnlyList<Domain.Entities.ConvenioMedico> convenios)
-        => convenios is null ? default! : convenios.Select(MapFromEntity).ToList();
+    public static IReadOnlyList<ConvenioMedicoResponse>? MapFromEntity(IEnumerable<Domain.Entities.ConvenioMedico> convenios)
+        => (convenios is null || !convenios.Any()) ? null : convenios.Select(MapFromEntity).ToList();
 }

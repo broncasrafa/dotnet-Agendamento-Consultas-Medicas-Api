@@ -6,24 +6,27 @@ public class EspecialistaRespostaPergunta
 {
     public int Id { get; private set; }
     public int PerguntaId { get; private set; }
-    public int EspecialistaId { get; private set; }
     public string Resposta { get; private set; }
     public int? Likes { get; private set; }
     public int? Dislikes { get; private set; }
     public DateTime CreatedAt { get; private set; }
 
-    public Especialista Especialista { get; set; }
+    
     public EspecialistaPergunta Pergunta { get; set; }
 
-    public EspecialistaRespostaPergunta(int perguntaId, int especialistaId, string resposta)
+    protected EspecialistaRespostaPergunta()
+    {        
+    }
+
+    public EspecialistaRespostaPergunta(int perguntaId, string resposta)
     {
         PerguntaId = perguntaId;
-        EspecialistaId = especialistaId;
         Resposta = resposta;
+        Likes = 0;
+        Dislikes = 0;
         CreatedAt = DateTime.UtcNow;
 
         DomainValidation.IdentifierGreaterThanZero(perguntaId, nameof(PerguntaId));
-        DomainValidation.IdentifierGreaterThanZero(especialistaId, nameof(EspecialistaId));
         DomainValidation.NotNullOrEmpty(resposta, nameof(Resposta));
     }
 }

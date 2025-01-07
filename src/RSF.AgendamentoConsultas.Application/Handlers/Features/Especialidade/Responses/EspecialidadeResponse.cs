@@ -17,6 +17,10 @@ public record EspecialidadeResponse(
                 especialidade.Term,
                 especialidade.EspecialidadeGrupo?.NomePlural);
 
-    public static IReadOnlyList<EspecialidadeResponse> MapFromEntity(IEnumerable<Domain.Entities.Especialidade> especialidades)
-        => especialidades is null ? default! : especialidades.Select(MapFromEntity).ToList();
+    public static IReadOnlyList<EspecialidadeResponse>? MapFromEntity(IEnumerable<Domain.Entities.Especialidade> especialidades)
+    {
+        if (especialidades is null || !especialidades.Any()) return default!;
+
+        return especialidades.Select(MapFromEntity).ToList();
+    }
 }

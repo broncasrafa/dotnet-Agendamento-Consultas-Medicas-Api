@@ -11,6 +11,10 @@ public class EspecialistaTags
     public Especialista Especialista { get; set; }
     public Tags Tag { get; set; }
 
+    protected EspecialistaTags()
+    {        
+    }
+
     public EspecialistaTags(int especialistaId, int tagsId)
     {
         EspecialistaId = especialistaId;

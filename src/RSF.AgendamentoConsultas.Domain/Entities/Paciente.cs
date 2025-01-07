@@ -4,35 +4,37 @@ namespace RSF.AgendamentoConsultas.Domain.Entities;
 
 public class Paciente
 {
-    public int PacienteId { get; private set; }
+    public int PacienteId { get; set; }
 
     /// <summary>
     /// Tipo do paciente, podendo ser "Principal" ou "Dependente".
     /// </summary>
-    public string Tipo { get; private set; }
+    public string Tipo { get; set; }
     /// <summary>
     /// Se for um paciente dependente, esse campo deve ser preenchido com o id do paciente principal.
     /// </summary>
-    public int? PacientePrincipalId { get; private set; }
-    public string Nome { get; private set; }
-    public string CPF { get; private set; }
-    public string Email { get; private set; }
-    public string Telefone { get; private set; }
-    public string Genero { get; private set; } = "Não informado";
-    public string DataNascimento { get; private set; }
-    public string NomeSocial { get; private set; }
-    public decimal? Peso { get; private set; }
-    public decimal? Altura { get; private set; }
-    public bool TelefoneVerificado { get; private set; }
-    public bool EmailVerificado { get; private set; }
-    public bool TermoUsoAceito { get; private set; }
-    public DateTime CreatedAt { get; private set; }
-    public DateTime? UpdatedAt { get; private set; }
+    public int? PacientePrincipalId { get; set; }
+    public string Nome { get; set; }
+    public string CPF { get; set; }
+    public string Email { get; set; }
+    public string Telefone { get; set; }
+    public string Genero { get; set; } = "Não informado";
+    public string DataNascimento { get; set; }
+    public string NomeSocial { get; set; }
+    public decimal? Peso { get; set; }
+    public decimal? Altura { get; set; }
+    public bool TelefoneVerificado { get; set; }
+    public bool EmailVerificado { get; set; }
+    public bool TermoUsoAceito { get; set; }
+    public DateTime CreatedAt { get; set; }
+    public DateTime? UpdatedAt { get; set; }
 
     public ICollection<PacientePlanoMedico> PlanosMedicos { get; set; }
     public ICollection<EspecialistaAvaliacao> AvaliacoesFeitas { get; set; }
     public ICollection<EspecialistaPergunta> PerguntasRealizadas { get; set; }
     public ICollection<AgendamentoConsulta> AgendamentosRealizados { get; set; }
+
+    protected Paciente() { }
 
     public Paciente(string tipo, int? pacientePrincipalId, string nome, string cpf, string email, string telefone, string genero, string dataNascimento, string nomeSocial, decimal? peso, decimal? altura, bool telefoneVerificado, bool emailVerificado, bool termoUsoAceito)
     {
@@ -53,7 +55,6 @@ public class Paciente
         CreatedAt = DateTime.UtcNow;
 
         Validate();
-        Tipo = tipo;
     }
 
     public void Update(string nome, string email, string telefone, string genero, string dataNascimento, string nomeSocial, decimal? peso, decimal? altura, bool telefoneVerificado, bool emailVerificado, bool termoUsoAceito)
@@ -74,7 +75,7 @@ public class Paciente
         Validate();
     }
 
-    private void Validate()
+    void Validate()
     {
         DomainValidation.NotNullOrEmpty(Nome, nameof(Nome));
         DomainValidation.NotNullOrEmpty(CPF, nameof(CPF));

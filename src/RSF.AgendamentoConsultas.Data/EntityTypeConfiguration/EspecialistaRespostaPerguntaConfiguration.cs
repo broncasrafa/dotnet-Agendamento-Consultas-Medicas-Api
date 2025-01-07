@@ -14,8 +14,6 @@ public class EspecialistaRespostaPerguntaConfiguration : IEntityTypeConfiguratio
 
         builder.Property(r => r.PerguntaId).IsRequired();
 
-        builder.Property(r => r.EspecialistaId).IsRequired();
-
         builder.Property(r => r.Resposta).IsRequired().HasColumnType("varchar(max)");
         
         builder.Property(r => r.Likes).HasDefaultValue(0);
@@ -27,14 +25,10 @@ public class EspecialistaRespostaPerguntaConfiguration : IEntityTypeConfiguratio
             .HasColumnType("datetime")
             .HasDefaultValueSql("(getdate())");
 
-        builder.HasOne(r => r.Especialista)
-            .WithMany(e => e.RespostasPerguntas)
-            .HasForeignKey(r => r.EspecialistaId)
-            .OnDelete(DeleteBehavior.Restrict);
 
-        builder.HasOne(r => r.Pergunta)
-            .WithMany()
-            .HasForeignKey(r => r.PerguntaId)
+        builder.HasOne(p => p.Pergunta)
+            .WithMany(r => r.Respostas)
+            .HasForeignKey(p => p.PerguntaId)
             .OnDelete(DeleteBehavior.Restrict);
     }
 }

@@ -15,6 +15,6 @@ public class TagsResponse
     public static TagsResponse MapFromEntity(Domain.Entities.Tags tags)
         => tags is null ? default! : new TagsResponse(tags.TagId, tags.Descricao);
 
-    public static IReadOnlyList<TagsResponse> MapFromEntity(IReadOnlyList<Domain.Entities.Tags> tags)
-        => tags.Select(MapFromEntity).ToList();
+    public static IReadOnlyList<TagsResponse> MapFromEntity(IEnumerable<Domain.Entities.Tags> tags)
+        => (tags?.Count() == 0) ? default! : tags.Select(MapFromEntity).ToList();
 }

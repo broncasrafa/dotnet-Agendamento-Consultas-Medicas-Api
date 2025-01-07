@@ -162,6 +162,8 @@ dotnet_diagnostic.CA1848.severity = none
 # CA1849: Chamar métodos assíncronos quando em um método assíncrono
 dotnet_diagnostic.CA1849.severity = none
 
+# CA1851: diversas enumerações da coleção IEnumerable são possíveis
+dotnet_diagnostic.CA1851.severity = none
 
 # CA2007: não aguardar diretamente uma tarefa
 dotnet_diagnostic.CA2007.severity = none

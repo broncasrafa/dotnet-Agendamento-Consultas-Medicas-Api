@@ -34,8 +34,11 @@ public class Especialista
     public ICollection<EspecialistaTags> Tags { get; set; }
     public ICollection<EspecialistaAvaliacao> Avaliacoes { get; set; }
     public ICollection<EspecialistaPergunta> Perguntas { get; set; }
-    public ICollection<EspecialistaRespostaPergunta> RespostasPerguntas { get; set; }
+    
 
+    protected Especialista()
+    {        
+    }
 
     public Especialista(string tipo, string nome, string licenca, string foto, string sharedUrl, bool? agendaOnline, bool? perfilVerificado, bool? permitirPergunta, bool? telemedicinaOnline, bool? telemedicinaAtivo, string telemedicinaPreco, decimal? telemedicinaPrecoNumber, decimal? avaliacao, string experienciaProfissional, string formacaoAcademica, string genero, string tratamento)
     {

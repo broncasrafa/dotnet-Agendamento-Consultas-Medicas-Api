@@ -14,6 +14,10 @@ public class EspecialistaAvaliacao
     public Especialista Especialista { get; set; }
     public Paciente Paciente { get; set; }
 
+    protected EspecialistaAvaliacao()
+    {        
+    }
+
     public EspecialistaAvaliacao(int especialistaId, int pacienteId, string feedback, int score)
     {
         EspecialistaId = especialistaId;

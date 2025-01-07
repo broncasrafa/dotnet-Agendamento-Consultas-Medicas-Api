@@ -16,6 +16,10 @@ public class EspecialistaPergunta
     public ICollection<EspecialistaRespostaPergunta> Respostas { get; set; }
 
 
+    protected EspecialistaPergunta()
+    {        
+    }
+
     public EspecialistaPergunta(int especialistaId, int pacienteId, string titulo, string pergunta)
     {
         EspecialistaId = especialistaId;

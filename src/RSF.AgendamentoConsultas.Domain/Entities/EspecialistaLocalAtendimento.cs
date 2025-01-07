@@ -23,6 +23,10 @@ public class EspecialistaLocalAtendimento
     public Especialista Especialista { get; set; }
 
 
+    protected EspecialistaLocalAtendimento()
+    {        
+    }
+
     public EspecialistaLocalAtendimento(string nome, string logradouro, string complemento, string bairro, string cep, string cidade, string estado, decimal? preco, string precoDescricao, string tipoAtendimento, string telefone, string whatsapp)
     {
         Nome = nome;

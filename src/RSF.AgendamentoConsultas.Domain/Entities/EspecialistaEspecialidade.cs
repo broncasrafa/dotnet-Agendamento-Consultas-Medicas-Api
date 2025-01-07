@@ -12,6 +12,10 @@ public class EspecialistaEspecialidade
     public Especialista Especialista { get; set; }
     public Especialidade Especialidade { get; set; }
 
+    protected EspecialistaEspecialidade()
+    {        
+    }
+
     public EspecialistaEspecialidade(int especialistaId, int especialidadeId, string tipoEspecialidade)
     {
         EspecialistaId = especialistaId;
