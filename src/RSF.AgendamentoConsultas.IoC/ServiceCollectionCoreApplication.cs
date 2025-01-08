@@ -2,9 +2,10 @@
 using System.Diagnostics.CodeAnalysis;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using RSF.AgendamentoConsultas.Shareable;
 using RSF.AgendamentoConsultas.Application;
 using RSF.AgendamentoConsultas.Application.Handlers.Pipelines;
-using RSF.AgendamentoConsultas.Shareable;
+using RSF.AgendamentoConsultas.Application.Services.HasherPassword;
 using MediatR;
 using FluentValidation;
 using AutoMapper;
@@ -19,6 +20,8 @@ public static class ServiceCollectionCoreApplication
         services.ConfigureMediatR(new[] { typeof(ApplicationEntryPoint).Assembly });
         services.ConfigureFluentValidation(typeof(ShareableEntryPoint).Assembly, typeof(ApplicationEntryPoint).Assembly);
         services.ConfigureAutoMapper(new[] { typeof(ApplicationEntryPoint).Assembly });
+
+        services.AddSingleton<IPasswordHasher, PasswordHasher>();
 
         return services;
     }

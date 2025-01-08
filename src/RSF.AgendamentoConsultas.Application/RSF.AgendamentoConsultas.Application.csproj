@@ -1,23 +1,26 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Divino.OperationResult" Version="4.0.1" />
-    <PackageReference Include="FluentValidation" Version="11.11.0" />
-    <PackageReference Include="MediatR" Version="9.0.0" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Divino.OperationResult" Version="4.0.1" />
+		<PackageReference Include="FluentValidation" Version="11.11.0" />
+		<PackageReference Include="MediatR" Version="9.0.0" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\RSF.AgendamentoConsultas.Domain\RSF.AgendamentoConsultas.Domain.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\RSF.AgendamentoConsultas.Domain\RSF.AgendamentoConsultas.Domain.csproj" />
+		<ProjectReference Include="..\RSF.AgendamentoConsultas.Shareable\RSF.AgendamentoConsultas.Shareable.csproj" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Handlers\Features\Paciente\" />
-  </ItemGroup>
+	<ItemGroup>
+		<Folder Include="Handlers\Features\Paciente\GetAgendamentos\" />
+		<Folder Include="Handlers\Features\Paciente\GetAvaliacoes\" />
+		<Folder Include="Handlers\Features\Paciente\GetPerguntas\" />
+	</ItemGroup>
 
 </Project>

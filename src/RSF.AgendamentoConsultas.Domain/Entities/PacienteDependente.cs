@@ -4,25 +4,28 @@ namespace RSF.AgendamentoConsultas.Domain.Entities;
 
 public class PacienteDependente
 {
-    public int PacienteDependenteId { get; private set; }
-    public int PacienteId { get; private set; }
-    public string Nome { get; private set; }
-    public string CPF { get; private set; }
-    public string Email { get; private set; }
-    public string Telefone { get; private set; }
-    public string Genero { get; private set; } = "Não informado";
-    public string DataNascimento { get; private set; }
-    public string NomeSocial { get; private set; }
-    public decimal? Peso { get; private set; }
-    public decimal? Altura { get; private set; }
-    public DateTime CreatedAt { get; private set; }
-    public DateTime? UpdatedAt { get; private set; }
+    public int DependenteId { get; set; }
+    public int PacientePrincipalId { get; set; }
+    public string Nome { get; set; }
+    public string CPF { get; set; }
+    public string Email { get; set; }
+    public string Telefone { get; set; }
+    public string Genero { get; set; } = "Não informado";
+    public string DataNascimento { get; set; }
+    public string NomeSocial { get; set; }
+    public decimal? Peso { get; set; }
+    public decimal? Altura { get; set; }
+    public DateTime CreatedAt { get; set; }
+    public DateTime? UpdatedAt { get; set; }
 
-    public Paciente PacientePrincipal { get; set; }
+    public Paciente Paciente { get; set; }
+    public ICollection<PacienteDependentePlanoMedico> PlanosMedicos { get; set; }
 
-    public PacienteDependente(int pacienteId, string nome, string cpf, string email, string telefone, string genero, string dataNascimento, string nomeSocial, decimal? peso, decimal? altura)
+    protected PacienteDependente() { }
+
+    public PacienteDependente(int pacientePrincipalId, string nome, string cpf, string email, string telefone, string genero, string dataNascimento, string nomeSocial = null, decimal? peso = null, decimal? altura = null)
     {
-        PacienteId = pacienteId;
+        PacientePrincipalId = pacientePrincipalId;
         Nome = nome;
         CPF = cpf;
         Email = email;
@@ -37,7 +40,7 @@ public class PacienteDependente
         Validate();
     }
 
-    public void Update(string nome, string email, string telefone, string genero, string dataNascimento, string nomeSocial, decimal? peso, decimal? altura)
+    public void Update(string nome, string email, string telefone, string genero, string dataNascimento, string nomeSocial = null, decimal? peso = null, decimal? altura = null)
     {
         Nome = nome;
         Email = email;
@@ -52,10 +55,12 @@ public class PacienteDependente
         Validate();
     }
 
-    private void Validate()
+    void Validate()
     {
-        DomainValidation.IdentifierGreaterThanZero(PacienteId, nameof(PacienteId));
+        DomainValidation.IdentifierGreaterThanZero(PacientePrincipalId, nameof(PacientePrincipalId));
         DomainValidation.NotNullOrEmpty(Nome, nameof(Nome));
+        DomainValidation.NotNullOrEmpty(CPF, nameof(CPF));
+        DomainValidation.NotNullOrEmpty(Email, nameof(Email));
         DomainValidation.NotNullOrEmpty(Telefone, nameof(Telefone));
         DomainValidation.NotNullOrEmpty(Genero, nameof(Genero));
         DomainValidation.NotNullOrEmpty(DataNascimento, nameof(DataNascimento));

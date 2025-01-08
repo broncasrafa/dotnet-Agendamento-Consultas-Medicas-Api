@@ -2,27 +2,27 @@
 
 namespace RSF.AgendamentoConsultas.Domain.Entities;
 
-public class PacientePlanoMedico
-{    
+public class PacienteDependentePlanoMedico
+{
     public int PlanoMedicoId { get; private set; }
     public string NomePlano { get; private set; }
     public string NumCartao { get; private set; }
-    public int PacienteId { get; private set; }
+    public int DependenteId { get; private set; }
     public int ConvenioMedicoId { get; private set; }
 
-    public Paciente Paciente { get; set; }
+    public PacienteDependente Dependente { get; set; }
     public ConvenioMedico ConvenioMedico { get; set; }
 
 
-    protected PacientePlanoMedico()
-    {        
+    protected PacienteDependentePlanoMedico()
+    {
     }
 
-    public PacientePlanoMedico(string nomePlano, string numCartao, int pacienteId, int convenioMedicoId)
+    public PacienteDependentePlanoMedico(string nomePlano, string numCartao, int dependenteId, int convenioMedicoId)
     {
         NomePlano = nomePlano;
         NumCartao = numCartao;
-        PacienteId = pacienteId;
+        DependenteId = dependenteId;
         ConvenioMedicoId = convenioMedicoId;
 
         Validate();
@@ -32,7 +32,7 @@ public class PacientePlanoMedico
     {
         DomainValidation.NotNullOrEmpty(NomePlano, nameof(NomePlano));
         DomainValidation.NotNullOrEmpty(NumCartao, nameof(NumCartao));
-        DomainValidation.IdentifierGreaterThanZero(PacienteId, nameof(PacienteId));
+        DomainValidation.IdentifierGreaterThanZero(DependenteId, nameof(DependenteId));
         DomainValidation.IdentifierGreaterThanZero(ConvenioMedicoId, nameof(ConvenioMedicoId));
     }
 }

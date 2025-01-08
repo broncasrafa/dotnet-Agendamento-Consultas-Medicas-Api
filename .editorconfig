@@ -135,14 +135,23 @@ dotnet_diagnostic.CA1056.severity = none
 # CA1062: Validar argumentos de métodos públicos
 dotnet_diagnostic.CA1062.severity = none
 
+# CA1304: Especificar CultureInfo
+dotnet_diagnostic.CA1304.severity = suggestion
+
 # CA1305: Especificar IFormatProvider
 dotnet_diagnostic.CA1305.severity = none
 
 # CA1307: Especificar StringComparison para garantir a clareza
 dotnet_diagnostic.CA1307.severity = none
 
+# CA1309: Usar StringComparison ordinal
+dotnet_diagnostic.CA1309.severity = suggestion
+
 # CA1310: Especificar StringComparison para garantir a exatidão
 dotnet_diagnostic.CA1310.severity = none
+
+# CA1311: Especificar uma cultura ou usar uma versão invariável
+dotnet_diagnostic.CA1311.severity = suggestion
 
 # CA1707: Identificadores não devem conter sublinhados
 dotnet_diagnostic.CA1707.severity = none

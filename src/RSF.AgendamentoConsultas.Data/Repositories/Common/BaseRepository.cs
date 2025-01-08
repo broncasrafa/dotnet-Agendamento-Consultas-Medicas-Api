@@ -18,9 +18,12 @@ public class BaseRepository<T> : IBaseRepository<T> where T : class
     public async ValueTask<IReadOnlyList<T>> GetAllAsync()
         => await Context.Set<T>().ToListAsync().ConfigureAwait(false);
 
-    public async ValueTask<IReadOnlyList<T>> GetByFilterAsync(Expression<Func<T, bool>> filter)
+    public async ValueTask<IReadOnlyList<T>> GetAllByFilterAsync(Expression<Func<T, bool>> filter)
         => await Context.Set<T>().Where(filter).ToListAsync().ConfigureAwait(false);
-    
+
+    public async ValueTask<T> GetByFilterAsync(Expression<Func<T, bool>> filter)
+        => await Context.Set<T>().SingleOrDefaultAsync(filter).ConfigureAwait(false);
+
     public async ValueTask<T> GetByIdAsync(int id)
         => await Context.Set<T>().FindAsync(id).ConfigureAwait(false);
 

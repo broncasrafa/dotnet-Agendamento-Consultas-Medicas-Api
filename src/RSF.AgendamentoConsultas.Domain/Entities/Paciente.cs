@@ -5,15 +5,6 @@ namespace RSF.AgendamentoConsultas.Domain.Entities;
 public class Paciente
 {
     public int PacienteId { get; set; }
-
-    /// <summary>
-    /// Tipo do paciente, podendo ser "Principal" ou "Dependente".
-    /// </summary>
-    public string Tipo { get; set; }
-    /// <summary>
-    /// Se for um paciente dependente, esse campo deve ser preenchido com o id do paciente principal.
-    /// </summary>
-    public int? PacientePrincipalId { get; set; }
     public string Nome { get; set; }
     public string CPF { get; set; }
     public string Email { get; set; }
@@ -29,6 +20,9 @@ public class Paciente
     public DateTime CreatedAt { get; set; }
     public DateTime? UpdatedAt { get; set; }
 
+    public string Password { get; private set; }
+
+    public ICollection<PacienteDependente> Dependentes { get; set; }
     public ICollection<PacientePlanoMedico> PlanosMedicos { get; set; }
     public ICollection<EspecialistaAvaliacao> AvaliacoesFeitas { get; set; }
     public ICollection<EspecialistaPergunta> PerguntasRealizadas { get; set; }
@@ -36,10 +30,8 @@ public class Paciente
 
     protected Paciente() { }
 
-    public Paciente(string tipo, int? pacientePrincipalId, string nome, string cpf, string email, string telefone, string genero, string dataNascimento, string nomeSocial, decimal? peso, decimal? altura, bool telefoneVerificado, bool emailVerificado, bool termoUsoAceito)
+    public Paciente(string nome, string cpf, string email, string telefone, string genero, string dataNascimento, string nomeSocial = null, decimal? peso = null, decimal? altura = null, bool? telefoneVerificado = null, bool? emailVerificado = null, bool? termoUsoAceito = null)
     {
-        Tipo = tipo;
-        PacientePrincipalId = pacientePrincipalId;
         Nome = nome;
         CPF = cpf;
         Email = email;
@@ -49,15 +41,15 @@ public class Paciente
         NomeSocial = nomeSocial;
         Peso = peso;
         Altura = altura;
-        TelefoneVerificado = telefoneVerificado;
-        EmailVerificado = emailVerificado;
-        TermoUsoAceito = termoUsoAceito;
+        TelefoneVerificado = telefoneVerificado ?? false;
+        EmailVerificado = emailVerificado ?? false;
+        TermoUsoAceito = termoUsoAceito ?? false;
         CreatedAt = DateTime.UtcNow;
 
         Validate();
     }
 
-    public void Update(string nome, string email, string telefone, string genero, string dataNascimento, string nomeSocial, decimal? peso, decimal? altura, bool telefoneVerificado, bool emailVerificado, bool termoUsoAceito)
+    public void Update(string nome, string email, string telefone, string genero, string dataNascimento, string nomeSocial = null, decimal? peso = null, decimal? altura = null, bool? telefoneVerificado = null, bool? emailVerificado = null, bool? termoUsoAceito = null)
     {
         Nome = nome;
         Email = email;
@@ -67,9 +59,9 @@ public class Paciente
         NomeSocial = nomeSocial;
         Peso = peso;
         Altura = altura;
-        TelefoneVerificado = telefoneVerificado;
-        EmailVerificado = emailVerificado;
-        TermoUsoAceito = termoUsoAceito;
+        TelefoneVerificado = telefoneVerificado ?? false;
+        EmailVerificado = emailVerificado ?? false;
+        TermoUsoAceito = termoUsoAceito ?? false;
         UpdatedAt = DateTime.UtcNow;
 
         Validate();
@@ -86,7 +78,8 @@ public class Paciente
         DomainValidation.PossibleValidDate(DataNascimento, permitirSomenteDatasFuturas: false, nameof(DataNascimento));
         DomainValidation.PossibleValidPhoneNumber(Telefone, nameof(Telefone));
         DomainValidation.PossiblesValidTypes(TypeValids.VALID_GENEROS, value: Genero, nameof(Genero));
-        DomainValidation.PossiblesValidTypes(TypeValids.VALID_PACIENTES, value: Tipo, nameof(Tipo));
-        DomainValidation.IdentifierGreaterThanZero(PacientePrincipalId, nameof(PacientePrincipalId));
+        DomainValidation.PossibleValidPassword(Password);
     }
+
+    public void SetPassword(string passwordHash) => Password = passwordHash;
 }

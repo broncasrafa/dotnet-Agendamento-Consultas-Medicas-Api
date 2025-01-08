@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using System.ComponentModel;
+using System.Globalization;
 using System.Text.RegularExpressions;
 using RSF.AgendamentoConsultas.Domain.Exceptions;
 
@@ -73,7 +74,7 @@ public static class DomainValidation
     {
         // Se o telefone é obrigatório e não foi informado
         if (isRequired && string.IsNullOrWhiteSpace(value))
-            throw new ArgumentException($"{fieldName} não pode ser nulo ou vazio.");
+            throw new EntityValidationException($"{fieldName} não pode ser nulo ou vazio.");
 
         // Se não é obrigatório e o valor foi informado, faz a validação
         if (!string.IsNullOrWhiteSpace(value))
@@ -83,11 +84,11 @@ public static class DomainValidation
 
             // Verifica se contém apenas números
             if (!Regex.IsMatch(onlyNumbers, @"^\d+$"))
-                throw new ArgumentException($"{fieldName} deve conter apenas números.");
+                throw new EntityValidationException($"{fieldName} deve conter apenas números.");
 
             // Valida a quantidade de dígitos
             if (onlyNumbers.Length < 10 || onlyNumbers.Length > 11)
-                throw new ArgumentException($"{fieldName} deve conter 10 (fixo) ou 11 (celular) dígitos.");
+                throw new EntityValidationException($"{fieldName} deve conter 10 (fixo) ou 11 (celular) dígitos.");
         }
     }
 
@@ -99,27 +100,52 @@ public static class DomainValidation
 
     public static void PossibleValidNumber(string value, string fieldName)
     {
-        if (!string.IsNullOrWhiteSpace(value))
+        if (!string.IsNullOrWhiteSpace(value) && !Regex.IsMatch(value, @"^\d+$"))
         {
-            if (!Regex.IsMatch(value, @"^\d+$"))
-                throw new EntityValidationException($"{fieldName} deve conter apenas números.");
+            throw new EntityValidationException($"{fieldName} deve conter apenas números.");
         }
     }
 
     public static void PossibleValidTime(string value, string fieldName)
     {
         if (string.IsNullOrWhiteSpace(value))
-            throw new ArgumentException($"{fieldName} não pode ser nulo ou vazio.");
+            throw new EntityValidationException($"{fieldName} não pode ser nulo ou vazio.");
 
         // Define o formato esperado de hora
         string pattern = "HH:mm";
 
         // Tenta converter a string para o formato "HH:mm"
         if (!DateTime.TryParseExact(value, pattern, CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime parsedTime))
-            throw new ArgumentException($"{fieldName} deve estar no formato válido HH:mm.");
+            throw new EntityValidationException($"{fieldName} deve estar no formato válido HH:mm.");
 
         // Verifica se a hora e minutos estão dentro do intervalo esperado
         if (parsedTime.Hour < 0 || parsedTime.Hour > 23 || parsedTime.Minute < 0 || parsedTime.Minute > 59)
-            throw new ArgumentException($"{fieldName} deve ser uma hora válida no formato HH:mm.");
+            throw new EntityValidationException($"{fieldName} deve ser uma hora válida no formato HH:mm.");
+    }
+
+    public static void PossibleValidPassword(string senha, int minimumLength = 5)
+    {
+        if (!string.IsNullOrWhiteSpace(senha))
+        {
+            var erros = new List<string>();
+
+            if (senha.Length < minimumLength)
+                erros.Add($"Senha deve ter pelo menos {minimumLength} caracteres");
+
+            if (!Regex.IsMatch(senha, "[A-Z]"))
+                erros.Add("Senha deve ter pelo menos 1 letra maiúscula");
+
+            if (!Regex.IsMatch(senha, "[a-z]"))
+                erros.Add("Senha deve ter pelo menos 1 letra minúscula");
+
+            if (!Regex.IsMatch(senha, "[0-9]"))
+                erros.Add("Senha deve ter pelo menos 1 número");
+
+            if (!Regex.IsMatch(senha, "[!*@#$%^&+=]"))
+                erros.Add("Senha deve ter pelo menos 1 caractere especial");
+
+            if (erros.Count > 0)
+                throw new EntityValidationException($"A senha não atende aos critérios: {string.Join(", ", erros)}");
+        }        
     }
 }

@@ -3,7 +3,7 @@ using RSF.AgendamentoConsultas.Domain.Interfaces.Common;
 
 namespace RSF.AgendamentoConsultas.Domain.Interfaces;
 
-public interface IPacienteRepository : IBaseRepository<Paciente>
+public interface IPacienteDependenteRepository : IBaseRepository<PacienteDependente>
 {
-    ValueTask<IReadOnlyList<PacientePlanoMedico>> GetByIdWithPlanosMedicosAsync(int pacienteId);
+    new ValueTask<PacienteDependente> GetByIdAsync(int dependenteId);
 }
