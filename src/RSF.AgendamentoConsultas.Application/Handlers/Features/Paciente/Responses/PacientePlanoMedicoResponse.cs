@@ -13,7 +13,7 @@ public record PacientePlanoMedicoResponse
             entity.PlanoMedicoId,
             entity.NomePlano,
             entity.NumCartao,
-            entity.ConvenioMedico.Nome);
+            entity.ConvenioMedico?.Nome);
 
     public static IReadOnlyList<PacientePlanoMedicoResponse>? MapFromEntity(IEnumerable<Domain.Entities.PacientePlanoMedico> collection)
         => (collection is null || !collection.Any()) ? default! : collection.Select(c => MapFromEntity(c)).ToList();

@@ -6,7 +6,7 @@ using MediatR;
 using OperationResult;
 
 
-namespace RSF.AgendamentoConsultas.Application.Handlers.Features.Paciente.CreatePaciente;
+namespace RSF.AgendamentoConsultas.Application.Handlers.Features.Paciente.Command.CreatePaciente;
 
 public class CreatePacienteRequestHandler : IRequestHandler<CreatePacienteRequest, Result<PacienteResponse>>
 {
@@ -26,7 +26,7 @@ public class CreatePacienteRequestHandler : IRequestHandler<CreatePacienteReques
 
         paciente = await _repository.GetByFilterAsync(c => c.Email == request.Email);
         AlreadyExistsException.ThrowIfExists(paciente, $"Paciente com o e-mail: '{request.Email}' já cadastrado");
-        
+
         var newPaciente = new Domain.Entities.Paciente(
             nome: request.NomeCompleto,
             cpf: request.CPF,

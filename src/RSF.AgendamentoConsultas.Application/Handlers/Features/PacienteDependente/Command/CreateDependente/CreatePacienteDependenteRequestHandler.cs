@@ -1,11 +1,11 @@
-﻿using RSF.AgendamentoConsultas.Application.Handlers.Features.Paciente.Responses;
+﻿using RSF.AgendamentoConsultas.Application.Handlers.Features.PacienteDependente.Responses;
 using RSF.AgendamentoConsultas.Domain.Interfaces;
 using RSF.AgendamentoConsultas.Shareable.Helpers;
 using RSF.AgendamentoConsultas.Shareable.Exceptions;
 using MediatR;
 using OperationResult;
 
-namespace RSF.AgendamentoConsultas.Application.Handlers.Features.Paciente.CreateDependentes;
+namespace RSF.AgendamentoConsultas.Application.Handlers.Features.PacienteDependente.Command.CreateDependente;
 
 public class CreatePacienteDependenteRequestHandler : IRequestHandler<CreatePacienteDependenteRequest, Result<PacienteDependenteResponse>>
 {

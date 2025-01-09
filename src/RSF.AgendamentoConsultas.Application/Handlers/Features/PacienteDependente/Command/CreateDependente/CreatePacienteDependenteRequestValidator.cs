@@ -1,7 +1,7 @@
 ﻿using RSF.AgendamentoConsultas.Shareable.Validations.Validators;
 using FluentValidation;
 
-namespace RSF.AgendamentoConsultas.Application.Handlers.Features.Paciente.CreateDependentes;
+namespace RSF.AgendamentoConsultas.Application.Handlers.Features.PacienteDependente.Command.CreateDependente;
 
 public class CreatePacienteDependenteRequestValidator : AbstractValidator<CreatePacienteDependenteRequest>
 {

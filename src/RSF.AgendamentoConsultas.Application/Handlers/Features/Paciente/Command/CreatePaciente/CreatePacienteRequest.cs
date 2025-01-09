@@ -2,7 +2,7 @@
 using MediatR;
 using OperationResult;
 
-namespace RSF.AgendamentoConsultas.Application.Handlers.Features.Paciente.CreatePaciente;
+namespace RSF.AgendamentoConsultas.Application.Handlers.Features.Paciente.Command.CreatePaciente;
 
 public class CreatePacienteRequest : IRequest<Result<PacienteResponse>>
 {

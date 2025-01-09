@@ -1,8 +1,8 @@
-﻿using RSF.AgendamentoConsultas.Application.Handlers.Features.Paciente.Responses;
+﻿using RSF.AgendamentoConsultas.Application.Handlers.Features.PacienteDependente.Responses;
 using MediatR;
 using OperationResult;
 
-namespace RSF.AgendamentoConsultas.Application.Handlers.Features.Paciente.CreateDependentes;
+namespace RSF.AgendamentoConsultas.Application.Handlers.Features.PacienteDependente.Command.CreateDependente;
 
 public class CreatePacienteDependenteRequest : IRequest<Result<PacienteDependenteResponse>>
 {

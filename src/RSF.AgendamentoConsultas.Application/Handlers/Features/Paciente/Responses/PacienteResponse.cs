@@ -1,4 +1,6 @@
-﻿namespace RSF.AgendamentoConsultas.Application.Handlers.Features.Paciente.Responses;
+﻿using RSF.AgendamentoConsultas.Application.Handlers.Features.PacienteDependente.Responses;
+
+namespace RSF.AgendamentoConsultas.Application.Handlers.Features.Paciente.Responses;
 
 public record PacienteResponse
 (
@@ -11,7 +13,9 @@ public record PacienteResponse
     bool TermoUsoAceito,
     string Genero,
     string DataNascimento,
-    DateTime CreatedAt
+    DateTime CreatedAt,
+    IReadOnlyList<PacienteDependenteResponse>? Dependentes,
+    IReadOnlyList<PacientePlanoMedicoResponse>? PlanosMedicos
 )
 {
     public static PacienteResponse MapFromEntity(Domain.Entities.Paciente paciente)
@@ -25,5 +29,7 @@ public record PacienteResponse
             paciente.TermoUsoAceito, 
             paciente.Genero,
             paciente.DataNascimento,
-            paciente.CreatedAt);
+            paciente.CreatedAt,
+            PacienteDependenteResponse.MapFromEntity(paciente.Dependentes),
+            PacientePlanoMedicoResponse.MapFromEntity(paciente.PlanosMedicos));
 }

@@ -1,13 +1,12 @@
 ﻿using System.Linq.Expressions;
-using RSF.AgendamentoConsultas.Shareable.Results;
 
 namespace RSF.AgendamentoConsultas.Domain.Interfaces.Common;
 
 public interface IBaseRepository<T> where T : class
 {
     ValueTask<IReadOnlyList<T>> GetAllAsync();
-    ValueTask<IReadOnlyList<T>> GetAllByFilterAsync(Expression<Func<T, bool>> filter);
-    ValueTask<T> GetByFilterAsync(Expression<Func<T, bool>> filter);
+    ValueTask<IReadOnlyList<T>> GetAllByFilterAsync(Expression<Func<T, bool>> filter, params Expression<Func<T, object?>>[] includes);
+    ValueTask<T> GetByFilterAsync(Expression<Func<T, bool>> filter, params Expression<Func<T, object?>>[] includes);
     ValueTask<T> GetByIdAsync(int id);
     ValueTask AddAsync(T entity);
     ValueTask UpdateAsync(T entity);

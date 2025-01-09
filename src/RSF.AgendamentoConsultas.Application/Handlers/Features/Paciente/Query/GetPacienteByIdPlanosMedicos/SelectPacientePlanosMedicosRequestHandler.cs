@@ -4,7 +4,7 @@ using RSF.AgendamentoConsultas.Domain.Interfaces;
 using MediatR;
 using OperationResult;
 
-namespace RSF.AgendamentoConsultas.Application.Handlers.Features.Paciente.GetPlanosMedicos;
+namespace RSF.AgendamentoConsultas.Application.Handlers.Features.Paciente.Query.GetPacienteByIdPlanosMedicos;
 
 public class SelectPacientePlanosMedicosRequestHandler : IRequestHandler<SelectPacientePlanosMedicosRequest, Result<PacienteResultList<PacientePlanoMedicoResponse>>>
 {
@@ -14,13 +14,13 @@ public class SelectPacientePlanosMedicosRequestHandler : IRequestHandler<SelectP
 
     public async Task<Result<PacienteResultList<PacientePlanoMedicoResponse>>> Handle(SelectPacientePlanosMedicosRequest request, CancellationToken cancellationToken)
     {
-        var planos = await _repository.GetByIdWithPlanosMedicosAsync(request.Id);
+        var planosMedicos = await _repository.GetPlanosMedicosPacienteByIdAsync(request.Id);
 
-        NotFoundException.ThrowIfNull(planos, $"Paciente com o ID: '{request.Id}' não foi encontrado");
-        
-        var response = new PacienteResultList<PacientePlanoMedicoResponse>(request.Id, PacientePlanoMedicoResponse.MapFromEntity(planos));
+        NotFoundException.ThrowIfNull(planosMedicos.Count == 0 ? null : planosMedicos, $"Paciente com o ID: '{request.Id}' não foi encontrado");
 
-        return Result.Success<PacienteResultList<PacientePlanoMedicoResponse>>(response);
+        var response = new PacienteResultList<PacientePlanoMedicoResponse>(request.Id, PacientePlanoMedicoResponse.MapFromEntity(planosMedicos));
+
+        return Result.Success(response);
     }
 }
 

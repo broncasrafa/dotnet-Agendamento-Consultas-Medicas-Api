@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace RSF.AgendamentoConsultas.Application.Handlers.Features.Paciente.GetPlanosMedicos;
+namespace RSF.AgendamentoConsultas.Application.Handlers.Features.Paciente.Query.GetPacienteByIdPlanosMedicos;
 
 public class SelectPacientePlanosMedicosRequestValidator : AbstractValidator<SelectPacientePlanosMedicosRequest>
 {

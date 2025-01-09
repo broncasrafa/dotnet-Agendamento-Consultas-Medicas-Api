@@ -2,6 +2,6 @@
 using MediatR;
 using OperationResult;
 
-namespace RSF.AgendamentoConsultas.Application.Handlers.Features.Paciente.GetById;
+namespace RSF.AgendamentoConsultas.Application.Handlers.Features.Paciente.Query.GetPacienteById;
 
 public record SelectPacienteByIdRequest(int Id) : IRequest<Result<PacienteResponse>>;
