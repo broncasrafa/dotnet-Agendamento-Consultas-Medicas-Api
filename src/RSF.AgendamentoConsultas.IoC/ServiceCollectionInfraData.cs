@@ -44,5 +44,6 @@ public static class ServiceCollectionInfraData
         services.AddScoped<IEspecialistaRepository, EspecialistaRepository>();
         services.AddScoped<IPacienteRepository, PacienteRepository>();
         services.AddScoped<IPacienteDependenteRepository, PacienteDependenteRepository>();
+        services.AddScoped<IAgendamentoConsultaRepository, AgendamentoConsultaRepository>();
     }
 }

@@ -16,7 +16,7 @@ public class PacienteRepository : BaseRepository<Paciente>, IPacienteRepository
         => await _Context.Pacientes
                     .AsNoTracking()
                     .Include(c => c.Dependentes).ThenInclude(d => d.PlanosMedicos).ThenInclude(cm => cm.ConvenioMedico)
-                    .Include(c => c.Dependentes).ThenInclude(p => p.Paciente)
+                    //.Include(c => c.Dependentes).ThenInclude(p => p.Paciente)
                     .Include(c => c.PlanosMedicos).ThenInclude(cm => cm.ConvenioMedico)
                     .FirstOrDefaultAsync(p => p.PacienteId == pacienteId);
 

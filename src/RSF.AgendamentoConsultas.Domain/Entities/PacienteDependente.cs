@@ -20,6 +20,7 @@ public class PacienteDependente
 
     public Paciente Paciente { get; set; }
     public ICollection<PacienteDependentePlanoMedico> PlanosMedicos { get; set; }
+    public ICollection<AgendamentoConsulta> AgendamentosRealizados { get; set; }
 
     protected PacienteDependente() { }
 

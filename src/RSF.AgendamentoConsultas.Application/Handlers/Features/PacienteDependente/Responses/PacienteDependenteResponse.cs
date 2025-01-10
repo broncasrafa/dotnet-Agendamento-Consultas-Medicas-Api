@@ -8,7 +8,6 @@ public record PacienteDependenteResponse(
     string Genero,
     string CPF,
     string DataNascimento,
-    string PacientePrincipal,
     IReadOnlyList<PacienteDependentePlanoMedicoResponse>? PlanosMedicos)
 {
     public static PacienteDependenteResponse MapFromEntity(Domain.Entities.PacienteDependente dependente)
@@ -20,7 +19,6 @@ public record PacienteDependenteResponse(
             dependente.Genero,
             dependente.CPF,
             dependente.DataNascimento,
-            dependente.Paciente?.Nome,
             PacienteDependentePlanoMedicoResponse.MapFromEntity(dependente.PlanosMedicos));
 
     public static IReadOnlyList<PacienteDependenteResponse>? MapFromEntity(IEnumerable<Domain.Entities.PacienteDependente> collection)
