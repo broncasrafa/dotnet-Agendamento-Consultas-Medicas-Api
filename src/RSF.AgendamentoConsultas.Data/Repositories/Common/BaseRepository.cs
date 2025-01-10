@@ -35,7 +35,7 @@ public class BaseRepository<T> : IBaseRepository<T> where T : class
     public async ValueTask RemoveAsync(T entity)
         => await ValueTask.FromResult(Context.Set<T>().Remove(entity)).ConfigureAwait(false);
 
-    public async ValueTask SaveChangesAsync() 
+    public async ValueTask<int> SaveChangesAsync() 
         => await Context.SaveChangesAsync().ConfigureAwait(false);
 
     public async ValueTask UpdateAsync(T entity)

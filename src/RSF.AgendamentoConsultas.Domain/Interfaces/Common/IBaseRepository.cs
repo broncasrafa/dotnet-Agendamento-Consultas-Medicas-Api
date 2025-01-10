@@ -11,5 +11,5 @@ public interface IBaseRepository<T> where T : class
     ValueTask AddAsync(T entity);
     ValueTask UpdateAsync(T entity);
     ValueTask RemoveAsync(T entity);
-    ValueTask SaveChangesAsync();
+    ValueTask<int> SaveChangesAsync();
 }

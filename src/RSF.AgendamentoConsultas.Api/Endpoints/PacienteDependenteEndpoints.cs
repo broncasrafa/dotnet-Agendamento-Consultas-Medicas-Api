@@ -8,6 +8,7 @@ using RSF.AgendamentoConsultas.Application.Handlers.Features.PacienteDependente.
 using RSF.AgendamentoConsultas.Application.Handlers.Features.PacienteDependente.Query.GetDependenteByIdPlanosMedicos;
 using MediatR;
 using FluentValidation;
+using RSF.AgendamentoConsultas.Shareable.Exceptions;
 
 
 namespace RSF.AgendamentoConsultas.Api.Endpoints;
@@ -22,9 +23,9 @@ internal static class PacienteDependenteEndpoints
         routes.MapPost("/", static async (IMediator mediator, [FromBody] CreatePacienteDependenteRequest request, [FromRoute] int id, CancellationToken cancellationToken) =>
         {
             if (id != request.PacientePrincipalId)
-                throw new ValidationException("Os IDs do paciente principal não conferem");
+                throw new InputRequestDataInvalidException("Id", "Os IDs do paciente principal não conferem");
 
-            await mediator.SendCommand(request, cancellationToken: cancellationToken);
+            return await mediator.SendCommand(request, cancellationToken: cancellationToken);
         })
             .WithName("CreateDependente")
             .Accepts<CreatePacienteDependenteRequest>("application/json")
@@ -39,9 +40,9 @@ internal static class PacienteDependenteEndpoints
         routes.MapPost("/{idDependente:int}/planos-medicos", static async (IMediator mediator, [FromBody] CreatePacienteDependentePlanoMedicoRequest request, [FromRoute] int id, [FromRoute] int idDependente, CancellationToken cancellationToken) =>
         {
             if (idDependente != request.DependenteId)
-                throw new ValidationException("Os IDs do paciente não conferem");
+                throw new InputRequestDataInvalidException("Id", "Os IDs do paciente dependente não conferem");
 
-            await mediator.SendCommand(request, cancellationToken: cancellationToken);
+            return await mediator.SendCommand(request, cancellationToken: cancellationToken);
         })
             .WithName("CreatePacienteDependentePlanoMedico")
             .Accepts<CreatePacienteDependentePlanoMedicoRequest>("application/json")

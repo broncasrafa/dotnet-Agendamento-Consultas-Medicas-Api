@@ -29,6 +29,10 @@ public class EspecialistaResponse
     public IReadOnlyList<EspecialistaAvaliacaoResponse>? Avaliacoes { get; set; }
     public IReadOnlyList<EspecialistaPerguntaResponse>? PerguntasRespostas { get; set; }
 
+    public EspecialistaResponse()
+    {        
+    }
+
     public static EspecialistaResponse MapFromEntity(Domain.Entities.Especialista entity)
     {
         if (entity is null) return default!;

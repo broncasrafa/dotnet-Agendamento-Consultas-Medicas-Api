@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using RSF.AgendamentoConsultas.Api.Extensions;
 using RSF.AgendamentoConsultas.Api.Models;
+using RSF.AgendamentoConsultas.Shareable.Exceptions;
 using RSF.AgendamentoConsultas.Application.Handlers.Features.PacienteDependente.Responses;
 using RSF.AgendamentoConsultas.Application.Handlers.Features.Paciente.Responses;
 using RSF.AgendamentoConsultas.Application.Handlers.Features.Paciente.Query.GetPacienteById;
@@ -20,6 +21,8 @@ internal static class PacienteEndpoints
     {
         var routes = builder.MapGroup("api/pacientes").WithTags("Pacientes");
 
+        #region [ GET ]
+
         routes.MapGet("/{id:int}", static async (IMediator mediator, [FromRoute] int id, CancellationToken cancellationToken) => await mediator.SendCommand(new SelectPacienteByIdRequest(id), cancellationToken: cancellationToken))
             .WithName("GetOnePacienteById")
             .Produces<ApiResponse<PacienteResponse>>(StatusCodes.Status200OK)
@@ -36,7 +39,6 @@ internal static class PacienteEndpoints
             .WithSummary("Obter a lista de Dependentes do Paciente pelo ID especificado")
             .WithOpenApi();
 
-
         routes.MapGet("/{id:int}/planos-medicos", static async (IMediator mediator, [FromRoute] int id, CancellationToken cancellationToken) => await mediator.SendCommand(new SelectPacientePlanosMedicosRequest(id), cancellationToken: cancellationToken))
             .WithName("GetPlanosMedicosForOnePacienteById")
             .Produces<ApiResponse<PacienteResultList<PacientePlanoMedicoResponse>>>(StatusCodes.Status200OK)
@@ -45,6 +47,9 @@ internal static class PacienteEndpoints
             .WithSummary("Obter a lista dos Planos Medicos do Paciente pelo ID especificado")
             .WithOpenApi();
 
+        #endregion
+
+        #region [ POST ]
 
         routes.MapPost("/", static async (IMediator mediator, [FromBody] CreatePacienteRequest request, CancellationToken cancellationToken) => await mediator.SendCommand(request, cancellationToken: cancellationToken))
             .WithName("CreatePaciente")
@@ -60,9 +65,9 @@ internal static class PacienteEndpoints
         routes.MapPost("/{id:int}/planos-medicos", static async (IMediator mediator, [FromBody] CreatePacientePlanoMedicoRequest request, [FromRoute] int id, CancellationToken cancellationToken) =>
         {
             if (id != request.PacienteId)
-                throw new ValidationException("Os IDs do paciente não conferem");
+                throw new InputRequestDataInvalidException("Id", "Os IDs do paciente não conferem");
 
-            await mediator.SendCommand(request, cancellationToken: cancellationToken);
+            return await mediator.SendCommand(request, cancellationToken: cancellationToken);
         })
             .WithName("CreatePacientePlanoMedico")
             .Accepts<CreatePacientePlanoMedicoRequest>("application/json")
@@ -73,6 +78,7 @@ internal static class PacienteEndpoints
             .WithSummary("Adicionar um Plano Medico para o Paciente pelo ID especificado do Paciente")
             .WithOpenApi();
 
+        #endregion
 
         return routes;
     }
