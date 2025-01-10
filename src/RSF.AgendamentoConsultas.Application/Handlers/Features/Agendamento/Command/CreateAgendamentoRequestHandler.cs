@@ -12,14 +12,14 @@ public class CreateAgendamentoRequestHandler : IRequestHandler<CreateAgendamento
     private readonly IAgendamentoConsultaRepository _agendamentoConsultaRepository;
     private readonly IEspecialistaRepository _especialistaRepository;
     private readonly IBaseRepository<Domain.Entities.TipoConsulta> _tipoConsultaRepository;
-    private readonly IBaseRepository<TipoAgendamento> _tipoAgendamentoRepository;
+    private readonly IBaseRepository<Domain.Entities.TipoAgendamento> _tipoAgendamentoRepository;
     private readonly IPacienteRepository _pacienteRepository;
 
     public CreateAgendamentoRequestHandler(
         IAgendamentoConsultaRepository agendamentoConsultaRepository,
         IEspecialistaRepository especialistaRepository,
         IBaseRepository<Domain.Entities.TipoConsulta> tipoConsultaRepository,
-        IBaseRepository<TipoAgendamento> tipoAgendamentoRepository,
+        IBaseRepository<Domain.Entities.TipoAgendamento> tipoAgendamentoRepository,
         IPacienteRepository pacienteRepository)
     {
         _agendamentoConsultaRepository = agendamentoConsultaRepository;
