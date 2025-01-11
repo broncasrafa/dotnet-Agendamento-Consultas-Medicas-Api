@@ -3,7 +3,6 @@ using RSF.AgendamentoConsultas.Shareable.Exceptions;
 using MediatR;
 using OperationResult;
 
-
 namespace RSF.AgendamentoConsultas.Application.Features.PacienteDependente.Command.UpdateDependente;
 
 public class UpdatePacienteDependenteRequestHandler : IRequestHandler<UpdatePacienteDependenteRequest, Result<bool>>

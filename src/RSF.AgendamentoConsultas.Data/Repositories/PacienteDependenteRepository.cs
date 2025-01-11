@@ -12,11 +12,11 @@ public class PacienteDependenteRepository : BaseRepository<PacienteDependente>, 
 
     public PacienteDependenteRepository(AppDbContext context) : base(context) => _Context = context;
 
-    public async ValueTask<PacienteDependente> GetByIdAsync(int dependenteId, int pacientePrincipalId)
+    new public async ValueTask<PacienteDependente> GetByIdAsync(int dependenteId)
     {
         return await _Context.Set<PacienteDependente>().AsNoTracking()
                 .Include(p => p.Paciente)
                 .Include(p => p.PlanosMedicos).ThenInclude(cm => cm.ConvenioMedico)
-                .FirstOrDefaultAsync(p => p.DependenteId == dependenteId && p.PacientePrincipalId == pacientePrincipalId);
+                .FirstOrDefaultAsync(p => p.DependenteId == dependenteId);
     }
 }

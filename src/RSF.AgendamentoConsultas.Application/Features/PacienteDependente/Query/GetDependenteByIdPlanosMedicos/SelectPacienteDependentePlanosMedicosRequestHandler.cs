@@ -1,8 +1,8 @@
 ﻿using RSF.AgendamentoConsultas.Domain.Interfaces;
 using RSF.AgendamentoConsultas.Shareable.Exceptions;
+using RSF.AgendamentoConsultas.Application.Features.PacienteDependente.Responses;
 using MediatR;
 using OperationResult;
-using RSF.AgendamentoConsultas.Application.Features.PacienteDependente.Responses;
 
 namespace RSF.AgendamentoConsultas.Application.Features.PacienteDependente.Query.GetDependenteByIdPlanosMedicos;
 
@@ -20,7 +20,7 @@ public class SelectPacienteDependentePlanosMedicosRequestHandler : IRequestHandl
 
         var response = new PacienteDependenteResultList<PacienteDependentePlanoMedicoResponse>(
             request.DependenteId,
-            request.PacientePrincipalId,
+            dependente.PacientePrincipalId,
             PacienteDependentePlanoMedicoResponse.MapFromEntity(dependente.PlanosMedicos));
 
         return Result.Success(response);

@@ -1,5 +1,4 @@
 ﻿using MediatR;
-
 using OperationResult;
 
 namespace RSF.AgendamentoConsultas.Application.Features.PacienteDependente.Command.DeleteDependente;

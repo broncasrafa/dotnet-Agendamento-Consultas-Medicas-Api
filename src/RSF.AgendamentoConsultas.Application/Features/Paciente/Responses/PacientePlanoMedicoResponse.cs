@@ -5,7 +5,8 @@ public record PacientePlanoMedicoResponse
     int Id,
     string NomePlano,
     string NumCartao,
-    string ConvenioMedico
+    string ConvenioMedico,
+    bool Ativo
 )
 {
     public static PacientePlanoMedicoResponse MapFromEntity(Domain.Entities.PacientePlanoMedico entity)
@@ -13,8 +14,9 @@ public record PacientePlanoMedicoResponse
             entity.PlanoMedicoId,
             entity.NomePlano,
             entity.NumCartao,
-            entity.ConvenioMedico?.Nome);
+            entity.ConvenioMedico?.Nome,
+            entity.IsActive);
 
     public static IReadOnlyList<PacientePlanoMedicoResponse>? MapFromEntity(IEnumerable<Domain.Entities.PacientePlanoMedico> collection)
-        => collection is null || !collection.Any() ? default! : collection.Select(c => MapFromEntity(c)).ToList();
+        => collection is null || !collection.Any() ? default! : collection.Where(c => c.IsActive).Select(c => MapFromEntity(c)).ToList();
 }

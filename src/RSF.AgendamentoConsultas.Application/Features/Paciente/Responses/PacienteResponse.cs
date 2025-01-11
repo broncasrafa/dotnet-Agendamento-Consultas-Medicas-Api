@@ -14,27 +14,30 @@ public class PacienteResponse
     public string Genero { get; set; }
     public string DataNascimento { get; set; }
     public DateTime CreatedAt { get; set; }
+    public bool Ativo { get; set; }
     public IReadOnlyList<PacienteDependenteResponse>? Dependentes { get; set; }
     public IReadOnlyList<PacientePlanoMedicoResponse>? PlanosMedicos { get; set; }
+    
 
     public PacienteResponse()
     {
     }
 
-    public static PacienteResponse MapFromEntity(Domain.Entities.Paciente paciente)
-        => paciente is null ? default! : new PacienteResponse
+    public static PacienteResponse MapFromEntity(Domain.Entities.Paciente entity)
+        => entity is null ? default! : new PacienteResponse
         {
-            Id = paciente.PacienteId,
-            Nome = paciente.Nome,
-            Telefone = paciente.Telefone,
-            Email = paciente.Email,
-            CPF = paciente.CPF,
-            TelefoneVerificado = paciente.TelefoneVerificado,
-            TermoUsoAceito = paciente.TermoUsoAceito,
-            Genero = paciente.Genero,
-            DataNascimento = paciente.DataNascimento,
-            CreatedAt = paciente.CreatedAt,
-            Dependentes = PacienteDependenteResponse.MapFromEntity(paciente.Dependentes),
-            PlanosMedicos = PacientePlanoMedicoResponse.MapFromEntity(paciente.PlanosMedicos)
+            Id = entity.PacienteId,
+            Nome = entity.Nome,
+            Telefone = entity.Telefone,
+            Email = entity.Email,
+            CPF = entity.CPF,
+            TelefoneVerificado = entity.TelefoneVerificado,
+            TermoUsoAceito = entity.TermoUsoAceito,
+            Genero = entity.Genero,
+            DataNascimento = entity.DataNascimento,
+            CreatedAt = entity.CreatedAt,
+            Ativo = entity.IsActive,
+            Dependentes = PacienteDependenteResponse.MapFromEntity(entity.Dependentes),
+            PlanosMedicos = PacientePlanoMedicoResponse.MapFromEntity(entity.PlanosMedicos)
         };
 }

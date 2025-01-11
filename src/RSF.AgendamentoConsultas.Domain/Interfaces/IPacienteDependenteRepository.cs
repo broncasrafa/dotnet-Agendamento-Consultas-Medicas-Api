@@ -5,5 +5,5 @@ namespace RSF.AgendamentoConsultas.Domain.Interfaces;
 
 public interface IPacienteDependenteRepository : IBaseRepository<PacienteDependente>
 {
-    ValueTask<PacienteDependente> GetByIdAsync(int dependenteId, int pacientePrincipalId);
+    new ValueTask<PacienteDependente> GetByIdAsync(int dependenteId);
 }

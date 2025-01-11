@@ -1,4 +1,6 @@
-﻿using RSF.AgendamentoConsultas.Domain.Validation;
+﻿using Microsoft.Extensions.DependencyModel;
+
+using RSF.AgendamentoConsultas.Domain.Validation;
 
 namespace RSF.AgendamentoConsultas.Domain.Entities;
 
@@ -24,7 +26,7 @@ public class PacienteDependentePlanoMedico
         NomePlano = nomePlano;
         NumCartao = numCartao;
         DependenteId = dependenteId;
-        ConvenioMedicoId = convenioMedicoId;
+        ConvenioMedicoId = convenioMedicoId;        
 
         Validate();
     }
@@ -34,11 +36,18 @@ public class PacienteDependentePlanoMedico
         NomePlano = nomePlano;
         NumCartao = numCartao;
         ConvenioMedicoId = convenioMedicoId;
+        Dependente = null;
+        ConvenioMedico = null;
 
         Validate();
     }
 
-    public void ChangeStatus(bool status) => IsActive = status;
+    public void ChangeStatus(bool status)
+    {
+        IsActive = status;
+        Dependente = null;
+        ConvenioMedico = null;
+    }
 
     private void Validate()
     {
