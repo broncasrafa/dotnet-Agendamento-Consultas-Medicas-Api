@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using RSF.AgendamentoConsultas.Api.Models;
 using RSF.AgendamentoConsultas.Api.Extensions;
-using RSF.AgendamentoConsultas.Application.Handlers.Features.ConvenioMedico.GetAll;
-using RSF.AgendamentoConsultas.Application.Handlers.Features.ConvenioMedico.GetById;
-using RSF.AgendamentoConsultas.Application.Handlers.Features.ConvenioMedico.GetByIdWithCidadesAtendidas;
-using RSF.AgendamentoConsultas.Application.Handlers.Features.ConvenioMedico.GetByIdWithCidadesAtendidasPorEstado;
-using RSF.AgendamentoConsultas.Application.Handlers.Features.ConvenioMedico.Responses;
+using RSF.AgendamentoConsultas.Application.Features.ConvenioMedico.GetAll;
+using RSF.AgendamentoConsultas.Application.Features.ConvenioMedico.GetById;
+using RSF.AgendamentoConsultas.Application.Features.ConvenioMedico.GetByIdWithCidadesAtendidas;
+using RSF.AgendamentoConsultas.Application.Features.ConvenioMedico.GetByIdWithCidadesAtendidasPorEstado;
+using RSF.AgendamentoConsultas.Application.Features.ConvenioMedico.Responses;
 using MediatR;
 
 namespace RSF.AgendamentoConsultas.Api.Endpoints;

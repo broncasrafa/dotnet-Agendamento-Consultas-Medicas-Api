@@ -9,6 +9,7 @@ public class PacientePlanoMedico
     public string NumCartao { get; private set; }
     public int PacienteId { get; private set; }
     public int ConvenioMedicoId { get; private set; }
+    public bool IsActive { get; private set; }
 
     public Paciente Paciente { get; set; }
     public ConvenioMedico ConvenioMedico { get; set; }
@@ -27,6 +28,8 @@ public class PacientePlanoMedico
 
         Validate();
     }
+
+    public void ChangeStatus(bool status) => IsActive = status;
 
     private void Validate()
     {

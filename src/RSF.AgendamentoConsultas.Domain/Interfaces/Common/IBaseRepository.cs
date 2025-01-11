@@ -9,7 +9,18 @@ public interface IBaseRepository<T> where T : class
     ValueTask<T> GetByFilterAsync(Expression<Func<T, bool>> filter, params Expression<Func<T, object?>>[] includes);
     ValueTask<T> GetByIdAsync(int id);
     ValueTask AddAsync(T entity);
-    ValueTask UpdateAsync(T entity);
+    /// <summary>
+    /// Atualiza os dados da entidade
+    /// </summary>
+    /// <param name="entity">entidade</param>
+    /// <returns>a quantidade de linhas afetadas na transação (rowsAffected</returns>
+    ValueTask<int> UpdateAsync(T entity);
     ValueTask RemoveAsync(T entity);
+    /// <summary>
+    /// Atualiza o status da entidade de ativo para inativo e vice versa
+    /// </summary>
+    /// <param name="entity">entidade</param>
+    /// <returns>a quantidade de linhas afetadas na transação (rowsAffected</returns>
+    ValueTask<int> ChangeStatusAsync(T entity);
     ValueTask<int> SaveChangesAsync();
 }

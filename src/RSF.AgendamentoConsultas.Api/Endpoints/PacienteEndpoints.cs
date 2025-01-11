@@ -2,13 +2,13 @@
 using RSF.AgendamentoConsultas.Api.Extensions;
 using RSF.AgendamentoConsultas.Api.Models;
 using RSF.AgendamentoConsultas.Shareable.Exceptions;
-using RSF.AgendamentoConsultas.Application.Handlers.Features.PacienteDependente.Responses;
-using RSF.AgendamentoConsultas.Application.Handlers.Features.Paciente.Responses;
-using RSF.AgendamentoConsultas.Application.Handlers.Features.Paciente.Query.GetPacienteById;
-using RSF.AgendamentoConsultas.Application.Handlers.Features.Paciente.Query.GetPacienteByIdDependentes;
-using RSF.AgendamentoConsultas.Application.Handlers.Features.Paciente.Query.GetPacienteByIdPlanosMedicos;
-using RSF.AgendamentoConsultas.Application.Handlers.Features.Paciente.Command.CreatePaciente;
-using RSF.AgendamentoConsultas.Application.Handlers.Features.Paciente.Command.CreatePacientePlanoMedico;
+using RSF.AgendamentoConsultas.Application.Features.Paciente.Responses;
+using RSF.AgendamentoConsultas.Application.Features.PacienteDependente.Responses;
+using RSF.AgendamentoConsultas.Application.Features.Paciente.Query.GetPacienteById;
+using RSF.AgendamentoConsultas.Application.Features.Paciente.Query.GetPacienteByIdDependentes;
+using RSF.AgendamentoConsultas.Application.Features.Paciente.Query.GetPacienteByIdPlanosMedicos;
+using RSF.AgendamentoConsultas.Application.Features.Paciente.Command.CreatePaciente;
+using RSF.AgendamentoConsultas.Application.Features.Paciente.Command.CreatePacientePlanoMedico;
 using MediatR;
 using FluentValidation;
 

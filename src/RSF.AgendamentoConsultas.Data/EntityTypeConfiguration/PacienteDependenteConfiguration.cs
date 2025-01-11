@@ -26,6 +26,7 @@ public class PacienteDependenteConfiguration : IEntityTypeConfiguration<Paciente
         builder.Property(c => c.Altura).HasColumnType("decimal(3, 2)");
         builder.Property(c => c.CreatedAt).HasColumnType("datetime").HasDefaultValueSql("(getdate())").IsRequired();
         builder.Property(c => c.UpdatedAt).HasColumnType("datetime");
+        builder.Property(c => c.IsActive).IsRequired().HasColumnType("bit").HasDefaultValueSql("((1))");
 
         builder.HasMany(p => p.PlanosMedicos)
             .WithOne(pm => pm.Dependente)

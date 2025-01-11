@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using RSF.AgendamentoConsultas.Api.Models;
 using RSF.AgendamentoConsultas.Api.Extensions;
-using RSF.AgendamentoConsultas.Application.Handlers.Features.Tags.GetAll;
-using RSF.AgendamentoConsultas.Application.Handlers.Features.Tags.GetById;
-using RSF.AgendamentoConsultas.Application.Handlers.Features.Tags.Responses;
+using RSF.AgendamentoConsultas.Application.Features.Tags.GetAll;
+using RSF.AgendamentoConsultas.Application.Features.Tags.GetById;
+using RSF.AgendamentoConsultas.Application.Features.Tags.Responses;
 using MediatR;
 
 namespace RSF.AgendamentoConsultas.Api.Endpoints;

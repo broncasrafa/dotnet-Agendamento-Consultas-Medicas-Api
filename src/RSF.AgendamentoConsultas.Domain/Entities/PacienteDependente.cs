@@ -1,4 +1,5 @@
 ﻿using RSF.AgendamentoConsultas.Domain.Validation;
+using RSF.AgendamentoConsultas.Shareable.Helpers;
 
 namespace RSF.AgendamentoConsultas.Domain.Entities;
 
@@ -17,6 +18,8 @@ public class PacienteDependente
     public decimal? Altura { get; set; }
     public DateTime CreatedAt { get; set; }
     public DateTime? UpdatedAt { get; set; }
+
+    public bool IsActive { get; private set; }
 
     public Paciente Paciente { get; set; }
     public ICollection<PacienteDependentePlanoMedico> PlanosMedicos { get; set; }
@@ -41,11 +44,12 @@ public class PacienteDependente
         Validate();
     }
 
-    public void Update(string nome, string email, string telefone, string genero, string dataNascimento, string nomeSocial = null, decimal? peso = null, decimal? altura = null)
+    public void Update(string nome, string email, string telefone, string genero, string dataNascimento, string cpf, string nomeSocial = null, decimal? peso = null, decimal? altura = null)
     {
         Nome = nome;
         Email = email;
-        Telefone = telefone;
+        Telefone = telefone.RemoverFormatacaoSomenteNumeros();
+        CPF = cpf.RemoverFormatacaoSomenteNumeros();
         Genero = genero;
         DataNascimento = dataNascimento;
         NomeSocial = nomeSocial;
@@ -56,7 +60,9 @@ public class PacienteDependente
         Validate();
     }
 
-    void Validate()
+    public void ChangeStatus(bool status) => IsActive = status;
+
+    private void Validate()
     {
         DomainValidation.IdentifierGreaterThanZero(PacientePrincipalId, nameof(PacientePrincipalId));
         DomainValidation.NotNullOrEmpty(Nome, nameof(Nome));

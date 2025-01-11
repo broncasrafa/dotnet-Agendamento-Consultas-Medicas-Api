@@ -9,6 +9,7 @@ public class PacienteDependentePlanoMedico
     public string NumCartao { get; private set; }
     public int DependenteId { get; private set; }
     public int ConvenioMedicoId { get; private set; }
+    public bool IsActive { get; private set; }
 
     public PacienteDependente Dependente { get; set; }
     public ConvenioMedico ConvenioMedico { get; set; }
@@ -28,11 +29,22 @@ public class PacienteDependentePlanoMedico
         Validate();
     }
 
+    public void Update(string nomePlano, string numCartao, int convenioMedicoId)
+    {
+        NomePlano = nomePlano;
+        NumCartao = numCartao;
+        ConvenioMedicoId = convenioMedicoId;
+
+        Validate();
+    }
+
+    public void ChangeStatus(bool status) => IsActive = status;
+
     private void Validate()
     {
         DomainValidation.NotNullOrEmpty(NomePlano, nameof(NomePlano));
         DomainValidation.NotNullOrEmpty(NumCartao, nameof(NumCartao));
         DomainValidation.IdentifierGreaterThanZero(DependenteId, nameof(DependenteId));
         DomainValidation.IdentifierGreaterThanZero(ConvenioMedicoId, nameof(ConvenioMedicoId));
-    }
+    }    
 }

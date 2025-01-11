@@ -2,16 +2,16 @@
 using RSF.AgendamentoConsultas.Api.Extensions;
 using RSF.AgendamentoConsultas.Api.Models;
 using RSF.AgendamentoConsultas.Shareable.Results;
-using RSF.AgendamentoConsultas.Application.Handlers.Features.Especialista.Responses;
-using RSF.AgendamentoConsultas.Application.Handlers.Features.Especialista.GetById;
-using RSF.AgendamentoConsultas.Application.Handlers.Features.Especialista.GetByIdWithEspecialidades;
-using RSF.AgendamentoConsultas.Application.Handlers.Features.Especialista.GetByIdWithConveniosMedicos;
-using RSF.AgendamentoConsultas.Application.Handlers.Features.Especialista.GetByIdWithAvaliacoes;
-using RSF.AgendamentoConsultas.Application.Handlers.Features.Especialista.GetByIdWithLocaisAtendimento;
-using RSF.AgendamentoConsultas.Application.Handlers.Features.Especialista.GetByIdWithPerguntasRespostas;
-using RSF.AgendamentoConsultas.Application.Handlers.Features.Especialista.GetByIdWithTags;
-using RSF.AgendamentoConsultas.Application.Handlers.Features.Especialista.GetByNamePaged;
-using RSF.AgendamentoConsultas.Application.Handlers.Features.Especialista.GetAllPaged;
+using RSF.AgendamentoConsultas.Application.Features.Especialista.Responses;
+using RSF.AgendamentoConsultas.Application.Features.Especialista.GetById;
+using RSF.AgendamentoConsultas.Application.Features.Especialista.GetByIdWithEspecialidades;
+using RSF.AgendamentoConsultas.Application.Features.Especialista.GetByIdWithConveniosMedicos;
+using RSF.AgendamentoConsultas.Application.Features.Especialista.GetByIdWithAvaliacoes;
+using RSF.AgendamentoConsultas.Application.Features.Especialista.GetByIdWithLocaisAtendimento;
+using RSF.AgendamentoConsultas.Application.Features.Especialista.GetByIdWithPerguntasRespostas;
+using RSF.AgendamentoConsultas.Application.Features.Especialista.GetByIdWithTags;
+using RSF.AgendamentoConsultas.Application.Features.Especialista.GetByNamePaged;
+using RSF.AgendamentoConsultas.Application.Features.Especialista.GetAllPaged;
 using MediatR;
 
 namespace RSF.AgendamentoConsultas.Api.Endpoints;

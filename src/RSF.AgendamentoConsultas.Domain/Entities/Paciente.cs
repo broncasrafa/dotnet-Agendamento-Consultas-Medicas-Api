@@ -21,6 +21,7 @@ public class Paciente
     public DateTime? UpdatedAt { get; set; }
 
     public string Password { get; private set; }
+    public bool IsActive { get; private set; }
 
     public ICollection<PacienteDependente> Dependentes { get; set; }
     public ICollection<PacientePlanoMedico> PlanosMedicos { get; set; }
@@ -67,6 +68,9 @@ public class Paciente
         Validate();
     }
 
+    public void SetPassword(string passwordHash) => Password = passwordHash;
+    public void ChangeStatus(bool status) => IsActive = status;
+
     void Validate()
     {
         DomainValidation.NotNullOrEmpty(Nome, nameof(Nome));
@@ -80,6 +84,4 @@ public class Paciente
         DomainValidation.PossiblesValidTypes(TypeValids.VALID_GENEROS, value: Genero, nameof(Genero));
         DomainValidation.PossibleValidPassword(Password);
     }
-
-    public void SetPassword(string passwordHash) => Password = passwordHash;
 }

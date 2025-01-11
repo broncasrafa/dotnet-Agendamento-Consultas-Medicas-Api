@@ -18,9 +18,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Folder Include="Handlers\Features\Paciente\Query\GetPacienteByIdAgendamentos\" />
-		<Folder Include="Handlers\Features\Paciente\Query\GetPacienteByIdAvaliacoes\" />
-		<Folder Include="Handlers\Features\Paciente\Query\GetPacienteByIdPerguntas\" />
+		<Folder Include="Features\Paciente\Query\GetPacienteByIdAgendamentos\" />
+		<Folder Include="Features\Paciente\Query\GetPacienteByIdAvaliacoes\" />
+		<Folder Include="Features\Paciente\Query\GetPacienteByIdPerguntas\" />
 	</ItemGroup>
 
 </Project>

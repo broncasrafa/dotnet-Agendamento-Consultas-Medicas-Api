@@ -17,6 +17,7 @@ public class PacienteDependentePlanoMedicoConfiguration : IEntityTypeConfigurati
         builder.Property(c => c.NumCartao).IsRequired().HasMaxLength(155);
         builder.Property(c => c.DependenteId).IsRequired();
         builder.Property(c => c.ConvenioMedicoId).IsRequired();
+        builder.Property(c => c.IsActive).IsRequired().HasColumnType("bit").HasDefaultValueSql("((1))");
 
         builder.HasOne(pm => pm.Dependente)
             .WithMany(p => p.PlanosMedicos)

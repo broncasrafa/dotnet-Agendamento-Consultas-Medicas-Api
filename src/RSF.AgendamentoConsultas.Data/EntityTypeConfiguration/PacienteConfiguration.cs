@@ -28,6 +28,7 @@ public class PacienteConfiguration : IEntityTypeConfiguration<Paciente>
         builder.Property(c => c.CreatedAt).HasColumnType("datetime").HasDefaultValueSql("(getdate())").IsRequired();
         builder.Property(c => c.UpdatedAt).HasColumnType("datetime");
         builder.Property(c => c.Password).HasColumnName("PasswordHash").IsRequired(false);
+        builder.Property(c => c.IsActive).IsRequired().HasColumnType("bit").HasDefaultValueSql("((1))");
 
         builder.HasMany(p => p.PlanosMedicos)
             .WithOne(pm => pm.Paciente)

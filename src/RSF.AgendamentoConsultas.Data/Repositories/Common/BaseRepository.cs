@@ -38,9 +38,11 @@ public class BaseRepository<T> : IBaseRepository<T> where T : class
     public async ValueTask<int> SaveChangesAsync() 
         => await Context.SaveChangesAsync().ConfigureAwait(false);
 
-    public async ValueTask UpdateAsync(T entity)
+    public async ValueTask<int> UpdateAsync(T entity)
     {
         Context.Set<T>().Update(entity);
-        await Context.SaveChangesAsync().ConfigureAwait(false);
+        return await Context.SaveChangesAsync().ConfigureAwait(false);
     }
+    public async ValueTask<int> ChangeStatusAsync(T entity)
+        => await UpdateAsync(entity).ConfigureAwait(false);
 }
