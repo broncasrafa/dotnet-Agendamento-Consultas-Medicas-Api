@@ -1,13 +1,13 @@
 ﻿using System.Reflection;
 using System.Text.Json.Serialization;
 using Microsoft.OpenApi.Models;
+using Microsoft.AspNetCore.Http.Json;
 using RSF.AgendamentoConsultas.Api.Middlewares;
 using RSF.AgendamentoConsultas.IoC;
 using RSF.AgendamentoConsultas.Shareable;
 using FluentValidation;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
-using Microsoft.AspNetCore.Http.Json;
 
 
 namespace RSF.AgendamentoConsultas.Api.Extensions;
@@ -36,7 +36,7 @@ internal static class ConfigureServicesExtension
 
         services.AddValidatorsFromAssemblyContaining<ShareableEntryPoint>();
 
-        services.RegisterInfraDataServices(configuration);
+        services.RegisterInfrastructureServices(configuration);
         
         services.RegisterApplicationServices(configuration);
     }

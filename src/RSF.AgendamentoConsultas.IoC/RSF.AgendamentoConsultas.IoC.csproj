@@ -20,6 +20,7 @@
 		<ProjectReference Include="..\RSF.AgendamentoConsultas.Application\RSF.AgendamentoConsultas.Application.csproj" />
 		<ProjectReference Include="..\RSF.AgendamentoConsultas.Data\RSF.AgendamentoConsultas.Data.csproj" />
 		<ProjectReference Include="..\RSF.AgendamentoConsultas.Domain\RSF.AgendamentoConsultas.Domain.csproj" />
+		<ProjectReference Include="..\RSF.AgendamentoConsultas.MessageBroker\RSF.AgendamentoConsultas.MessageBroker.csproj" />
 	</ItemGroup>
 
 </Project>

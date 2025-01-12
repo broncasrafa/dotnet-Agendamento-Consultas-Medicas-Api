@@ -33,6 +33,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RSF.AgendamentoConsultas.Io
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RSF.AgendamentoConsultas.Shareable", "src\RSF.AgendamentoConsultas.Shareable\RSF.AgendamentoConsultas.Shareable.csproj", "{B6065314-045E-4E7F-BF42-D6E23C4550EE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RSF.AgendamentoConsultas.MessageBroker", "src\RSF.AgendamentoConsultas.MessageBroker\RSF.AgendamentoConsultas.MessageBroker.csproj", "{F6DB516C-89FD-430B-874C-ED7E25482E92}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -63,6 +65,10 @@ Global
 		{B6065314-045E-4E7F-BF42-D6E23C4550EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B6065314-045E-4E7F-BF42-D6E23C4550EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B6065314-045E-4E7F-BF42-D6E23C4550EE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F6DB516C-89FD-430B-874C-ED7E25482E92}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F6DB516C-89FD-430B-874C-ED7E25482E92}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F6DB516C-89FD-430B-874C-ED7E25482E92}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F6DB516C-89FD-430B-874C-ED7E25482E92}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -74,5 +80,6 @@ Global
 		{7DB7570D-37E9-41AF-B341-79AFC9DF52D7} = {D7355464-6CA1-4475-ADF7-AA3B30A316A3}
 		{1DD94646-3A65-4271-8B05-D2C2B3041654} = {CC1B6233-F76F-4A0A-84F1-26A2FCC6DF2D}
 		{B6065314-045E-4E7F-BF42-D6E23C4550EE} = {CC1B6233-F76F-4A0A-84F1-26A2FCC6DF2D}
+		{F6DB516C-89FD-430B-874C-ED7E25482E92} = {26C51A3F-0826-4791-BFE6-32A3DC49AB34}
 	EndGlobalSection
 EndGlobal

@@ -7,7 +7,11 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\RSF.AgendamentoConsultas.Shareable\RSF.AgendamentoConsultas.Shareable.csproj" />
+		<PackageReference Include="MediatR" Version="9.0.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\RSF.AgendamentoConsultas.Shareable\RSF.AgendamentoConsultas.Shareable.csproj" />
 	</ItemGroup>
 
 </Project>

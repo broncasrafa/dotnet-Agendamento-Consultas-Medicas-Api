@@ -129,6 +129,9 @@ dotnet_diagnostic.CA1031.severity = none
 # CA1032: Implement standard exception constructors
 dotnet_diagnostic.CA1032.severity = none
 
+# CA1040: Evitar interfaces vazias
+dotnet_diagnostic.CA1040.severity = none
+
 # CA1054: Parâmetros de URI não devem ser cadeias de caracteres
 dotnet_diagnostic.CA1054.severity = none
 
@@ -159,6 +162,12 @@ dotnet_diagnostic.CA1311.severity = suggestion
 # CA1707: Identificadores não devem conter sublinhados
 dotnet_diagnostic.CA1707.severity = none
 
+# CA1711: Identificadores não devem ter um sufixo incorreto
+dotnet_diagnostic.CA1711.severity = suggestion
+
+# CA1716: Identificadores não devem corresponder a palavras-chave
+dotnet_diagnostic.CA1716.severity = suggestion
+
 # CA1810: Inicializar campos estáticos de tipo de referência em linha
 dotnet_diagnostic.CA1810.severity = none
 
@@ -176,6 +185,9 @@ dotnet_diagnostic.CA1849.severity = none
 
 # CA1851: diversas enumerações da coleção IEnumerable são possíveis
 dotnet_diagnostic.CA1851.severity = none
+
+# CA1854: Preferir o método IDictionary.TryGetValue(TKey, out TValue)
+dotnet_diagnostic.CA1854.severity = suggestion
 
 # CA2007: não aguardar diretamente uma tarefa
 dotnet_diagnostic.CA2007.severity = none

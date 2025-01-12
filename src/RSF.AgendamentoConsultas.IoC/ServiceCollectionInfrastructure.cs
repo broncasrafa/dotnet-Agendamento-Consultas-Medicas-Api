@@ -8,16 +8,21 @@ using RSF.AgendamentoConsultas.Data.Repositories;
 using RSF.AgendamentoConsultas.Data.Repositories.Common;
 using RSF.AgendamentoConsultas.Domain.Interfaces;
 using RSF.AgendamentoConsultas.Domain.Interfaces.Common;
+using RSF.AgendamentoConsultas.Domain.MessageBus.Bus;
+using RSF.AgendamentoConsultas.MessageBroker.Configurations;
+using RSF.AgendamentoConsultas.MessageBroker;
+using MediatR;
 
 namespace RSF.AgendamentoConsultas.IoC;
 
 [ExcludeFromCodeCoverage]
-public static class ServiceCollectionInfraData
+public static class ServiceCollectionInfrastructure
 {
-    public static IServiceCollection RegisterInfraDataServices(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection RegisterInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddDatabase(configuration);
         services.AddRepositories();
+        services.AddRabbitMQ();
 
         return services;
     }
@@ -45,5 +50,27 @@ public static class ServiceCollectionInfraData
         services.AddScoped<IPacienteRepository, PacienteRepository>();
         services.AddScoped<IPacienteDependenteRepository, PacienteDependenteRepository>();
         services.AddScoped<IAgendamentoConsultaRepository, AgendamentoConsultaRepository>();
+    }
+
+    private static void AddRabbitMQ(this IServiceCollection services, IConfiguration configuration)
+    {
+        services.Configure<RabbitMQOptions>(options => configuration.GetSection("RabbitMQ").Bind(options));
+        services.Configure<ProducerOptions>(options => configuration.GetSection("RabbitMQ:Producer").Bind(options));
+        services.Configure<ConsumerOptions>(options => configuration.GetSection("RabbitMQ:Consumer").Bind(options));
+
+        if (configuration.GetSection("RabbitMQ:MessageConfirmation").Exists())
+        {
+            services.Configure<MessageConfirmationOptions>(options => configuration.GetSection("RabbitMQ:MessageConfirmation").Bind(options));
+        }
+        else
+        {
+            services.Configure<MessageConfirmationOptions>(options => options.SaveMessagesToFile = false);
+        }
+
+        services.AddSingleton<IEventBus, RabbitMQBus>(sp =>
+        {
+            var scopeFactory = sp.GetRequiredService<IServiceScopeFactory>();
+            return new RabbitMQBus(sp.GetService<IMediator>(), scopeFactory);
+        });
     }
 }
