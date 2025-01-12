@@ -56,11 +56,20 @@ public class PacienteDependente
         Peso = peso;
         Altura = altura;
         UpdatedAt = DateTime.UtcNow;
+        Paciente = null;
+        PlanosMedicos = null;
+        AgendamentosRealizados = null;
 
         Validate();
     }
 
-    public void ChangeStatus(bool status) => IsActive = status;
+    public void ChangeStatus(bool status)
+    {
+        IsActive = status;
+        Paciente = null;
+        PlanosMedicos = null;
+        AgendamentosRealizados = null;
+    }
 
     private void Validate()
     {

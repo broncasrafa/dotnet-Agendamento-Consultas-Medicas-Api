@@ -9,9 +9,15 @@ using RSF.AgendamentoConsultas.Application.Features.Paciente.Query.GetPacienteBy
 using RSF.AgendamentoConsultas.Application.Features.Paciente.Query.GetPacienteByIdPlanosMedicos;
 using RSF.AgendamentoConsultas.Application.Features.Paciente.Command.CreatePaciente;
 using RSF.AgendamentoConsultas.Application.Features.Paciente.Command.CreatePacientePlanoMedico;
+using RSF.AgendamentoConsultas.Application.Features.Paciente.Command.UpdatePaciente;
+using RSF.AgendamentoConsultas.Application.Features.Paciente.Command.UpdatePacientePlanoMedico;
+using RSF.AgendamentoConsultas.Application.Features.Paciente.Command.DeletePaciente;
+using RSF.AgendamentoConsultas.Application.Features.Paciente.Command.DeletePacientePlanoMedico;
 using MediatR;
 using FluentValidation;
-
+using Azure.Core;
+using Microsoft.AspNetCore.Components.Forms;
+using System.Threading;
 
 namespace RSF.AgendamentoConsultas.Api.Endpoints;
 
@@ -78,6 +84,80 @@ internal static class PacienteEndpoints
             .WithSummary("Adicionar um Plano Medico para o Paciente pelo ID especificado do Paciente")
             .WithOpenApi();
 
+        #endregion
+
+        #region [ PUT ]
+        routes.MapPut("/{id:int}", static async (IMediator mediator, [FromBody] UpdatePacienteRequest request, [FromRoute] int id, CancellationToken cancellationToken)
+            =>
+            {
+                if (id != request.PacienteId)
+                    throw new InputRequestDataInvalidException("Id", "Os IDs do paciente não conferem");
+
+                return await mediator.SendCommand(request, cancellationToken: cancellationToken);
+            })
+            .WithName("UpdatePaciente")
+            .Accepts<UpdatePacienteRequest>("application/json")
+            .Produces<ApiResponse<bool>>(StatusCodes.Status200OK)
+            .Produces<ProblemDetails>(StatusCodes.Status400BadRequest)
+            .Produces<ProblemDetails>(StatusCodes.Status404NotFound)
+            .WithDescription("Atualizar os dados de um Paciente pelo ID especificado")
+            .WithSummary("Atualizar os dados de um Paciente pelo ID especificado")
+            .WithOpenApi();
+
+
+        routes.MapPut("/{id:int}/planos-medicos", static async (IMediator mediator, [FromBody] UpdatePacientePlanoMedicoRequest request, [FromRoute] int id, CancellationToken cancellationToken)
+            =>
+            {
+                if (id != request.PacienteId)
+                    throw new InputRequestDataInvalidException("Id", "Os IDs do paciente não conferem");
+
+                return await mediator.SendCommand(request, cancellationToken: cancellationToken);
+            })
+            .WithName("UpdatePacientePlanoMedico")
+            .Accepts<UpdatePacientePlanoMedicoRequest>("application/json")
+            .Produces<ApiResponse<bool>>(StatusCodes.Status200OK)
+            .Produces<ProblemDetails>(StatusCodes.Status400BadRequest)
+            .Produces<ProblemDetails>(StatusCodes.Status404NotFound)
+            .WithDescription("Atualizar os dados do Plano Medico do Paciente pelo ID especificado")
+            .WithSummary("Atualizar os dados do Plano Medico do Paciente pelo ID especificado")
+            .WithOpenApi();
+        #endregion
+
+        #region [ DELETE ]
+        routes.MapDelete("/{id:int}", static async (IMediator mediator, [FromBody] DeletePacienteRequest request, [FromRoute] int id, CancellationToken cancellationToken)
+            =>
+            {
+                if (id != request.PacienteId)
+                    throw new InputRequestDataInvalidException("Id", "Os IDs do paciente não conferem");
+
+                return await mediator.SendCommand(request, cancellationToken: cancellationToken);
+            })
+            .WithName("DeletePaciente")
+            .Accepts<DeletePacienteRequest>("application/json")
+            .Produces<ApiResponse<bool>>(StatusCodes.Status200OK)
+            .Produces<ProblemDetails>(StatusCodes.Status400BadRequest)
+            .Produces<ProblemDetails>(StatusCodes.Status404NotFound)
+            .WithDescription("Deleta os dados de um Paciente pelo ID especificado")
+            .WithSummary("Deleta os dados de um Paciente pelo ID especificado")
+            .WithOpenApi();
+
+
+        routes.MapDelete("/{id:int}/planos-medicos", static async (IMediator mediator, [FromBody] DeletePacientePlanoMedicoRequest request, [FromRoute] int id, CancellationToken cancellationToken)
+            =>
+            {
+                if (id != request.PacienteId)
+                    throw new InputRequestDataInvalidException("Id", "Os IDs do paciente não conferem");
+
+                return await mediator.SendCommand(request, cancellationToken: cancellationToken);
+            })
+            .WithName("DeletePacientePlanoMedico")
+            .Accepts<DeletePacientePlanoMedicoRequest>("application/json")
+            .Produces<ApiResponse<bool>>(StatusCodes.Status200OK)
+            .Produces<ProblemDetails>(StatusCodes.Status400BadRequest)
+            .Produces<ProblemDetails>(StatusCodes.Status404NotFound)
+            .WithDescription("Deleta os dados do Plano Medico do Paciente pelo ID especificado")
+            .WithSummary("Deleta os dados do Plano Medico do Paciente pelo ID especificado")
+            .WithOpenApi();
         #endregion
 
         return routes;

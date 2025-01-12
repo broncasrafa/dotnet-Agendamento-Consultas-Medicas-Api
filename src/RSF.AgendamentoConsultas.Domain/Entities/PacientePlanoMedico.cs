@@ -1,4 +1,6 @@
-﻿using RSF.AgendamentoConsultas.Domain.Validation;
+﻿using Microsoft.Extensions.DependencyModel;
+
+using RSF.AgendamentoConsultas.Domain.Validation;
 
 namespace RSF.AgendamentoConsultas.Domain.Entities;
 
@@ -25,6 +27,14 @@ public class PacientePlanoMedico
         NumCartao = numCartao;
         PacienteId = pacienteId;
         ConvenioMedicoId = convenioMedicoId;
+
+        Validate();
+    }
+
+    public void Update(string nomePlano, string numCartao)
+    {
+        NomePlano = nomePlano;
+        NumCartao = numCartao;
 
         Validate();
     }

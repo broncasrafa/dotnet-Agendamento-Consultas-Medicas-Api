@@ -1,15 +1,10 @@
 ﻿using System.Reflection;
-
+using RSF.AgendamentoConsultas.Shareable.Exceptions;
 using FluentValidation;
-
 using MediatR;
-
 using OperationResult;
 
-using RSF.AgendamentoConsultas.Shareable.Exceptions;
-
-
-namespace RSF.AgendamentoConsultas.Application.Behaviours.Pipelines;
+namespace RSF.AgendamentoConsultas.Application.Behaviors.Pipelines;
 
 public sealed class ValidationPipelineBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
     where TRequest : notnull

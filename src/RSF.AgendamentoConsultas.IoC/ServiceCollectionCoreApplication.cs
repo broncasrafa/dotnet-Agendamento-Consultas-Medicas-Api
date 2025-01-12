@@ -8,7 +8,7 @@ using RSF.AgendamentoConsultas.Application.Services.HasherPassword;
 using MediatR;
 using FluentValidation;
 using AutoMapper;
-using RSF.AgendamentoConsultas.Application.Behaviours.Pipelines;
+using RSF.AgendamentoConsultas.Application.Behaviors.Pipelines;
 
 namespace RSF.AgendamentoConsultas.IoC;
 

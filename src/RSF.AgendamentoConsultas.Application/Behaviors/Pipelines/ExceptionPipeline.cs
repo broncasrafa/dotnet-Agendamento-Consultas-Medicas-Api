@@ -3,8 +3,7 @@ using Microsoft.Extensions.Logging;
 using MediatR;
 using OperationResult;
 
-
-namespace RSF.AgendamentoConsultas.Application.Behaviours.Pipelines;
+namespace RSF.AgendamentoConsultas.Application.Behaviors.Pipelines;
 
 public sealed class ExceptionPipeline<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
     where TRequest : notnull

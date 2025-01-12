@@ -35,7 +35,6 @@ public class PacienteRepository : BaseRepository<Paciente>, IPacienteRepository
         var paciente = await _Context.Pacientes
                                 .AsNoTracking()
                                 .Include(c => c.Dependentes).ThenInclude(d => d.PlanosMedicos).ThenInclude(cm => cm.ConvenioMedico)
-                                .Include(c => c.Dependentes).ThenInclude(p => p.Paciente)
                                 .FirstOrDefaultAsync(p => p.PacienteId == pacienteId);
 
         return paciente?.Dependentes?.ToList() ?? [];

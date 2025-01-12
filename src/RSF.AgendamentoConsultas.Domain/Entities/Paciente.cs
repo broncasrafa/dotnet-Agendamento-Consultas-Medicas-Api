@@ -65,13 +65,13 @@ public class Paciente
         TermoUsoAceito = termoUsoAceito ?? false;
         UpdatedAt = DateTime.UtcNow;
 
-        Validate();
+        Validate(validatePassword: false);
     }
 
     public void SetPassword(string passwordHash) => Password = passwordHash;
     public void ChangeStatus(bool status) => IsActive = status;
 
-    void Validate()
+    void Validate(bool validatePassword = true)
     {
         DomainValidation.NotNullOrEmpty(Nome, nameof(Nome));
         DomainValidation.NotNullOrEmpty(CPF, nameof(CPF));
@@ -82,6 +82,6 @@ public class Paciente
         DomainValidation.PossibleValidDate(DataNascimento, permitirSomenteDatasFuturas: false, nameof(DataNascimento));
         DomainValidation.PossibleValidPhoneNumber(Telefone, nameof(Telefone));
         DomainValidation.PossiblesValidTypes(TypeValids.VALID_GENEROS, value: Genero, nameof(Genero));
-        DomainValidation.PossibleValidPassword(Password);
+        if(validatePassword) DomainValidation.PossibleValidPassword(Password);
     }
 }

@@ -1,8 +1,8 @@
 ﻿using RSF.AgendamentoConsultas.Domain.Interfaces;
 using RSF.AgendamentoConsultas.Shareable.Exceptions;
+using RSF.AgendamentoConsultas.Application.Features.Paciente.Responses;
 using MediatR;
 using OperationResult;
-using RSF.AgendamentoConsultas.Application.Features.Paciente.Responses;
 
 namespace RSF.AgendamentoConsultas.Application.Features.Paciente.Query.GetPacienteById;
 
@@ -14,8 +14,8 @@ public class SelectPacienteByIdRequestHandler : IRequestHandler<SelectPacienteBy
 
     public async Task<Result<PacienteResponse>> Handle(SelectPacienteByIdRequest request, CancellationToken cancellationToken)
     {
-        var paciente = await _repository.GetByIdDetailsAsync(request.Id);
-        NotFoundException.ThrowIfNull(paciente, $"Paciente com o ID: '{request.Id}' não foi encontrado");
+        var paciente = await _repository.GetByIdDetailsAsync(request.PacienteId);
+        NotFoundException.ThrowIfNull(paciente, $"Paciente com o ID: '{request.PacienteId}' não foi encontrado");
         return await Task.FromResult(PacienteResponse.MapFromEntity(paciente));
     }
 }

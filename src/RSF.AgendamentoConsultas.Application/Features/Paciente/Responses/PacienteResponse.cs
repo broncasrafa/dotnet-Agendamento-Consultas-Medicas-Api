@@ -14,6 +14,7 @@ public class PacienteResponse
     public string Genero { get; set; }
     public string DataNascimento { get; set; }
     public DateTime CreatedAt { get; set; }
+    public DateTime? UpdatedAt { get; set; }
     public bool Ativo { get; set; }
     public IReadOnlyList<PacienteDependenteResponse>? Dependentes { get; set; }
     public IReadOnlyList<PacientePlanoMedicoResponse>? PlanosMedicos { get; set; }
@@ -36,6 +37,7 @@ public class PacienteResponse
             Genero = entity.Genero,
             DataNascimento = entity.DataNascimento,
             CreatedAt = entity.CreatedAt,
+            UpdatedAt = entity.UpdatedAt,
             Ativo = entity.IsActive,
             Dependentes = PacienteDependenteResponse.MapFromEntity(entity.Dependentes),
             PlanosMedicos = PacientePlanoMedicoResponse.MapFromEntity(entity.PlanosMedicos)

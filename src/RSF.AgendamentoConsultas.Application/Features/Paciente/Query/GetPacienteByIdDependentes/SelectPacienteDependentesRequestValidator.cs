@@ -6,7 +6,7 @@ public class SelectPacienteDependentesRequestValidator : AbstractValidator<Selec
 {
     public SelectPacienteDependentesRequestValidator()
     {
-        RuleFor(x => x.Id)
+        RuleFor(x => x.PacienteId)
             .GreaterThan(0)
             .WithMessage("O ID do Paciente deve ser maior que 0");
     }
