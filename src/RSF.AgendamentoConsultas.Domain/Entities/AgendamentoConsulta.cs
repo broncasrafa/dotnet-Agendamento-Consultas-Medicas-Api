@@ -85,6 +85,38 @@ public class AgendamentoConsulta
         Validate();
     }
 
+
+
+    public void Confirmar()
+    {
+        StatusConsultaId = (int)ETipoStatusConsulta.Confirmado;
+        UpdatedAt = DateTime.UtcNow;
+    }
+    public void Cancelar(string notaCancelamento)
+    {
+        DomainValidation.NotNullOrEmpty(notaCancelamento, nameof(NotaCancelamento));
+
+        NotaCancelamento = notaCancelamento;
+        StatusConsultaId = (int)ETipoStatusConsulta.Cancelado;
+        UpdatedAt = DateTime.UtcNow;
+    }
+    public void ExpirarProfissional(string notaCancelamento)
+    {
+        DomainValidation.NotNullOrEmpty(notaCancelamento, nameof(NotaCancelamento));
+
+        NotaCancelamento = notaCancelamento;
+        StatusConsultaId = (int)ETipoStatusConsulta.ExpiradoProfissional;
+        UpdatedAt = DateTime.UtcNow;
+    }
+    public void ExpirarPaciente(string notaCancelamento)
+    {
+        DomainValidation.NotNullOrEmpty(notaCancelamento, nameof(NotaCancelamento));
+
+        NotaCancelamento = notaCancelamento;
+        StatusConsultaId = (int)ETipoStatusConsulta.ExpiradoPaciente;
+        UpdatedAt = DateTime.UtcNow;
+    }
+
     private void Validate()
     {
         DomainValidation.NotNullOrEmpty(HorarioConsulta, nameof(HorarioConsulta));

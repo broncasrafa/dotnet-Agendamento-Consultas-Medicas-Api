@@ -39,4 +39,14 @@ public class PacienteRepository : BaseRepository<Paciente>, IPacienteRepository
 
         return paciente?.Dependentes?.ToList() ?? [];
     }
+
+    public async ValueTask<IReadOnlyList<EspecialistaAvaliacao>> GetAvaliacoesPacienteByIdAsync(int pacienteId)
+    {
+        var paciente = await _Context.Pacientes
+                                .AsNoTracking()
+                                .Include(c => c.AvaliacoesFeitas).ThenInclude(e => e.Especialista)
+                                .FirstOrDefaultAsync(p => p.PacienteId == pacienteId);
+
+        return paciente?.AvaliacoesFeitas?.ToList() ?? [];
+    }
 }

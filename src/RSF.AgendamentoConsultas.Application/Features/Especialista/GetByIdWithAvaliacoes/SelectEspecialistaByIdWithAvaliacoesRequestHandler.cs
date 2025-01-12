@@ -1,8 +1,8 @@
 ﻿using RSF.AgendamentoConsultas.Domain.Interfaces;
 using RSF.AgendamentoConsultas.Shareable.Exceptions;
+using RSF.AgendamentoConsultas.Application.Features.Especialista.Responses;
 using MediatR;
 using OperationResult;
-using RSF.AgendamentoConsultas.Application.Features.Especialista.Responses;
 
 namespace RSF.AgendamentoConsultas.Application.Features.Especialista.GetByIdWithAvaliacoes;
 

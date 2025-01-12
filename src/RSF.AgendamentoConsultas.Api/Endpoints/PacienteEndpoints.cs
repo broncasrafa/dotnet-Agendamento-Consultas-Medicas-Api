@@ -4,9 +4,12 @@ using RSF.AgendamentoConsultas.Api.Models;
 using RSF.AgendamentoConsultas.Shareable.Exceptions;
 using RSF.AgendamentoConsultas.Application.Features.Paciente.Responses;
 using RSF.AgendamentoConsultas.Application.Features.PacienteDependente.Responses;
+using RSF.AgendamentoConsultas.Application.Features.Agendamento.Responses;
 using RSF.AgendamentoConsultas.Application.Features.Paciente.Query.GetPacienteById;
 using RSF.AgendamentoConsultas.Application.Features.Paciente.Query.GetPacienteByIdDependentes;
 using RSF.AgendamentoConsultas.Application.Features.Paciente.Query.GetPacienteByIdPlanosMedicos;
+using RSF.AgendamentoConsultas.Application.Features.Paciente.Query.GetPacienteByIdAgendamentos;
+using RSF.AgendamentoConsultas.Application.Features.Paciente.Query.GetPacienteByIdAvaliacoes;
 using RSF.AgendamentoConsultas.Application.Features.Paciente.Command.CreatePaciente;
 using RSF.AgendamentoConsultas.Application.Features.Paciente.Command.CreatePacientePlanoMedico;
 using RSF.AgendamentoConsultas.Application.Features.Paciente.Command.UpdatePaciente;
@@ -15,9 +18,7 @@ using RSF.AgendamentoConsultas.Application.Features.Paciente.Command.DeletePacie
 using RSF.AgendamentoConsultas.Application.Features.Paciente.Command.DeletePacientePlanoMedico;
 using MediatR;
 using FluentValidation;
-using Azure.Core;
-using Microsoft.AspNetCore.Components.Forms;
-using System.Threading;
+using RSF.AgendamentoConsultas.Application.Features.Paciente.Command.DeletePacienteAgendamento;
 
 namespace RSF.AgendamentoConsultas.Api.Endpoints;
 
@@ -51,6 +52,22 @@ internal static class PacienteEndpoints
             .Produces<ProblemDetails>(StatusCodes.Status404NotFound)
             .WithDescription("Obter a lista dos Planos Medicos do Paciente pelo ID especificado")
             .WithSummary("Obter a lista dos Planos Medicos do Paciente pelo ID especificado")
+            .WithOpenApi();
+
+        routes.MapGet("/{id:int}/agendamentos", static async (IMediator mediator, [FromRoute] int id, CancellationToken cancellationToken) => await mediator.SendCommand(new SelectPacienteAgendamentosRequest(id), cancellationToken: cancellationToken))
+            .WithName("GetAgendamentosForOnePacienteById")
+            .Produces<ApiResponse<PacienteResultList<AgendamentoResponse>>>(StatusCodes.Status200OK)
+            .Produces<ProblemDetails>(StatusCodes.Status404NotFound)
+            .WithDescription("Obter a lista dos Agendamentos realizados do Paciente pelo ID especificado")
+            .WithSummary("Obter a lista dos Agendamentos realizados do Paciente pelo ID especificado")
+            .WithOpenApi();
+
+        routes.MapGet("/{id:int}/avaliacoes", static async (IMediator mediator, [FromRoute] int id, CancellationToken cancellationToken) => await mediator.SendCommand(new SelectPacienteAvaliacoesRequest(id), cancellationToken: cancellationToken))
+            .WithName("GetAvaliacoesForOnePacienteById")
+            .Produces<ApiResponse<PacienteResultList<PacienteAvaliacaoResponse>>>(StatusCodes.Status200OK)
+            .Produces<ProblemDetails>(StatusCodes.Status404NotFound)
+            .WithDescription("Obter a lista dos Avaliações feitas pelo Paciente pelo ID especificado")
+            .WithSummary("Obter a lista dos Avaliações feitas pelo Paciente pelo ID especificado")
             .WithOpenApi();
 
         #endregion
@@ -157,6 +174,24 @@ internal static class PacienteEndpoints
             .Produces<ProblemDetails>(StatusCodes.Status404NotFound)
             .WithDescription("Deleta os dados do Plano Medico do Paciente pelo ID especificado")
             .WithSummary("Deleta os dados do Plano Medico do Paciente pelo ID especificado")
+            .WithOpenApi();
+
+
+        routes.MapDelete("/{id:int}/agendamentos", static async (IMediator mediator, [FromBody] DeletePacienteAgendamentoRequest request, [FromRoute] int id, CancellationToken cancellationToken)
+            =>
+            {
+                if (id != request.PacienteId)
+                    throw new InputRequestDataInvalidException("Id", "Os IDs do paciente não conferem");
+
+                return await mediator.SendCommand(request, cancellationToken: cancellationToken);
+            })
+            .WithName("DeletePacienteAgendamento")
+            .Accepts<DeletePacienteAgendamentoRequest>("application/json")
+            .Produces<ApiResponse<bool>>(StatusCodes.Status200OK)
+            .Produces<ProblemDetails>(StatusCodes.Status400BadRequest)
+            .Produces<ProblemDetails>(StatusCodes.Status404NotFound)
+            .WithDescription("Cancela um agendamento do Paciente pelo ID especificado")
+            .WithSummary("Cancela um agendamento Paciente pelo ID especificado")
             .WithOpenApi();
         #endregion
 

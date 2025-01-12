@@ -4,7 +4,6 @@ using RSF.AgendamentoConsultas.Data.Repositories.Common;
 using RSF.AgendamentoConsultas.Domain.Entities;
 using RSF.AgendamentoConsultas.Domain.Interfaces;
 
-
 namespace RSF.AgendamentoConsultas.Data.Repositories;
 
 public class AgendamentoConsultaRepository : BaseRepository<AgendamentoConsulta>, IAgendamentoConsultaRepository
@@ -30,7 +29,7 @@ public class AgendamentoConsultaRepository : BaseRepository<AgendamentoConsulta>
             .Include(dpm => dpm.PlanoMedicoDependente).ThenInclude(dpmcv => dpmcv.ConvenioMedico)
         .ToListAsync();
 
-    new public async ValueTask<AgendamentoConsulta> GetByIdAsync(int id)
+    new public async ValueTask<AgendamentoConsulta> GetByIdAsync(int agendamentoId)
         => await _Context.Agendamentos
             .AsNoTracking()
             .Include(e => e.Especialista)
@@ -43,5 +42,13 @@ public class AgendamentoConsultaRepository : BaseRepository<AgendamentoConsulta>
             .Include(ppm => ppm.PlanoMedico).ThenInclude(cv => cv.ConvenioMedico)
             .Include(d => d.Dependente)
             .Include(dpm => dpm.PlanoMedicoDependente).ThenInclude(dpmcv => dpmcv.ConvenioMedico)
-        .FirstOrDefaultAsync(c => c.AgendamentoConsultaId == id);
+        .FirstOrDefaultAsync(c => c.AgendamentoConsultaId == agendamentoId);
+
+    public async ValueTask<AgendamentoConsulta> GetByIdAsync(int agendamentoId, int pacienteId)
+        => await _Context.Agendamentos
+            .AsNoTracking()
+            .Include(e => e.Especialista)
+            .Include(p => p.Paciente)
+            .Include(d => d.Dependente)
+            .FirstOrDefaultAsync(c => c.AgendamentoConsultaId == agendamentoId && c.PacienteId == pacienteId);
 }

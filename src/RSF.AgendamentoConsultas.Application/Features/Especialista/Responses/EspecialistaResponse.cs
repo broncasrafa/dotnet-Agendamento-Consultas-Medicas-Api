@@ -72,12 +72,5 @@ public class EspecialistaResponse
 
         var lista = pagedResult.Results.Select(c => MapFromEntity(c));
         return new PagedResult<EspecialistaResponse>(lista, pagedResult.Total, pageNumber, pageSize);
-        //{
-        //    Results = lista,
-        //    Total = pagedResult.Total,
-        //    EndPage = pagedResult.EndPage,
-        //    HasNextPage = pagedResult.HasNextPage,
-        //    NextPage = pagedResult.NextPage
-        //};
     }
 }

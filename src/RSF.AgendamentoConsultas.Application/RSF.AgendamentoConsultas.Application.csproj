@@ -18,8 +18,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Folder Include="Features\Paciente\Query\GetPacienteByIdAgendamentos\" />
-		<Folder Include="Features\Paciente\Query\GetPacienteByIdAvaliacoes\" />
 		<Folder Include="Features\Paciente\Query\GetPacienteByIdPerguntas\" />
 	</ItemGroup>
 

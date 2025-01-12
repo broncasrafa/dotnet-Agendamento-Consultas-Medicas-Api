@@ -1,8 +1,6 @@
-﻿using MediatR;
-
+﻿using RSF.AgendamentoConsultas.Application.Features.Especialista.Responses;
+using MediatR;
 using OperationResult;
-
-using RSF.AgendamentoConsultas.Application.Features.Especialista.Responses;
 
 namespace RSF.AgendamentoConsultas.Application.Features.Especialista.GetByIdWithAvaliacoes;
 
