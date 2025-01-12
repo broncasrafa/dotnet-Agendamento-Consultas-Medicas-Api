@@ -26,7 +26,7 @@ public class Paciente
     public ICollection<PacienteDependente> Dependentes { get; set; }
     public ICollection<PacientePlanoMedico> PlanosMedicos { get; set; }
     public ICollection<EspecialistaAvaliacao> AvaliacoesFeitas { get; set; }
-    public ICollection<EspecialistaPergunta> PerguntasRealizadas { get; set; }
+    public ICollection<Pergunta> PerguntasRealizadas { get; set; }
     public ICollection<AgendamentoConsulta> AgendamentosRealizados { get; set; }
 
     protected Paciente() { }

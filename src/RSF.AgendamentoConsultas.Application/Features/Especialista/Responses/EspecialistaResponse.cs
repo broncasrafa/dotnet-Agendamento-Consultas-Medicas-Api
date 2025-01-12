@@ -61,7 +61,7 @@ public class EspecialistaResponse
             Marcacoes = EspecialistaTagsResponse.MapFromEntity(entity.Tags?.Select(c => c.Tag)),
             LocaisAtendimento = EspecialistaLocalAtendimentoResponse.MapFromEntity(entity.LocaisAtendimento),
             Avaliacoes = EspecialistaAvaliacaoResponse.MapFromEntity(entity.Avaliacoes),
-            PerguntasRespostas = EspecialistaPerguntaResponse.MapFromEntity(entity.Perguntas)
+            PerguntasRespostas = default! //EspecialistaPerguntaResponse.MapFromEntity(entity.Perguntas)
         };
     }
 

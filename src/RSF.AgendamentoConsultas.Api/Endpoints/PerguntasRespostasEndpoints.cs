@@ -2,10 +2,11 @@
 using RSF.AgendamentoConsultas.Api.Extensions;
 using RSF.AgendamentoConsultas.Api.Models;
 using RSF.AgendamentoConsultas.Application.Features.PerguntasRespostas.Responses;
-using RSF.AgendamentoConsultas.Application.Features.PerguntasRespostas.Query.GetPerguntaById;
 using RSF.AgendamentoConsultas.Application.Features.PerguntasRespostas.Query.GetRespostasByPerguntaId;
-using RSF.AgendamentoConsultas.Application.Features.PerguntasRespostas.Command.CreatePergunta;
 using RSF.AgendamentoConsultas.Application.Features.PerguntasRespostas.Command.CreateResposta;
+using RSF.AgendamentoConsultas.Application.Features.Pergunta.Responses;
+using RSF.AgendamentoConsultas.Application.Features.Pergunta.Command.CreatePergunta;
+using RSF.AgendamentoConsultas.Application.Features.Pergunta.Query.GetPerguntaById;
 using MediatR;
 
 namespace RSF.AgendamentoConsultas.Api.Endpoints;

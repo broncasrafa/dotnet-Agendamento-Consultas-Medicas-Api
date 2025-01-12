@@ -12,6 +12,7 @@ using RSF.AgendamentoConsultas.Domain.MessageBus.Bus;
 using RSF.AgendamentoConsultas.MessageBroker.Configurations;
 using RSF.AgendamentoConsultas.MessageBroker;
 using MediatR;
+using Microsoft.Extensions.Options;
 
 namespace RSF.AgendamentoConsultas.IoC;
 
@@ -22,7 +23,7 @@ public static class ServiceCollectionInfrastructure
     {
         services.AddDatabase(configuration);
         services.AddRepositories();
-        services.AddRabbitMQ();
+        services.AddRabbitMQ(configuration);
 
         return services;
     }
@@ -70,7 +71,8 @@ public static class ServiceCollectionInfrastructure
         services.AddSingleton<IEventBus, RabbitMQBus>(sp =>
         {
             var scopeFactory = sp.GetRequiredService<IServiceScopeFactory>();
-            return new RabbitMQBus(sp.GetService<IMediator>(), scopeFactory);
+            var options = sp.GetRequiredService<IOptions<RabbitMQOptions>>();
+            return new RabbitMQBus(sp.GetService<IMediator>(), scopeFactory, options);
         });
     }
 }

@@ -24,6 +24,8 @@ public class AppDbContext : DbContext
     public DbSet<Paciente> Pacientes { get; set; }
     public DbSet<Especialista> Especialistas { get; set; }
     public DbSet<AgendamentoConsulta> Agendamentos { get; set; }
+    public DbSet<Pergunta> Perguntas { get; set; }
+    public DbSet<PerguntaResposta> Respostas { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
         => modelBuilder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);

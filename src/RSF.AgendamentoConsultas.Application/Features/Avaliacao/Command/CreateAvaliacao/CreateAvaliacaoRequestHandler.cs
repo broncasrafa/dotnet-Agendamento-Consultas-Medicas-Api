@@ -32,8 +32,8 @@ public class CreateAvaliacaoRequestHandler : IRequestHandler<CreateAvaliacaoRequ
         NotFoundException.ThrowIfNull(paciente, $"Paciente com o ID: '{request.PacienteId}' não foi encontrado");
 
         var avaliacao = new EspecialistaAvaliacao(request.EspecialistaId, request.PacienteId, request.Feedback, request.Score);
-        await _especialistaAvaliacaoRepository.AddAsync(avaliacao);
-        var rowsAffected = await _especialistaAvaliacaoRepository.SaveChangesAsync();
+
+        var rowsAffected = await _especialistaAvaliacaoRepository.AddAsync(avaliacao);
 
         return await Task.FromResult(rowsAffected > 0);
     }

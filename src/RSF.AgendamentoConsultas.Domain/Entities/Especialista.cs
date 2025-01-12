@@ -33,7 +33,8 @@ public class Especialista
     public ICollection<EspecialistaLocalAtendimento> LocaisAtendimento { get; set; }
     public ICollection<EspecialistaTags> Tags { get; set; }
     public ICollection<EspecialistaAvaliacao> Avaliacoes { get; set; }
-    public ICollection<EspecialistaPergunta> Perguntas { get; set; }
+    //public ICollection<Pergunta> Perguntas { get; set; }
+    public ICollection<PerguntaResposta> Respostas { get; set; }
     
 
     protected Especialista()

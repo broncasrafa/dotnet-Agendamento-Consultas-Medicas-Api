@@ -18,6 +18,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<Folder Include="Features\Especialista\Command\" />
 		<Folder Include="Features\Paciente\Query\GetPacienteByIdPerguntas\" />
 	</ItemGroup>
 

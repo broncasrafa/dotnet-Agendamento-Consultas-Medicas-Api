@@ -34,7 +34,6 @@ public class CreatePacienteDependenteRequestHandler : IRequestHandler<CreatePaci
             dataNascimento: request.DataNascimento.ToString("yyyy-MM-dd"));
 
         await _repository.AddAsync(paciente);
-        await _repository.SaveChangesAsync();
 
         return await Task.FromResult(PacienteDependenteResponse.MapFromEntity(paciente));
     }

@@ -3,15 +3,15 @@ using RSF.AgendamentoConsultas.Api.Extensions;
 using RSF.AgendamentoConsultas.Api.Models;
 using RSF.AgendamentoConsultas.Shareable.Results;
 using RSF.AgendamentoConsultas.Application.Features.Especialista.Responses;
-using RSF.AgendamentoConsultas.Application.Features.Especialista.GetById;
-using RSF.AgendamentoConsultas.Application.Features.Especialista.GetByIdWithEspecialidades;
-using RSF.AgendamentoConsultas.Application.Features.Especialista.GetByIdWithConveniosMedicos;
-using RSF.AgendamentoConsultas.Application.Features.Especialista.GetByIdWithAvaliacoes;
-using RSF.AgendamentoConsultas.Application.Features.Especialista.GetByIdWithLocaisAtendimento;
-using RSF.AgendamentoConsultas.Application.Features.Especialista.GetByIdWithPerguntasRespostas;
-using RSF.AgendamentoConsultas.Application.Features.Especialista.GetByIdWithTags;
-using RSF.AgendamentoConsultas.Application.Features.Especialista.GetByNamePaged;
-using RSF.AgendamentoConsultas.Application.Features.Especialista.GetAllPaged;
+using RSF.AgendamentoConsultas.Application.Features.Especialista.Query.GetById;
+using RSF.AgendamentoConsultas.Application.Features.Especialista.Query.GetEspecialistaRespostas;
+using RSF.AgendamentoConsultas.Application.Features.Especialista.Query.GetByIdWithEspecialidades;
+using RSF.AgendamentoConsultas.Application.Features.Especialista.Query.GetByIdWithConveniosMedicos;
+using RSF.AgendamentoConsultas.Application.Features.Especialista.Query.GetByIdWithAvaliacoes;
+using RSF.AgendamentoConsultas.Application.Features.Especialista.Query.GetByIdWithLocaisAtendimento;
+using RSF.AgendamentoConsultas.Application.Features.Especialista.Query.GetByIdWithTags;
+using RSF.AgendamentoConsultas.Application.Features.Especialista.Query.GetByNamePaged;
+using RSF.AgendamentoConsultas.Application.Features.Especialista.Query.GetAllPaged;
 using MediatR;
 
 namespace RSF.AgendamentoConsultas.Api.Endpoints;
@@ -79,12 +79,12 @@ internal static class EspecialistaEndpoints
             .WithSummary("Obter a lista dos Locais de Atendimento do Especialista pelo ID especificado")
             .WithOpenApi();
 
-        routes.MapGet("/{id:int}/perguntas-respostas", static async (IMediator mediator, [FromRoute] int id, CancellationToken cancellationToken) => await mediator.SendCommand(new SelectEspecialistaByIdWithPerguntasRespostasRequest(id), cancellationToken: cancellationToken))
-            .WithName("GetOneEspecialistaByIdPerguntasRespostas")
-            .Produces<ApiResponse<EspecialistaResultList<EspecialistaPerguntaResponse>>>(StatusCodes.Status200OK)
+        routes.MapGet("/{id:int}/respostas", static async (IMediator mediator, [FromRoute] int id, CancellationToken cancellationToken) => await mediator.SendCommand(new SelectEspecialistaRespostasRequest(id), cancellationToken: cancellationToken))
+            .WithName("GetOneEspecialistaByIdRespostas")
+            .Produces<ApiResponse<EspecialistaResultList<EspecialistaPerguntaRespostaResponse>>>(StatusCodes.Status200OK)
             .Produces<ProblemDetails>(StatusCodes.Status404NotFound)
-            .WithDescription("Obter a lista das Perguntas feitas pelos pacientes e as Respostas do Especialista pelo ID especificado")
-            .WithSummary("Obter a lista das Perguntas feitas pelos pacientes e as Respostas do Especialista pelo ID especificado")
+            .WithDescription("Obter a lista das Respostas do Especialista pelo ID especificado")
+            .WithSummary("Obter a lista das Respostas do Especialista pelo ID especificado")
             .WithOpenApi();
 
         routes.MapGet("/{id:int}/marcacoes", static async (IMediator mediator, [FromRoute] int id, CancellationToken cancellationToken) => await mediator.SendCommand(new SelectEspecialistaByIdWithTagsRequest(id), cancellationToken: cancellationToken))

@@ -1,6 +1,4 @@
-﻿using System.Drawing.Printing;
-
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using RSF.AgendamentoConsultas.Data.Context;
 using RSF.AgendamentoConsultas.Data.Repositories.Common;
 using RSF.AgendamentoConsultas.Domain.Entities;
@@ -50,8 +48,8 @@ public class EspecialistaRepository : BaseRepository<Especialista>, IEspecialist
                 .Include(c => c.Tags).ThenInclude(t => t.Tag)
                 .Include(c => c.LocaisAtendimento)
                 .Include(c => c.Avaliacoes).ThenInclude(p => p.Paciente)
-                .Include(c => c.Perguntas).ThenInclude(p => p.Paciente)
-                .Include(c => c.Perguntas).ThenInclude(r => r.Respostas)
+                //.Include(c => c.Perguntas).ThenInclude(p => p.Paciente)
+                //.Include(c => c.Perguntas).ThenInclude(r => r.Respostas)
                 .FirstOrDefaultAsync(c => c.EspecialistaId == id);
 
     public async ValueTask<Especialista> GetByIdWithEspecialidadesAsync(int id)
@@ -79,9 +77,10 @@ public class EspecialistaRepository : BaseRepository<Especialista>, IEspecialist
                 .Include(c => c.Tags).ThenInclude(t => t.Tag)
                 .FirstOrDefaultAsync(c => c.EspecialistaId == id);
 
-    public async ValueTask<Especialista> GetByIdWithPerguntasRespostasAsync(int id)
+    public async ValueTask<Especialista> GetByIdWithRespostasAsync(int id)
         => await _Context.Especialistas.AsNoTracking()
-                .Include(c => c.Perguntas).ThenInclude(p => p.Paciente)
-                .Include(c => c.Perguntas).ThenInclude(r => r.Respostas)
+                .Include(c => c.Especialidades).ThenInclude(e => e.Especialidade).ThenInclude(g => g.EspecialidadeGrupo)
+                .Include(c => c.Respostas).ThenInclude(x => x.Pergunta).ThenInclude(p => p.Paciente)
+                .Include(c => c.Respostas).ThenInclude(x => x.Pergunta).ThenInclude(p => p.Especialidade).ThenInclude(g => g.EspecialidadeGrupo)
                 .FirstOrDefaultAsync(c => c.EspecialistaId == id);
 }

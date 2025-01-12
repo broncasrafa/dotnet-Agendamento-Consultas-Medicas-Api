@@ -49,9 +49,7 @@ public class CreateAgendamentoRequestHandler : IRequestHandler<CreateAgendamento
             dependenteId: request.DependenteId,
             planoMedicoId: request.PlanoMedicoId);
 
-        await _agendamentoConsultaRepository.AddAsync(agendamento);
-
-        var rowsAffected = await _agendamentoConsultaRepository.SaveChangesAsync();
+        var rowsAffected = await _agendamentoConsultaRepository.AddAsync(agendamento);
 
         // pode disparar uma mensagem para a fila de AgendamentoConsultas (o especialista recebe um email de uma nova consulta para ele(onde ele pode aceitar ou recusar, propor um novo horario)
         // e o paciente recebe um e-mail

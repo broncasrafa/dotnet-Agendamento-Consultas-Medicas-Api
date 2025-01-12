@@ -36,8 +36,8 @@ public class CreatePacienteDependentePlanoMedicoRequestHandler : IRequestHandler
         NotFoundException.ThrowIfNull(dependente, $"Paciente Dependente com o ID: '{request.DependenteId}' não foi encontrado para o Paciente Principal com o ID: '{request.PacientePrincipalId}'");
 
         var planoMedico = new PacienteDependentePlanoMedico(request.NomePlano, request.NumCartao, request.DependenteId, request.ConvenioMedicoId);
+        
         await _dependentePlanoMedicoRepository.AddAsync(planoMedico);
-        await _dependentePlanoMedicoRepository.SaveChangesAsync();
 
         return await Task.FromResult(PacienteDependentePlanoMedicoResponse.MapFromEntity(planoMedico));
     }

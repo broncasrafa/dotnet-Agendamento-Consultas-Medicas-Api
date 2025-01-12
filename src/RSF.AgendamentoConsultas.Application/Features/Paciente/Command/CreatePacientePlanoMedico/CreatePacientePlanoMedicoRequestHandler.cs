@@ -33,8 +33,8 @@ public class CreatePacientePlanoMedicoRequestHandler : IRequestHandler<CreatePac
         NotFoundException.ThrowIfNull(paciente, $"Paciente com o ID: '{request.PacienteId}' não foi encontrado");
 
         var planoMedico = new PacientePlanoMedico(request.NomePlano, request.NumCartao, request.PacienteId, request.ConvenioMedicoId);
+        
         await _pacientePlanoMedicoRepository.AddAsync(planoMedico);
-        await _pacientePlanoMedicoRepository.SaveChangesAsync();
 
         return await Task.FromResult(PacientePlanoMedicoResponse.MapFromEntity(planoMedico));
     }

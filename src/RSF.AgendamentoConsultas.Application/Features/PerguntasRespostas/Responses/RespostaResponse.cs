@@ -1,4 +1,5 @@
-﻿using RSF.AgendamentoConsultas.Domain.Entities;
+﻿using RSF.AgendamentoConsultas.Application.Features.Pergunta.Responses;
+using RSF.AgendamentoConsultas.Domain.Entities;
 
 namespace RSF.AgendamentoConsultas.Application.Features.PerguntasRespostas.Responses;
 
@@ -11,19 +12,18 @@ public class RespostaResponse
     public DateTime CreatedAt { get; private set; }
     public PerguntaResponse Pergunta { get; set; }
 
-    public static RespostaResponse MapFromEntity(EspecialistaRespostaPergunta entity)
+    public static RespostaResponse MapFromEntity(PerguntaResposta entity)
      => entity is null ? default! : new RespostaResponse
      {
-         Id = entity.Id,
+         Id = entity.PerguntaRespostaId,
          Resposta = entity.Resposta,
-         Likes = entity.Likes,
-         Dislikes = entity.Dislikes,
+         //Likes = entity.Likes,
+         //Dislikes = entity.Dislikes,
          CreatedAt = entity.CreatedAt,
          Pergunta = entity.Pergunta is null ? default! : new PerguntaResponse
          {
-             Id = entity.Pergunta.Id,
-             Titulo = entity.Pergunta.Titulo,
-             Pergunta = entity.Pergunta.Pergunta
+             Id = entity.Pergunta.PerguntaId,
+             Pergunta = entity.Pergunta.Texto
          }
      };
 }

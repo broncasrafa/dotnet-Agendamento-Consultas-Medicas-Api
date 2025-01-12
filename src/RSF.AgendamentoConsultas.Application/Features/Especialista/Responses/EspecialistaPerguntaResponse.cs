@@ -1,26 +1,22 @@
-﻿using RSF.AgendamentoConsultas.Domain.Entities;
-
-namespace RSF.AgendamentoConsultas.Application.Features.Especialista.Responses;
+﻿namespace RSF.AgendamentoConsultas.Application.Features.Especialista.Responses;
 
 public record EspecialistaPerguntaResponse(
     int Id,
-    string Paciente,
-    string Titulo,
     string Pergunta,
-    DateTime CreatedAt,
-    IReadOnlyList<EspecialistaRespostaPerguntaResponse> Respostas)
+    string Especialidade,
+    string Paciente,
+    DateTime CreatedAt)
 {
-    public static EspecialistaPerguntaResponse MapFromEntity(EspecialistaPergunta pergunta)
-        => pergunta is null
+    public static EspecialistaPerguntaResponse MapFromEntity(Domain.Entities.Pergunta entity)
+        => entity is null
             ? default!
             : new EspecialistaPerguntaResponse(
-                pergunta.Id,
-                pergunta.Paciente.Nome,
-                pergunta.Titulo,
-                pergunta.Pergunta,
-                pergunta.CreatedAt,
-                EspecialistaRespostaPerguntaResponse.MapFromEntity(pergunta.Respostas));
+                entity.PerguntaId,
+                entity.Texto,
+                entity.Especialidade?.Nome,
+                entity.Paciente.Nome,
+                entity.CreatedAt);
 
-    public static IReadOnlyList<EspecialistaPerguntaResponse>? MapFromEntity(IEnumerable<EspecialistaPergunta> collection)
+    public static IReadOnlyList<EspecialistaPerguntaResponse>? MapFromEntity(IEnumerable<Domain.Entities.Pergunta> collection)
         => collection is null || !collection.Any() ? default! : collection.Select(c => MapFromEntity(c)).ToList();
 }

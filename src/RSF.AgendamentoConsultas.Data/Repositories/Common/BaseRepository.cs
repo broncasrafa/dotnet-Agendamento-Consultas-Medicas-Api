@@ -13,8 +13,7 @@ public class BaseRepository<T> : IBaseRepository<T> where T : class
     public BaseRepository(AppDbContext context) => Context = context;
 
 
-    public async ValueTask AddAsync(T entity)
-        => await Context.Set<T>().AddAsync(entity).ConfigureAwait(false);
+    
 
     public async ValueTask<IReadOnlyList<T>> GetAllAsync()
         => await Context.Set<T>().ToListAsync().ConfigureAwait(false);
@@ -32,17 +31,28 @@ public class BaseRepository<T> : IBaseRepository<T> where T : class
     public async ValueTask<T> GetByIdAsync(int id)
         => await Context.Set<T>().FindAsync(id).ConfigureAwait(false);
 
-    public async ValueTask RemoveAsync(T entity)
-        => await ValueTask.FromResult(Context.Set<T>().Remove(entity)).ConfigureAwait(false);
-
-    public async ValueTask<int> SaveChangesAsync() 
-        => await Context.SaveChangesAsync().ConfigureAwait(false);
+    
+    public async ValueTask<int> AddAsync(T entity)
+    {
+        await Context.Set<T>().AddAsync(entity).ConfigureAwait(false);
+        return await Context.SaveChangesAsync().ConfigureAwait(false);
+    }
 
     public async ValueTask<int> UpdateAsync(T entity)
     {
         Context.Set<T>().Update(entity);
         return await Context.SaveChangesAsync().ConfigureAwait(false);
     }
+
+    public async ValueTask<int> RemoveAsync(T entity)
+    {
+        await ValueTask.FromResult(Context.Set<T>().Remove(entity)).ConfigureAwait(false);
+        return await Context.SaveChangesAsync().ConfigureAwait(false);
+    }
+
     public async ValueTask<int> ChangeStatusAsync(T entity)
         => await UpdateAsync(entity).ConfigureAwait(false);
+
+    public async ValueTask<int> SaveChangesAsync() 
+        => await Context.SaveChangesAsync().ConfigureAwait(false);
 }

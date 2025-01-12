@@ -1,14 +1,14 @@
 ﻿using System.Text;
+using Microsoft.Extensions.Options;
 using Microsoft.Extensions.DependencyInjection;
 using RSF.AgendamentoConsultas.Domain.MessageBus.Bus;
 using RSF.AgendamentoConsultas.Domain.MessageBus.Events;
 using RSF.AgendamentoConsultas.Domain.MessageBus.Commands;
+using RSF.AgendamentoConsultas.MessageBroker.Configurations;
 using MediatR;
 using Newtonsoft.Json;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
-using Microsoft.Extensions.Options;
-using RSF.AgendamentoConsultas.MessageBroker.Configurations;
 
 namespace RSF.AgendamentoConsultas.MessageBroker;
 

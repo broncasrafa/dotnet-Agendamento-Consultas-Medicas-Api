@@ -40,7 +40,6 @@ public class CreatePacienteRequestHandler : IRequestHandler<CreatePacienteReques
         newPaciente.SetPassword(_passwordHasher.Hash(request.Password));
 
         await _repository.AddAsync(newPaciente);
-        await _repository.SaveChangesAsync();
 
         return await Task.FromResult(PacienteResponse.MapFromEntity(newPaciente));
     }

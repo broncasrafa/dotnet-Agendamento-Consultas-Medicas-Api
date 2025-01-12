@@ -14,6 +14,7 @@ public class Especialidade
     public int EspecialidadeGrupoId { get; private set; }
 
     public EspecialidadeGrupo EspecialidadeGrupo { get; set; }
+    public ICollection<Pergunta> Perguntas { get; set; }
 
     public Especialidade(string nome, string nomePlural, int especialidadeGrupoId)
     {
