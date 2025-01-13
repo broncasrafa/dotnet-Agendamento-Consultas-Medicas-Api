@@ -24,7 +24,7 @@ public class EspecialistaAvaliacao
         PacienteId = pacienteId;
         Feedback = feedback;
         Score = score;
-        CreatedAt = DateTime.UtcNow;
+        CreatedAt = DateTime.Now;
 
         DomainValidation.IdentifierGreaterThanZero(especialistaId, nameof(EspecialistaId));
         DomainValidation.IdentifierGreaterThanZero(pacienteId, nameof(PacienteId));

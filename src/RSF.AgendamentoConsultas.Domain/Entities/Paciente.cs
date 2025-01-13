@@ -45,7 +45,7 @@ public class Paciente
         TelefoneVerificado = telefoneVerificado ?? false;
         EmailVerificado = emailVerificado ?? false;
         TermoUsoAceito = termoUsoAceito ?? false;
-        CreatedAt = DateTime.UtcNow;
+        CreatedAt = DateTime.Now;
 
         Validate();
     }
@@ -63,7 +63,7 @@ public class Paciente
         TelefoneVerificado = telefoneVerificado ?? false;
         EmailVerificado = emailVerificado ?? false;
         TermoUsoAceito = termoUsoAceito ?? false;
-        UpdatedAt = DateTime.UtcNow;
+        UpdatedAt = DateTime.Now;
 
         Validate(validatePassword: false);
     }

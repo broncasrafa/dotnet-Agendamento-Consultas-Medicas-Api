@@ -35,12 +35,12 @@ public class CreatePerguntaRequestHandler : IRequestHandler<CreatePerguntaReques
         var paciente = await _pacienteRepository.GetByIdAsync(request.PacienteId);
         NotFoundException.ThrowIfNull(paciente, $"Paciente com o ID: '{request.PacienteId}' não foi encontrado");
 
-        var pergunta = new Domain.Entities.Pergunta(request.EspecialidadeId, request.PacienteId, request.Pergunta);
+        var pergunta = new Domain.Entities.Pergunta(request.EspecialidadeId, request.PacienteId, request.Pergunta, request.TermosUsoPolitica);
 
         var rowsAffected = await _perguntaRepository.AddAsync(pergunta);
 
         // envia mensagem para a fila de Perguntas criadas
-        _eventBus.Publish(new PerguntaCreatedEvent(request.EspecialidadeId, request.PacienteId, paciente.Email, request.Pergunta));
+        _eventBus.Publish(new PerguntaCreatedEvent(request.EspecialidadeId, request.PacienteId, paciente.Email, pergunta.PerguntaId, request.Pergunta));
         
         return await Task.FromResult(rowsAffected > 0);
     }

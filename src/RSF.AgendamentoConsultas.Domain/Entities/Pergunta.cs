@@ -20,12 +20,13 @@ public class Pergunta
     {        
     }
 
-    public Pergunta(int especialidadeId, int pacienteId, string pergunta)
+    public Pergunta(int especialidadeId, int pacienteId, string pergunta, bool termosUsoPolitica)
     {
         EspecialidadeId = especialidadeId;
         PacienteId = pacienteId;
         Texto = pergunta;
-        CreatedAt = DateTime.UtcNow;
+        TermosUsoPolitica = termosUsoPolitica;
+        CreatedAt = DateTime.Now;
 
         DomainValidation.IdentifierGreaterThanZero(especialidadeId, nameof(EspecialidadeId));
         DomainValidation.IdentifierGreaterThanZero(pacienteId, nameof(PacienteId));

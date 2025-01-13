@@ -23,7 +23,7 @@ public class PerguntaResposta
         PerguntaId = perguntaId;
         EspecialistaId = especialistaId;
         Resposta = resposta;
-        CreatedAt = DateTime.UtcNow;
+        CreatedAt = DateTime.Now;
 
         DomainValidation.IdentifierGreaterThanZero(perguntaId, nameof(PerguntaId));
         DomainValidation.IdentifierGreaterThanZero(especialistaId, nameof(EspecialistaId));

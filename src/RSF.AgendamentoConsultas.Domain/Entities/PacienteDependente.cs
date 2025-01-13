@@ -39,7 +39,7 @@ public class PacienteDependente
         NomeSocial = nomeSocial;
         Peso = peso;
         Altura = altura;
-        CreatedAt = DateTime.UtcNow;
+        CreatedAt = DateTime.Now;
 
         Validate();
     }
@@ -55,7 +55,7 @@ public class PacienteDependente
         NomeSocial = nomeSocial;
         Peso = peso;
         Altura = altura;
-        UpdatedAt = DateTime.UtcNow;
+        UpdatedAt = DateTime.Now;
         Paciente = null;
         PlanosMedicos = null;
         AgendamentosRealizados = null;

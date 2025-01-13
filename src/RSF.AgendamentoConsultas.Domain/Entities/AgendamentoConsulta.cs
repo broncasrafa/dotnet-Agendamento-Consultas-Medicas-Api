@@ -80,7 +80,7 @@ public class AgendamentoConsulta
         DependentePlanoMedicoId = (dependenteId is not null) ? planoMedicoId : null;
         AgendamentoDependente = dependenteId is not null;
         StatusConsultaId = (int)ETipoStatusConsulta.Solicitado;
-        CreatedAt = DateTime.UtcNow;
+        CreatedAt = DateTime.Now;
 
         Validate();
     }
@@ -90,7 +90,7 @@ public class AgendamentoConsulta
     public void Confirmar()
     {
         StatusConsultaId = (int)ETipoStatusConsulta.Confirmado;
-        UpdatedAt = DateTime.UtcNow;
+        UpdatedAt = DateTime.Now;
     }
     public void Cancelar(string notaCancelamento)
     {
@@ -98,7 +98,7 @@ public class AgendamentoConsulta
 
         NotaCancelamento = notaCancelamento;
         StatusConsultaId = (int)ETipoStatusConsulta.Cancelado;
-        UpdatedAt = DateTime.UtcNow;
+        UpdatedAt = DateTime.Now;
     }
     public void ExpirarProfissional(string notaCancelamento)
     {
@@ -106,7 +106,7 @@ public class AgendamentoConsulta
 
         NotaCancelamento = notaCancelamento;
         StatusConsultaId = (int)ETipoStatusConsulta.ExpiradoProfissional;
-        UpdatedAt = DateTime.UtcNow;
+        UpdatedAt = DateTime.Now;
     }
     public void ExpirarPaciente(string notaCancelamento)
     {
@@ -114,7 +114,7 @@ public class AgendamentoConsulta
 
         NotaCancelamento = notaCancelamento;
         StatusConsultaId = (int)ETipoStatusConsulta.ExpiradoPaciente;
-        UpdatedAt = DateTime.UtcNow;
+        UpdatedAt = DateTime.Now;
     }
 
     private void Validate()

@@ -10,7 +10,6 @@ public class RespostaCreatedEvent : Event
     public int EspecialistaId { get; private set; }
     public string EspecialistaNome { get; private set; }
     public string Resposta { get; private set; }
-    public DateTime CreatedAt { get; private set; }
 
     public RespostaCreatedEvent(int pacienteId, string pacienteNome, string pacienteEmail, int especialistaId, string especialistaNome, string resposta)
     {
@@ -20,6 +19,5 @@ public class RespostaCreatedEvent : Event
         EspecialistaId = especialistaId;
         EspecialistaNome = especialistaNome;
         Resposta = resposta;
-        CreatedAt = DateTime.UtcNow;
     }
 }
