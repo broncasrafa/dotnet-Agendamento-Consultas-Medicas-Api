@@ -19,6 +19,7 @@ public class EspecialistaConfiguration : IEntityTypeConfiguration<Especialista>
         builder.Property(c => c.EspecCodeId).HasMaxLength(455);
         builder.Property(c => c.Nome).HasMaxLength(455);
         builder.Property(c => c.Licenca).HasMaxLength(455);
+        builder.Property(c => c.Email).HasMaxLength(455);
         builder.Property(c => c.Foto).HasColumnType("varchar(max)");
         builder.Property(c => c.SharedUrl).HasMaxLength(455);
         builder.Property(c => c.Ativo).HasColumnType("bit");

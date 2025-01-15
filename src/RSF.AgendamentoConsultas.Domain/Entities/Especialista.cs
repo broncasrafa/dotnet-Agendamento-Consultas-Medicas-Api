@@ -11,7 +11,8 @@ public class Especialista
     public string CodeId { get; private set; }
     public string EspecCodeId { get; private set; }
     public string Nome { get; private set; }
-    public string Licenca { get; private set; }
+    public string Licenca { get; private set; }    
+    public string Email { get; private set; }
     public string Foto { get; private set; }
     public string SharedUrl { get; private set; }
     public bool? Ativo { get; private set; }
@@ -41,7 +42,7 @@ public class Especialista
     {        
     }
 
-    public Especialista(string tipo, string nome, string licenca, string foto, string sharedUrl, bool? agendaOnline, bool? perfilVerificado, bool? permitirPergunta, bool? telemedicinaOnline, bool? telemedicinaAtivo, string telemedicinaPreco, decimal? telemedicinaPrecoNumber, decimal? avaliacao, string experienciaProfissional, string formacaoAcademica, string genero, string tratamento)
+    public Especialista(string tipo, string nome, string licenca, string email, string foto, string sharedUrl, bool? agendaOnline, bool? perfilVerificado, bool? permitirPergunta, bool? telemedicinaOnline, bool? telemedicinaAtivo, string telemedicinaPreco, decimal? telemedicinaPrecoNumber, decimal? avaliacao, string experienciaProfissional, string formacaoAcademica, string genero, string tratamento)
     {
         Tipo = tipo;
         Code = Utilitarios.GenerateSlugifyString(nome);
@@ -49,6 +50,7 @@ public class Especialista
         EspecCodeId = $"{Code}-{CodeId}";
         Nome = nome;
         Licenca = licenca;
+        Email = email;
         Foto = foto;
         SharedUrl = sharedUrl;
         Ativo = true;
@@ -68,13 +70,14 @@ public class Especialista
         Validate();
     }
 
-    public void Update(string tipo, string nome, string licenca, string foto, string sharedUrl, bool? agendaOnline, bool? perfilVerificado, bool? permitirPergunta, bool? telemedicinaOnline, bool? telemedicinaAtivo, string telemedicinaPreco, decimal? telemedicinaPrecoNumber, decimal? avaliacao, string experienciaProfissional, string formacaoAcademica, string genero, string tratamento)
+    public void Update(string tipo, string nome, string licenca, string email, string foto, string sharedUrl, bool? agendaOnline, bool? perfilVerificado, bool? permitirPergunta, bool? telemedicinaOnline, bool? telemedicinaAtivo, string telemedicinaPreco, decimal? telemedicinaPrecoNumber, decimal? avaliacao, string experienciaProfissional, string formacaoAcademica, string genero, string tratamento)
     {
         Tipo = tipo;
         Code = Utilitarios.GenerateSlugifyString(nome);
         EspecCodeId = $"{Code}-{CodeId}";
         Nome = nome;
         Licenca = licenca;
+        Email = email;
         Foto = foto;
         SharedUrl = sharedUrl;
         AgendaOnline = agendaOnline;
@@ -100,5 +103,6 @@ public class Especialista
         DomainValidation.PossiblesValidTypes(TypeValids.VALID_CATEGORIAS, value: Tipo, nameof(Nome));
         DomainValidation.PossiblesValidTypes(TypeValids.VALID_GENEROS, value: Genero, nameof(Genero));
         DomainValidation.PossiblesValidTypes(TypeValids.VALID_TRATAMENTOS, value: Tratamento, nameof(Tratamento));
+        DomainValidation.PossibleValidEmailAddress(Email, nameof(Email));
     }
 }

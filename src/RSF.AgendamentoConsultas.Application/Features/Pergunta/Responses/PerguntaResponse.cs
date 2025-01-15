@@ -31,4 +31,7 @@ public class PerguntaResponse
                 Nome = entity.Paciente.Nome, 
             }
         };
+
+    public static IReadOnlyList<PerguntaResponse>? MapFromEntity(IEnumerable<Domain.Entities.Pergunta> convenios)
+        => convenios is null || !convenios.Any() ? null : convenios.Select(MapFromEntity).ToList();
 }

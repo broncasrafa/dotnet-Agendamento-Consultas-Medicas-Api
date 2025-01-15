@@ -104,7 +104,7 @@ indent_size = 4
 end_of_line = crlf
 dotnet_style_prefer_inferred_tuple_names = true:suggestion
 
-
+dotnet_code_quality.ca1711.allowed_suffixes = Flag|Flags
 
 
 
@@ -159,11 +159,14 @@ dotnet_diagnostic.CA1310.severity = none
 # CA1311: Especificar uma cultura ou usar uma versão invariável
 dotnet_diagnostic.CA1311.severity = suggestion
 
+# CA1515: Considere tornar os tipos públicos internos
+dotnet_diagnostic.CA1515.severity = suggestion
+
 # CA1707: Identificadores não devem conter sublinhados
 dotnet_diagnostic.CA1707.severity = none
 
 # CA1711: Identificadores não devem ter um sufixo incorreto
-dotnet_diagnostic.CA1711.severity = suggestion
+dotnet_diagnostic.CA1711.severity = none
 
 # CA1716: Identificadores não devem corresponder a palavras-chave
 dotnet_diagnostic.CA1716.severity = suggestion
@@ -189,11 +192,20 @@ dotnet_diagnostic.CA1851.severity = none
 # CA1854: Preferir o método IDictionary.TryGetValue(TKey, out TValue)
 dotnet_diagnostic.CA1854.severity = suggestion
 
+# CA1869: armazenar em cache e reutilizar instâncias de "JsonSerializerOptions"
+dotnet_diagnostic.CA1869.severity = suggestion
+
+# CA2000: Descartar objetos antes de perder o escopo
+dotnet_diagnostic.CA2000.severity = suggestion
+
 # CA2007: não aguardar diretamente uma tarefa
 dotnet_diagnostic.CA2007.severity = none
 
 # CA2227: Propriedades de coleção devem ser somente leitura
 dotnet_diagnostic.CA2227.severity = none
+
+# CA2254: o modelo deve ser uma expressão estática
+dotnet_diagnostic.CA2254.severity = none
 
 # IDE0320: Tornar a função anônima estática
 dotnet_diagnostic.IDE0320.severity = none

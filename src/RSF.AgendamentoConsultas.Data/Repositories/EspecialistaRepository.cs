@@ -83,4 +83,12 @@ public class EspecialistaRepository : BaseRepository<Especialista>, IEspecialist
                 .Include(c => c.Respostas).ThenInclude(x => x.Pergunta).ThenInclude(p => p.Paciente)
                 .Include(c => c.Respostas).ThenInclude(x => x.Pergunta).ThenInclude(p => p.Especialidade).ThenInclude(g => g.EspecialidadeGrupo)
                 .FirstOrDefaultAsync(c => c.EspecialistaId == id);
+
+    public async ValueTask<IReadOnlyList<Especialista>> GetAllByEspecialidadeIdAsync(int especialidadeId)
+        => await _Context.Set<EspecialistaEspecialidade>().AsNoTracking()
+                        .Where(c => c.EspecialidadeId == especialidadeId)
+                        .Include(e => e.Especialista)
+                        .Include(ee => ee.Especialidade).ThenInclude(g => g.EspecialidadeGrupo)
+                        .Select(c => c.Especialista)
+                        .ToListAsync();
 }

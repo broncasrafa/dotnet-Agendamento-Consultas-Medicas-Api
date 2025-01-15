@@ -18,9 +18,11 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\RSF.AgendamentoConsultas.Application\RSF.AgendamentoConsultas.Application.csproj" />
+		<ProjectReference Include="..\RSF.AgendamentoConsultas.Consumers.Notification\RSF.AgendamentoConsultas.Consumers.Notification.csproj" />
 		<ProjectReference Include="..\RSF.AgendamentoConsultas.Data\RSF.AgendamentoConsultas.Data.csproj" />
 		<ProjectReference Include="..\RSF.AgendamentoConsultas.Domain\RSF.AgendamentoConsultas.Domain.csproj" />
 		<ProjectReference Include="..\RSF.AgendamentoConsultas.MessageBroker\RSF.AgendamentoConsultas.MessageBroker.csproj" />
+		<ProjectReference Include="..\RSF.AgendamentoConsultas.Notifications\RSF.AgendamentoConsultas.Notifications.csproj" />
 	</ItemGroup>
 
 </Project>

@@ -39,6 +39,8 @@ internal static class ConfigureServicesExtension
         services.RegisterInfrastructureServices(configuration);
         
         services.RegisterApplicationServices(configuration);
+
+        services.RegisterConsumersServices(configuration);
     }
 
 

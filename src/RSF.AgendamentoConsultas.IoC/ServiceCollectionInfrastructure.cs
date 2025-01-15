@@ -1,4 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using Amazon.S3;
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -8,11 +10,14 @@ using RSF.AgendamentoConsultas.Data.Repositories;
 using RSF.AgendamentoConsultas.Data.Repositories.Common;
 using RSF.AgendamentoConsultas.Domain.Interfaces;
 using RSF.AgendamentoConsultas.Domain.Interfaces.Common;
+using RSF.AgendamentoConsultas.Domain.MessageBus;
 using RSF.AgendamentoConsultas.Domain.MessageBus.Bus;
-using RSF.AgendamentoConsultas.MessageBroker.Configurations;
+using RSF.AgendamentoConsultas.Domain.Notifications;
 using RSF.AgendamentoConsultas.MessageBroker;
-using MediatR;
-using Microsoft.Extensions.Options;
+using RSF.AgendamentoConsultas.MessageBroker.Configurations;
+using RSF.AgendamentoConsultas.Notifications;
+using RSF.AgendamentoConsultas.Notifications.Configurations;
+using RSF.AgendamentoConsultas.Notifications.Templates;
 
 namespace RSF.AgendamentoConsultas.IoC;
 
@@ -24,6 +29,8 @@ public static class ServiceCollectionInfrastructure
         services.AddDatabase(configuration);
         services.AddRepositories();
         services.AddRabbitMQ(configuration);
+        services.AddAwsS3(configuration);
+        services.AddMailSender(configuration);
 
         return services;
     }
@@ -51,28 +58,58 @@ public static class ServiceCollectionInfrastructure
         services.AddScoped<IPacienteRepository, PacienteRepository>();
         services.AddScoped<IPacienteDependenteRepository, PacienteDependenteRepository>();
         services.AddScoped<IAgendamentoConsultaRepository, AgendamentoConsultaRepository>();
+        services.AddScoped<IPerguntaRepository, PerguntaRepository>();
+        services.AddScoped<IPerguntaRespostaRepository, PerguntaRespostaRepository>();
     }
 
     private static void AddRabbitMQ(this IServiceCollection services, IConfiguration configuration)
     {
-        services.Configure<RabbitMQOptions>(options => configuration.GetSection("RabbitMQ").Bind(options));
-        services.Configure<ProducerOptions>(options => configuration.GetSection("RabbitMQ:Producer").Bind(options));
-        services.Configure<ConsumerOptions>(options => configuration.GetSection("RabbitMQ:Consumer").Bind(options));
+        //services.Configure<RabbitMQOptions>(configuration.GetSection("RabbitMQ"));
+        //services.Configure<ProducerOptions>(configuration.GetSection("RabbitMQ:Producer"));
+        //services.Configure<ConsumerOptions>(configuration.GetSection("RabbitMQ:Consumer"));
+        ////services.Configure<RabbitMQOptions>(options => configuration.GetSection("RabbitMQ").Bind(options));
+        ////services.Configure<ProducerOptions>(options => configuration.GetSection("RabbitMQ:Producer").Bind(options));
+        ////services.Configure<ConsumerOptions>(options => configuration.GetSection("RabbitMQ:Consumer").Bind(options));
 
-        if (configuration.GetSection("RabbitMQ:MessageConfirmation").Exists())
-        {
-            services.Configure<MessageConfirmationOptions>(options => configuration.GetSection("RabbitMQ:MessageConfirmation").Bind(options));
-        }
-        else
-        {
-            services.Configure<MessageConfirmationOptions>(options => options.SaveMessagesToFile = false);
-        }
+        //if (configuration.GetSection("RabbitMQ:MessageConfirmation").Exists())
+        //{
+        //    services.Configure<MessageConfirmationOptions>(options => configuration.GetSection("RabbitMQ:MessageConfirmation").Bind(options));
+        //}
+        //else
+        //{
+        //    services.Configure<MessageConfirmationOptions>(options => options.SaveMessagesToFile = false);
+        //}
 
-        services.AddSingleton<IEventBus, RabbitMQBus>(sp =>
-        {
-            var scopeFactory = sp.GetRequiredService<IServiceScopeFactory>();
-            var options = sp.GetRequiredService<IOptions<RabbitMQOptions>>();
-            return new RabbitMQBus(sp.GetService<IMediator>(), scopeFactory, options);
-        });
+        //services.AddSingleton<IEventBus, RabbitMQBus>(sp =>
+        //{
+        //    var scopeFactory = sp.GetRequiredService<IServiceScopeFactory>();
+        //    var options = sp.GetRequiredService<IOptions<RabbitMQOptions>>();
+        //    return new RabbitMQBus(sp.GetService<IMediator>(), scopeFactory, options);
+        //});
+
+
+        services.Configure<RabbitMQOptions>(configuration.GetSection("RabbitMQ"));
+        services.Configure<RabbitMQSettings>(configuration.GetSection("RabbitMQ"));
+
+        services.AddScoped<IRabbitMQService, RabbitMQService>();
+
+        //services.AddSingleton<RabbitMQConnection>();
+        //services.AddSingleton<IEventBus, RabbitMQBus>();
+    }
+
+    private static void AddMailSender(this IServiceCollection services, IConfiguration configuration)
+    {
+        services.Configure<MailOptions>(configuration.GetSection("MailSettings"));
+
+        services.AddTransient<IMailSender, MailSender>();
+
+        // Registrando e-mails específicos
+        services.AddTransient<PerguntaCreatedEmail>();
+    }
+    
+    private static void AddAwsS3(this IServiceCollection services, IConfiguration configuration)
+    {
+        services.AddDefaultAWSOptions(configuration.GetAWSOptions());
+        services.AddAWSService<IAmazonS3>();
     }
 }

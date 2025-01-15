@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 using System.Text.RegularExpressions;
 using RSF.AgendamentoConsultas.Domain.Exceptions;
@@ -146,6 +147,21 @@ public static class DomainValidation
 
             if (erros.Count > 0)
                 throw new EntityValidationException($"A senha não atende aos critérios: {string.Join(", ", erros)}");
-        }        
+        }
+    }
+
+    public static void PossibleValidEmailAddress(string value, string fieldName, bool isRequired = true)
+    {
+        if (isRequired && string.IsNullOrWhiteSpace(value))
+            throw new EntityValidationException($"{fieldName} não pode ser nulo ou vazio.");
+
+        // Se não é obrigatório e o valor foi informado, faz a validação
+        if (!string.IsNullOrWhiteSpace(value))
+        {
+            var emailAttribute = new EmailAddressAttribute();
+            var isValid = emailAttribute.IsValid(value);
+            if (!isValid)
+                throw new EntityValidationException($"{fieldName} com valor inválido.");
+        }
     }
 }

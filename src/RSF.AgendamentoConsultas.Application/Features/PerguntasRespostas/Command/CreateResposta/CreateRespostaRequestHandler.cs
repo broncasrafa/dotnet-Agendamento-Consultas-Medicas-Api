@@ -14,20 +14,19 @@ public class CreateRespostaRequestHandler : IRequestHandler<CreateRespostaReques
     private readonly IBaseRepository<Domain.Entities.Pergunta> _perguntaRepository;
     private readonly IEspecialistaRepository _especialistaRepository;
     private readonly IPacienteRepository _pacienteRepository;
-    private readonly IEventBus _eventBus;
+    //private readonly IEventBus _eventBus;
 
     public CreateRespostaRequestHandler(
         IBaseRepository<Domain.Entities.PerguntaResposta> perguntaRespostaRepository,
         IBaseRepository<Domain.Entities.Pergunta> perguntaRepository,
         IEspecialistaRepository especialistaRepository,
-        IPacienteRepository pacienteRepository,
-        IEventBus eventBus)
+        IPacienteRepository pacienteRepository)
     {
         _perguntaRespostaRepository = perguntaRespostaRepository;
         _perguntaRepository = perguntaRepository;
         _especialistaRepository = especialistaRepository;
         _pacienteRepository = pacienteRepository;
-        _eventBus = eventBus;
+        //_eventBus = eventBus;
     }
 
     public async Task<Result<bool>> Handle(CreateRespostaRequest request, CancellationToken cancellationToken)
@@ -46,7 +45,7 @@ public class CreateRespostaRequestHandler : IRequestHandler<CreateRespostaReques
         var rowsAffected = await _perguntaRespostaRepository.AddAsync(resposta);
 
         // envia a mensagem para a fila de respostas
-        _eventBus.Publish(new RespostaCreatedEvent(pergunta.PacienteId, paciente.Nome, paciente.Email, request.EspecialistaId, especialista.Nome, request.Resposta));
+        // _eventBus.Publish(new RespostaCreatedEvent(pergunta.PacienteId, paciente.Nome, paciente.Email, request.EspecialistaId, especialista.Nome, request.Resposta));
 
         return await Task.FromResult(rowsAffected > 0);
     }

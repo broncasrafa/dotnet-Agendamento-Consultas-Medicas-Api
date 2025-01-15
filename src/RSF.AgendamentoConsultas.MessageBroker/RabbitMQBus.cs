@@ -1,56 +1,43 @@
 ﻿using System.Text;
-using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.DependencyInjection;
 using RSF.AgendamentoConsultas.Domain.MessageBus.Bus;
 using RSF.AgendamentoConsultas.Domain.MessageBus.Events;
-using RSF.AgendamentoConsultas.Domain.MessageBus.Commands;
-using RSF.AgendamentoConsultas.MessageBroker.Configurations;
-using MediatR;
 using Newtonsoft.Json;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 
 namespace RSF.AgendamentoConsultas.MessageBroker;
 
-public sealed class RabbitMQBus : IEventBus
+public sealed class RabbitMQBus: IEventBus
 {
-    private readonly IMediator _mediator;
+    private readonly RabbitMQConnection _connection;
     private readonly IServiceScopeFactory _serviceScopeFactory;
-    private readonly Dictionary<string, List<Type>> _handlers;
-    private readonly List<Type> _eventTypes;
-    private readonly IOptions<RabbitMQOptions> _options;
+    private readonly Dictionary<string, List<Type>> _handlers = new();
+    private readonly List<Type> _eventTypes = new();
+    private readonly ILogger<RabbitMQBus> _logger;
 
-    public RabbitMQBus(IMediator mediator, IServiceScopeFactory serviceScopeFactory, IOptions<RabbitMQOptions> options)
+
+    public RabbitMQBus(RabbitMQConnection connection, IServiceScopeFactory serviceScopeFactory, ILogger<RabbitMQBus> logger)
     {
-        _mediator = mediator;
+        _connection = connection;
         _serviceScopeFactory = serviceScopeFactory;
-
-        _handlers = new Dictionary<string, List<Type>>();
-        _eventTypes = new List<Type>();
-        _options = options;
+        _logger = logger;
     }
 
     public void Publish<TEvent>(TEvent @event) where TEvent : Event
     {
-        var factory = new ConnectionFactory() { HostName = _options.Value.ConnectionString };
-        using var connection = factory.CreateConnection();
-        using var channel = connection.CreateModel();
+        using var channel = _connection.CreateChannel();
         var eventName = @event.GetType().Name;
+        channel.QueueDeclare(queue: eventName, durable: true, exclusive: false, autoDelete: false);
 
-        // declare a queue
-        channel.QueueDeclare(queue: eventName, durable: false, exclusive: false, autoDelete: false, arguments: null);
+        _logger.LogInformation($"Queue with name '{eventName}' created");
 
-        // create a message
-        //var options = new JsonSerializerOptions { WriteIndented = true };
-        //var message = JsonSerializer.Serialize<TEvent>(@event, options);
         var message = JsonConvert.SerializeObject(@event);
         var body = Encoding.UTF8.GetBytes(message);
 
         channel.BasicPublish(exchange: "", routingKey: eventName, basicProperties: null, body: body);
     }
-
-    public Task SendCommand<TEvent>(TEvent command) where TEvent : Command
-        => _mediator.Send(command);
 
     public void Subcribe<TEvent, TEventHandler>()
         where TEvent : Event
@@ -77,18 +64,10 @@ public sealed class RabbitMQBus : IEventBus
 
     private void StartBasicConsume<TEvent>() where TEvent : Event
     {
-        var factory = new ConnectionFactory()
-        {
-            HostName = "localhost",
-            DispatchConsumersAsync = true
-        };
-
-        var connection = factory.CreateConnection();
-        var channel = connection.CreateModel();
-
+        var channel = _connection.CreateChannel();
         var eventName = typeof(TEvent).Name;
 
-        channel.QueueDeclare(queue: eventName, durable: false, exclusive: false, autoDelete: false, arguments: null);
+        channel.QueueDeclare(queue: eventName, durable: true, exclusive: false, autoDelete: false, arguments: null);
 
         var consumer = new AsyncEventingBasicConsumer(channel);
         consumer.Received += Consumer_Received;
@@ -96,7 +75,7 @@ public sealed class RabbitMQBus : IEventBus
         channel.BasicConsume(queue: eventName, autoAck: true, consumer: consumer);
     }
 
-    private async Task Consumer_Received(object sender, BasicDeliverEventArgs e)
+    public async Task Consumer_Received(object sender, BasicDeliverEventArgs e)
     {
         string eventName = e.RoutingKey;
         string message = Encoding.UTF8.GetString(e.Body.ToArray());
@@ -105,8 +84,9 @@ public sealed class RabbitMQBus : IEventBus
         {
             await ProcessEvent(eventName, message).ConfigureAwait(false);
         }
-        catch (Exception)
+        catch (Exception ex)
         {
+            _logger.LogError($"Erro ao processar evento: {ex.Message}");
         }
     }
 
