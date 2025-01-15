@@ -34,9 +34,9 @@ public sealed class PerguntaCreatedSubscriber : IHostedService
 
         var connectionFactory = new ConnectionFactory
         {
-            HostName = "localhost",
-            UserName = "rsfrancisco",
-            Password = "Admin@123"
+            HostName = _options.Value.Host,
+            UserName = _options.Value.UserName,
+            Password = _options.Value.Password
         };
 
         var connection = connectionFactory.CreateConnection("rabbitmq-client-consumer");

@@ -3,20 +3,20 @@ using RSF.AgendamentoConsultas.Domain.Events;
 using RSF.AgendamentoConsultas.Domain.Interfaces;
 using RSF.AgendamentoConsultas.Domain.MessageBus.Bus;
 using RSF.AgendamentoConsultas.Domain.Notifications;
+using RSF.AgendamentoConsultas.Notifications.Templates;
 using RSF.AgendamentoConsultas.Shareable.Extensions;
-
 
 namespace RSF.AgendamentoConsultas.Consumers.Notification.Handlers;
 
 public sealed class PerguntaCreatedEventHandler : IEventHandler<PerguntaCreatedEvent>
 {
     private readonly ILogger<PerguntaCreatedEventHandler> _logger;
-    private readonly IMailSender _mailSender;
+    private readonly PerguntaCreatedEmail _mailSender;
     private readonly IEspecialistaRepository _especialistaRepository;
 
     public PerguntaCreatedEventHandler(
         ILogger<PerguntaCreatedEventHandler> logger,
-        IMailSender mailSender,
+        PerguntaCreatedEmail mailSender,
         IEspecialistaRepository especialistaRepository)
     {
         _logger = logger;
@@ -32,22 +32,14 @@ public sealed class PerguntaCreatedEventHandler : IEventHandler<PerguntaCreatedE
 
         foreach (var esp in especialistas)
         {
-            var body = $@"
-            Caro profissional {esp.Nome},
-
-            O paciente {@event.PacienteNome} realizou a seguinte pergunta para os profissionais da especialidade '{@event.EspecialidadeNome}':
-
-            {@event.Pergunta}
-
-            Para responder clique no link: http://frontend/resposta/?perguntaId={@event.PerguntaId}&espId={esp.EspecialistaId}
-
-
-            Só agradece !!!
-
-            Atenciosamente
-            Agendamento de Consultas Médicas";
-
-            await _mailSender.SendMailAsync(new MailTo(esp.Nome, esp.Email), "Sua especialidade recebeu uma nova pergunta", body);
+            await _mailSender.SendEmailAsync(
+                    to: new MailTo(esp.Nome, esp.Email),
+                    pacienteNome: @event.PacienteNome,
+                    especialidadeNome: @event.EspecialidadeNome,
+                    pergunta: @event.Pergunta,
+                    perguntaId: @event.PerguntaId,
+                    especialistaId: esp.EspecialistaId,
+                    especialistaNome: esp.Nome);
         }
 
         await Task.CompletedTask;
