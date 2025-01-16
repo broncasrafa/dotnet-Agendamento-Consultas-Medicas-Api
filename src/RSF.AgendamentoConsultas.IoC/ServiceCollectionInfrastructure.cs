@@ -1,6 +1,4 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using Amazon.S3;
-
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -11,13 +9,13 @@ using RSF.AgendamentoConsultas.Data.Repositories.Common;
 using RSF.AgendamentoConsultas.Domain.Interfaces;
 using RSF.AgendamentoConsultas.Domain.Interfaces.Common;
 using RSF.AgendamentoConsultas.Domain.MessageBus;
-using RSF.AgendamentoConsultas.Domain.MessageBus.Bus;
 using RSF.AgendamentoConsultas.Domain.Notifications;
 using RSF.AgendamentoConsultas.MessageBroker;
 using RSF.AgendamentoConsultas.MessageBroker.Configurations;
 using RSF.AgendamentoConsultas.Notifications;
 using RSF.AgendamentoConsultas.Notifications.Configurations;
 using RSF.AgendamentoConsultas.Notifications.Templates;
+using Amazon.S3;
 
 namespace RSF.AgendamentoConsultas.IoC;
 
@@ -96,6 +94,12 @@ public static class ServiceCollectionInfrastructure
         //services.AddSingleton<RabbitMQConnection>();
         //services.AddSingleton<IEventBus, RabbitMQBus>();
     }
+    
+    private static void AddAwsS3(this IServiceCollection services, IConfiguration configuration)
+    {
+        services.AddDefaultAWSOptions(configuration.GetAWSOptions());
+        services.AddAWSService<IAmazonS3>();
+    }
 
     private static void AddMailSender(this IServiceCollection services, IConfiguration configuration)
     {
@@ -105,11 +109,8 @@ public static class ServiceCollectionInfrastructure
 
         // Registrando e-mails específicos
         services.AddTransient<PerguntaCreatedEmail>();
+        services.AddTransient<RespostaCreatedEmail>();
     }
     
-    private static void AddAwsS3(this IServiceCollection services, IConfiguration configuration)
-    {
-        services.AddDefaultAWSOptions(configuration.GetAWSOptions());
-        services.AddAWSService<IAmazonS3>();
-    }
+    
 }

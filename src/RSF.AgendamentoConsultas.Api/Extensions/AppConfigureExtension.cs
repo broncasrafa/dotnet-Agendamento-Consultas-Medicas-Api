@@ -1,7 +1,4 @@
 ﻿using RSF.AgendamentoConsultas.Api.Endpoints;
-using RSF.AgendamentoConsultas.Application.Features.Pergunta.EventHandler;
-using RSF.AgendamentoConsultas.Domain.Events;
-using RSF.AgendamentoConsultas.Domain.MessageBus.Bus;
 using Swashbuckle.AspNetCore.SwaggerUI;
 
 namespace RSF.AgendamentoConsultas.Api.Extensions;

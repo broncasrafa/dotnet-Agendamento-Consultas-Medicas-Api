@@ -1,6 +1,7 @@
-﻿using RSF.AgendamentoConsultas.Domain.Interfaces;
+﻿using Microsoft.Extensions.Configuration;
+using RSF.AgendamentoConsultas.Domain.Interfaces;
 using RSF.AgendamentoConsultas.Domain.Interfaces.Common;
-using RSF.AgendamentoConsultas.Domain.MessageBus.Bus;
+using RSF.AgendamentoConsultas.Domain.MessageBus;
 using RSF.AgendamentoConsultas.Domain.Events;
 using RSF.AgendamentoConsultas.Shareable.Exceptions;
 using MediatR;
@@ -11,22 +12,26 @@ namespace RSF.AgendamentoConsultas.Application.Features.PerguntasRespostas.Comma
 public class CreateRespostaRequestHandler : IRequestHandler<CreateRespostaRequest, Result<bool>>
 {
     private readonly IBaseRepository<Domain.Entities.PerguntaResposta> _perguntaRespostaRepository;
-    private readonly IBaseRepository<Domain.Entities.Pergunta> _perguntaRepository;
+    private readonly IPerguntaRepository _perguntaRepository;
     private readonly IEspecialistaRepository _especialistaRepository;
     private readonly IPacienteRepository _pacienteRepository;
-    //private readonly IEventBus _eventBus;
+    private readonly IRabbitMQService _eventBus;
+    private readonly IConfiguration _configuration;
 
     public CreateRespostaRequestHandler(
         IBaseRepository<Domain.Entities.PerguntaResposta> perguntaRespostaRepository,
-        IBaseRepository<Domain.Entities.Pergunta> perguntaRepository,
+        IPerguntaRepository perguntaRepository,
         IEspecialistaRepository especialistaRepository,
-        IPacienteRepository pacienteRepository)
+        IPacienteRepository pacienteRepository,
+        IRabbitMQService eventBus,
+        IConfiguration configuration)
     {
         _perguntaRespostaRepository = perguntaRespostaRepository;
         _perguntaRepository = perguntaRepository;
         _especialistaRepository = especialistaRepository;
         _pacienteRepository = pacienteRepository;
-        //_eventBus = eventBus;
+        _eventBus = eventBus;
+        _configuration = configuration;
     }
 
     public async Task<Result<bool>> Handle(CreateRespostaRequest request, CancellationToken cancellationToken)
@@ -45,7 +50,8 @@ public class CreateRespostaRequestHandler : IRequestHandler<CreateRespostaReques
         var rowsAffected = await _perguntaRespostaRepository.AddAsync(resposta);
 
         // envia a mensagem para a fila de respostas
-        // _eventBus.Publish(new RespostaCreatedEvent(pergunta.PacienteId, paciente.Nome, paciente.Email, request.EspecialistaId, especialista.Nome, request.Resposta));
+        var @event = new RespostaCreatedEvent(pergunta.PacienteId, paciente.Nome, paciente.Email, pergunta.Especialidade.NomePlural, request.EspecialistaId, especialista.Nome, resposta.PerguntaRespostaId, request.Resposta);
+        _eventBus.Publish(@event, _configuration.GetSection("RabbitMQ:RespostasQueueName").Value);
 
         return await Task.FromResult(rowsAffected > 0);
     }

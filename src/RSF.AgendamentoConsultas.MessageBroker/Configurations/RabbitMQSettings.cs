@@ -8,7 +8,7 @@ public class RabbitMQSettings
     public string VirtualHost { get; set; }
     public int Port { get; set; }
 
-    public string PerguntasExchangeName { get; set; }
-    public string PerguntasRoutingKey { get; set; }
+    
     public string PerguntasQueueName { get; set; }
+    public string RespostasQueueName { get; set; }    
 }
