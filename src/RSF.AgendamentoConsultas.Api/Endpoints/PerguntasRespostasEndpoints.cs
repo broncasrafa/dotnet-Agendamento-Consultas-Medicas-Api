@@ -3,7 +3,6 @@ using RSF.AgendamentoConsultas.Api.Extensions;
 using RSF.AgendamentoConsultas.Api.Models;
 using RSF.AgendamentoConsultas.Application.Features.PerguntasRespostas.Responses;
 using RSF.AgendamentoConsultas.Application.Features.PerguntasRespostas.Query.GetRespostasById;
-using RSF.AgendamentoConsultas.Application.Features.PerguntasRespostas.Query.GetRespostasByIdReacoes;
 using RSF.AgendamentoConsultas.Application.Features.PerguntasRespostas.Command.CreateResposta;
 using MediatR;
 
@@ -36,15 +35,6 @@ internal static class PerguntasRespostasEndpoints
             .Produces<ProblemDetails>(StatusCodes.Status404NotFound)
             .WithDescription("Obter os dados da Resposta a pergunta feita ao Especialista pelo ID especificado")
             .WithSummary("Obter os dados da Resposta a pergunta feita ao Especialista pelo ID especificado")
-            .WithOpenApi();
-
-        routes.MapGet("/{id:int}/reacoes", static async (IMediator mediator, [FromRoute] int id, CancellationToken cancellationToken)
-            => await mediator.SendCommand(new SelectRespostaByIdReacoesRequest(id), cancellationToken: cancellationToken))
-            .WithName("GetRespostaReacoesById")
-            .Produces<ApiResponse<RespostaResponse>>(StatusCodes.Status200OK)
-            .Produces<ProblemDetails>(StatusCodes.Status404NotFound)
-            .WithDescription("Obter a contagem das reações da Resposta a pergunta feita ao Especialista pelo ID especificado")
-            .WithSummary("Obter a contagem das reações da Resposta a pergunta feita ao Especialista pelo ID especificado")
             .WithOpenApi();
         #endregion
 

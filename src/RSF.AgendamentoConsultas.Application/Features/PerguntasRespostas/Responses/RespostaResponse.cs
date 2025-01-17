@@ -3,6 +3,7 @@ using RSF.AgendamentoConsultas.Application.Features.Especialista.Responses;
 using RSF.AgendamentoConsultas.Application.Features.Paciente.Responses;
 using RSF.AgendamentoConsultas.Application.Features.Pergunta.Responses;
 using RSF.AgendamentoConsultas.Shareable.Enums;
+using RSF.AgendamentoConsultas.Shareable.Helpers;
 
 namespace RSF.AgendamentoConsultas.Application.Features.PerguntasRespostas.Responses;
 
@@ -11,12 +12,11 @@ public class RespostaResponse
     public int Id { get; private set; }
     public string Resposta { get; private set; }
     public DateTime CreatedAt { get; private set; }
-    public int? Likes { get; set; }
-    public int? Dislikes { get; set; }
-    public PerguntaResponse Pergunta { get; set; }
+    public string CreatedAtFormatted { get; private set; }
+    public int Likes { get; set; }
+    public int Dislikes { get; set; }    
     public EspecialistaResponse Especialista { get; set; }
-    public EspecialidadeResponse Especialidade { get; set; }
-    public PacienteResponse Paciente { get; set; }
+    public IReadOnlyList<PacienteLikeDislikeResponse> PacientesLikeDislike { get; set; }
 
     public static RespostaResponse MapFromEntity(Domain.Entities.PerguntaResposta entity)
      => entity is null ? default! : new RespostaResponse
@@ -24,33 +24,23 @@ public class RespostaResponse
          Id = entity.PerguntaRespostaId,
          Resposta = entity.Resposta,
          CreatedAt = entity.CreatedAt,
-         Pergunta = entity.Pergunta is null ? default! : new PerguntaResponse
-         {
-             Id = entity.Pergunta.PerguntaId,
-             Pergunta = entity.Pergunta.Texto,
-             CreatedAt = entity.Pergunta.CreatedAt
-         },
+         CreatedAtFormatted = Utilitarios.DataFormatadaExtenso(entity.CreatedAt),
+         Likes = entity.Reacoes is null ? 0 : entity.Reacoes.Where(c => c.Reacao.ToString().Equals(ETipoReacaoResposta.Like.ToString())).Count(),
+         Dislikes = entity.Reacoes is null ? 0 : entity.Reacoes.Where(c => c.Reacao.ToString().Equals(ETipoReacaoResposta.Dislike.ToString())).Count(),         
          Especialista = entity.Especialista is null ? default! : new EspecialistaResponse
          {
              Id = entity.Especialista.EspecialistaId,
              Nome = entity.Especialista.Nome,
              Licenca = entity.Especialista.Licenca,
-             Foto = entity.Especialista.Foto
+             Foto = entity.Especialista.Foto,
+             Especialidades = EspecialistaEspecialidadeResponse.MapFromEntity(entity.Especialista.Especialidades?.Select(c => c.Especialidade)),
          },
-         Especialidade = entity.Pergunta!.Especialidade is null ? default! : new EspecialidadeResponse
+         PacientesLikeDislike = entity.Reacoes is null ? default! : entity.Reacoes.Select(reacao => new PacienteLikeDislikeResponse
          {
-             Id = entity.Pergunta.Especialidade.EspecialidadeId,
-             Nome = entity.Pergunta.Especialidade.NomePlural,
-             Grupo = entity.Pergunta.Especialidade.EspecialidadeGrupo?.NomePlural!
-         },
-         Paciente = entity.Pergunta.Paciente is null ? default! : new PacienteResponse
-         {
-             Id = entity.Pergunta.Paciente.PacienteId,
-             Nome = entity.Pergunta.Paciente.Nome,
-             Email = entity.Pergunta.Paciente.Email,
-         },
-         Likes = entity.Reacoes is null ? null : entity.Reacoes.Where(c => c.Reacao.ToString().Equals(ETipoReacaoResposta.Like.ToString())).Count(),
-         Dislikes = entity.Reacoes is null ? null : entity.Reacoes.Where(c => c.Reacao.ToString().Equals(ETipoReacaoResposta.Dislike.ToString())).Count()
+             Pacienteid = reacao.PacienteId,
+             Nome = reacao.Paciente.Nome,
+             Reacao = reacao.Reacao.ToString()
+         }).ToList()
      };
 
     public static IReadOnlyList<RespostaResponse> MapFromEntity(IEnumerable<Domain.Entities.PerguntaResposta> collection)

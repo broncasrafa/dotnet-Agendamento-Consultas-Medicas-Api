@@ -40,4 +40,11 @@ public static class Utilitarios
         var slugifiedString = slugHelper.GenerateSlug(value);
         return slugifiedString;
     }
+
+    /// <summary>
+    /// Gera uma string de data e hora formatada por extenso completa. Ex.: sexta-feira, 10 de janeiro às 08:46
+    /// </summary>
+    /// <param name="data">datetime a ser formatada</param>
+    public static string DataFormatadaExtenso(DateTime data)
+        => data.ToString("dddd, dd 'de' MMMM 'às' HH:mm", new System.Globalization.CultureInfo("pt-BR"));
 }

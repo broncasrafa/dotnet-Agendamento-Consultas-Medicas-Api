@@ -6,5 +6,4 @@ namespace RSF.AgendamentoConsultas.Domain.Interfaces;
 public interface IPerguntaRespostaRepository : IBaseRepository<PerguntaResposta>
 {
     new ValueTask<PerguntaResposta> GetByIdAsync(int id);
-    ValueTask<PerguntaResposta> GetByIdWithReacoesAsync(int id);
 }

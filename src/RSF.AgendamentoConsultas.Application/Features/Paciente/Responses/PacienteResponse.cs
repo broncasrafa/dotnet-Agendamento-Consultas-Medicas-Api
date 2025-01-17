@@ -43,3 +43,10 @@ public class PacienteResponse
             PlanosMedicos = PacientePlanoMedicoResponse.MapFromEntity(entity.PlanosMedicos)
         };
 }
+
+public class PacienteLikeDislikeResponse
+{
+    public int Pacienteid { get; set; }
+    public string Nome { get; set; }
+    public string Reacao { get; set; }
+}

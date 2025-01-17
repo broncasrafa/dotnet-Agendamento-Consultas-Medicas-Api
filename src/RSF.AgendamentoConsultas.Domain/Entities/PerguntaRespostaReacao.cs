@@ -12,6 +12,7 @@ public class PerguntaRespostaReacao
     public DateTime CreatedAt { get; private set; } = DateTime.Now;
 
     public PerguntaResposta Resposta { get; private set; }
+    public Paciente Paciente { get; private set; }
 
     protected PerguntaRespostaReacao()
     {

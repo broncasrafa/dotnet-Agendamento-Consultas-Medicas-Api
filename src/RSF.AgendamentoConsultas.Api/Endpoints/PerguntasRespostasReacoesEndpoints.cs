@@ -2,6 +2,7 @@
 using RSF.AgendamentoConsultas.Api.Extensions;
 using RSF.AgendamentoConsultas.Api.Models;
 using RSF.AgendamentoConsultas.Application.Features.PerguntasRespostasReacoes.Command.CreateReacao;
+using RSF.AgendamentoConsultas.Application.Features.PerguntasRespostasReacoes.Command.UpdateReacao;
 using MediatR;
 
 namespace RSF.AgendamentoConsultas.Api.Endpoints;
@@ -12,6 +13,7 @@ internal static class PerguntasRespostasReacoesEndpoints
     {
         var routes = builder.MapGroup("api/reacoes-respostas").WithTags("Reações Respostas");
 
+        #region [ POST ]
         routes.MapPost("/", static async (IMediator mediator, [FromBody] CreateReacaoRespostaRequest request, CancellationToken cancellationToken)
             => await mediator.SendCommand(request, cancellationToken: cancellationToken))
             .WithName("CreateReacaoResposta")
@@ -22,14 +24,19 @@ internal static class PerguntasRespostasReacoesEndpoints
             .WithDescription("Adicionar uma Reação de like ou dislike a Resposta")
             .WithSummary("Adicionar uma Reação de like ou dislike a Resposta")
             .WithOpenApi();
-
-        #region [ POST ]
         #endregion
 
         #region [ PUT ]
-        #endregion
-
-        #region [ DELETE ]
+        routes.MapPut("/", static async (IMediator mediator, [FromBody] UpdateReacaoRespostaRequest request, CancellationToken cancellationToken)
+            => await mediator.SendCommand(request, cancellationToken: cancellationToken))
+            .WithName("UpdateReacaoResposta")
+            .Accepts<UpdateReacaoRespostaRequest>("application/json")
+            .Produces<ApiResponse<bool>>(StatusCodes.Status200OK)
+            .Produces<ProblemDetails>(StatusCodes.Status400BadRequest)
+            .Produces<ProblemDetails>(StatusCodes.Status404NotFound)
+            .WithDescription("Atualiza os dados de uma Reação a Resposta, de like ou dislike ou retirar a reação")
+            .WithSummary("Atualiza os dados de uma Reação a Resposta, de like ou dislike ou retirar a reação")
+            .WithOpenApi();
         #endregion
 
         return routes;
