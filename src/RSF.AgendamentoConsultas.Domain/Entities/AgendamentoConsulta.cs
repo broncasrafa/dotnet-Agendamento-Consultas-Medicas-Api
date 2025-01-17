@@ -9,7 +9,7 @@ public class AgendamentoConsulta
     public int EspecialistaId { get; set; }
     public int EspecialidadeId { get; set; }
     public int LocalAtendimentoId { get; set; }
-    public bool AgendamentoDependente { get; private set; }
+    public bool? AgendamentoDependente { get; private set; }
     public int PacienteId { get; set; }
     public int? PlanoMedicoId { get; set; }
     public int? DependenteId { get; set; }
@@ -25,7 +25,7 @@ public class AgendamentoConsulta
     /// </summary>
     public string HorarioConsulta { get; set; }
     public decimal? ValorConsulta { get; set; }
-    public bool PrimeiraVez { get; set; }
+    public bool? PrimeiraVez { get; set; }
     public int? DuracaoEmMinutosConsulta { get; set; }
     public string Observacoes { get; set; }
     public string NotaCancelamento { get; set; }
@@ -57,7 +57,7 @@ public class AgendamentoConsulta
         string motivoConsulta,
         decimal? valorConsulta,
         string telefoneContato,
-        bool primeiraVez,
+        bool? primeiraVez,
         int pacienteId, 
         int? dependenteId, 
         int planoMedicoId
@@ -73,7 +73,7 @@ public class AgendamentoConsulta
         MotivoConsulta = motivoConsulta;
         ValorConsulta = (tipoAgendamentoId == (int)ETipoAgendamento.Convenio) ? null : valorConsulta;
         TelefoneContato = telefoneContato;
-        PrimeiraVez = primeiraVez;
+        PrimeiraVez = primeiraVez ?? false;
         PacienteId = pacienteId;
         DependenteId = dependenteId;
         PlanoMedicoId = (dependenteId is null) ? planoMedicoId : null;

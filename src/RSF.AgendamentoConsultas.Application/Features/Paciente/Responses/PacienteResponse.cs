@@ -9,13 +9,13 @@ public class PacienteResponse
     public string Telefone { get; set; }
     public string Email { get; set; }
     public string CPF { get; set; }
-    public bool TelefoneVerificado { get; set; }
-    public bool TermoUsoAceito { get; set; }
+    public bool? TelefoneVerificado { get; set; }
+    public bool? TermoUsoAceito { get; set; }
     public string Genero { get; set; }
     public string DataNascimento { get; set; }
-    public DateTime CreatedAt { get; set; }
+    public DateTime? CreatedAt { get; set; }
     public DateTime? UpdatedAt { get; set; }
-    public bool Ativo { get; set; }
+    public bool? Ativo { get; set; }
     public IReadOnlyList<PacienteDependenteResponse>? Dependentes { get; set; }
     public IReadOnlyList<PacientePlanoMedicoResponse>? PlanosMedicos { get; set; }
     

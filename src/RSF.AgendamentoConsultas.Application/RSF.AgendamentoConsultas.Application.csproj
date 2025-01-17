@@ -20,6 +20,7 @@
 	<ItemGroup>
 		<Folder Include="Features\Especialista\Command\" />
 		<Folder Include="Features\Paciente\Query\GetPacienteByIdPerguntas\" />
+		<Folder Include="Features\PerguntasRespostasReacoes\Query\" />
 	</ItemGroup>
 
 </Project>

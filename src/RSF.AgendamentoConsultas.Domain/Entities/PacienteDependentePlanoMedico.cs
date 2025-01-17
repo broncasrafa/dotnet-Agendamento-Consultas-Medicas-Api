@@ -11,7 +11,7 @@ public class PacienteDependentePlanoMedico
     public string NumCartao { get; private set; }
     public int DependenteId { get; private set; }
     public int ConvenioMedicoId { get; private set; }
-    public bool IsActive { get; private set; }
+    public bool? IsActive { get; private set; }
 
     public PacienteDependente Dependente { get; set; }
     public ConvenioMedico ConvenioMedico { get; set; }
@@ -26,7 +26,8 @@ public class PacienteDependentePlanoMedico
         NomePlano = nomePlano;
         NumCartao = numCartao;
         DependenteId = dependenteId;
-        ConvenioMedicoId = convenioMedicoId;        
+        ConvenioMedicoId = convenioMedicoId;
+        IsActive = true;
 
         Validate();
     }

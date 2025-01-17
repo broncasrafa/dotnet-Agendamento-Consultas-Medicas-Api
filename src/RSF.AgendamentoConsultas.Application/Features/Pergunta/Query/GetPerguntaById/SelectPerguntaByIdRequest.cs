@@ -4,6 +4,4 @@ using OperationResult;
 
 namespace RSF.AgendamentoConsultas.Application.Features.Pergunta.Query.GetPerguntaById;
 
-public record SelectPerguntaByIdRequest(
-    int PerguntaId,
-    int EspecialidadeId) : IRequest<Result<PerguntaResponse>>;
+public record SelectPerguntaByIdRequest(int PerguntaId) : IRequest<Result<PerguntaResponse>>;

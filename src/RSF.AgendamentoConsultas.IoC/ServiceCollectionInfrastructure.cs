@@ -58,6 +58,7 @@ public static class ServiceCollectionInfrastructure
         services.AddScoped<IAgendamentoConsultaRepository, AgendamentoConsultaRepository>();
         services.AddScoped<IPerguntaRepository, PerguntaRepository>();
         services.AddScoped<IPerguntaRespostaRepository, PerguntaRespostaRepository>();
+        services.AddScoped<IPerguntaRespostaReacaoRepository, PerguntaRespostaReacaoRepository>();
     }
 
     private static void AddRabbitMQ(this IServiceCollection services, IConfiguration configuration)

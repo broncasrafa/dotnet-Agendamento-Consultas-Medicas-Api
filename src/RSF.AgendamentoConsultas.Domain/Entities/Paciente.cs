@@ -14,14 +14,14 @@ public class Paciente
     public string NomeSocial { get; set; }
     public decimal? Peso { get; set; }
     public decimal? Altura { get; set; }
-    public bool TelefoneVerificado { get; set; }
-    public bool EmailVerificado { get; set; }
-    public bool TermoUsoAceito { get; set; }
+    public bool? TelefoneVerificado { get; set; }
+    public bool? EmailVerificado { get; set; }
+    public bool? TermoUsoAceito { get; set; }
     public DateTime CreatedAt { get; set; }
     public DateTime? UpdatedAt { get; set; }
 
     public string Password { get; private set; }
-    public bool IsActive { get; private set; }
+    public bool? IsActive { get; private set; }
 
     public ICollection<PacienteDependente> Dependentes { get; set; }
     public ICollection<PacientePlanoMedico> PlanosMedicos { get; set; }
@@ -46,6 +46,7 @@ public class Paciente
         EmailVerificado = emailVerificado ?? false;
         TermoUsoAceito = termoUsoAceito ?? false;
         CreatedAt = DateTime.Now;
+        IsActive = true;
 
         Validate();
     }

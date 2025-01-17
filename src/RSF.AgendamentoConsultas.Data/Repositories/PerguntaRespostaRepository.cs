@@ -17,4 +17,12 @@ public class PerguntaRespostaRepository : BaseRepository<PerguntaResposta>, IPer
             .Include(c => c.Pergunta).ThenInclude(es => es.Especialidade).ThenInclude(g => g.EspecialidadeGrupo)
             .Include(e => e.Especialista)
             .FirstOrDefaultAsync(c => c.PerguntaRespostaId == id);
+
+    public async ValueTask<PerguntaResposta> GetByIdWithReacoesAsync(int id)
+        => await _Context.Respostas
+            .AsNoTracking()
+            .Include(c => c.Pergunta).ThenInclude(es => es.Especialidade).ThenInclude(g => g.EspecialidadeGrupo)
+            .Include(e => e.Especialista)
+            .Include(r => r.Reacoes)
+            .FirstOrDefaultAsync(c => c.PerguntaRespostaId == id);
 }

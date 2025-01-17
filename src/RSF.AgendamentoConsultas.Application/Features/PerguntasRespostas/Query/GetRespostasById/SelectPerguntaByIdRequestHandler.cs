@@ -4,8 +4,7 @@ using RSF.AgendamentoConsultas.Domain.Interfaces;
 using MediatR;
 using OperationResult;
 
-
-namespace RSF.AgendamentoConsultas.Application.Features.PerguntasRespostas.Query.GetRespostasByPerguntaId;
+namespace RSF.AgendamentoConsultas.Application.Features.PerguntasRespostas.Query.GetRespostasById;
 
 public class SelectRespostaByIdRequestHandler : IRequestHandler<SelectRespostaByIdRequest, Result<RespostaResponse>>
 {
@@ -16,7 +15,7 @@ public class SelectRespostaByIdRequestHandler : IRequestHandler<SelectRespostaBy
 
     public async Task<Result<RespostaResponse>> Handle(SelectRespostaByIdRequest request, CancellationToken cancellationToken)
     {
-        var result = await _perguntaRespostaRepository.GetByFilterAsync(c => c.PerguntaRespostaId == request.Id, c => c.Pergunta);
+        var result = await _perguntaRespostaRepository.GetByIdAsync(request.Id);
 
         NotFoundException.ThrowIfNull(result, $"Resposta com o ID: '{request.Id}' não encontrada");
 

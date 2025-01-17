@@ -14,6 +14,8 @@ public class PerguntaResposta
     public Pergunta Pergunta { get; set; }
     public Especialista Especialista { get; set; }
 
+    public ICollection<PerguntaRespostaReacao> Reacoes { get; set; }
+
     protected PerguntaResposta()
     {        
     }

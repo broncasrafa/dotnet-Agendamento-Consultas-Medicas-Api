@@ -22,13 +22,14 @@ public class PerguntaResponse
             Especialidade = entity.Especialidade is null ? default! : new EspecialidadeResponse 
             { 
                 Id = entity.Especialidade.EspecialidadeId, 
-                Nome = entity.Especialidade.Nome, 
+                Nome = entity.Especialidade.NomePlural,
                 Grupo = entity.Especialidade.EspecialidadeGrupo?.NomePlural!
             },
             Paciente = entity.Paciente is null ? default! : new PacienteResponse 
             { 
                 Id = entity.Paciente.PacienteId, 
-                Nome = entity.Paciente.Nome, 
+                Nome = entity.Paciente.Nome,
+                Email = entity.Paciente.Email,
             }
         };
 

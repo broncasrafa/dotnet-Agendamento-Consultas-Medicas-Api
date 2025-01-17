@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace RSF.AgendamentoConsultas.Application.Features.PerguntasRespostas.Query.GetRespostasByPerguntaId;
+namespace RSF.AgendamentoConsultas.Application.Features.PerguntasRespostas.Query.GetRespostasById;
 
 public class SelectRespostaByIdRequestValidator : AbstractValidator<SelectRespostaByIdRequest>
 {

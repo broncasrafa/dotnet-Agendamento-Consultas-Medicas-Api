@@ -19,7 +19,7 @@ public class PacienteDependente
     public DateTime CreatedAt { get; set; }
     public DateTime? UpdatedAt { get; set; }
 
-    public bool IsActive { get; private set; }
+    public bool? IsActive { get; private set; }
 
     public Paciente Paciente { get; set; }
     public ICollection<PacienteDependentePlanoMedico> PlanosMedicos { get; set; }
@@ -40,6 +40,7 @@ public class PacienteDependente
         Peso = peso;
         Altura = altura;
         CreatedAt = DateTime.Now;
+        IsActive = true;
 
         Validate();
     }

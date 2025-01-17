@@ -33,9 +33,10 @@ internal static class AppConfigureExtension
         app.MapPacienteEndpoints();
         app.MapPacienteDependenteEndpoints();
         app.MapAvaliacaoEndpoints();
+        app.MapAgendamentoConsultaEndpoints();
         app.MapPerguntasEndpoints();
         app.MapPerguntasRespostasEndpoints();
-        app.MapAgendamentoConsultaEndpoints();
+        app.MapPerguntasRespostasReacoesEndpoints();
 
         return app;
     }

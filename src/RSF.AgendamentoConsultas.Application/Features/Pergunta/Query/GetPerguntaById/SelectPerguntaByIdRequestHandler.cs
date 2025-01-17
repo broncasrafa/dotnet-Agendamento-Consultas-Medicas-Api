@@ -4,7 +4,6 @@ using RSF.AgendamentoConsultas.Domain.Interfaces;
 using MediatR;
 using OperationResult;
 
-
 namespace RSF.AgendamentoConsultas.Application.Features.Pergunta.Query.GetPerguntaById;
 
 public class SelectPerguntaByIdRequestHandler : IRequestHandler<SelectPerguntaByIdRequest, Result<PerguntaResponse>>
@@ -16,9 +15,9 @@ public class SelectPerguntaByIdRequestHandler : IRequestHandler<SelectPerguntaBy
 
     public async Task<Result<PerguntaResponse>> Handle(SelectPerguntaByIdRequest request, CancellationToken cancellationToken)
     {
-        var pergunta = await _perguntaRepository.GetByIdAsync(request.PerguntaId, request.EspecialidadeId);
+        var pergunta = await _perguntaRepository.GetByIdAsync(request.PerguntaId);
 
-        NotFoundException.ThrowIfNull(pergunta, $"Pergunta com o ID: '{request.PerguntaId}' na Especialidade ID: '{request.EspecialidadeId}' não encontrada");
+        NotFoundException.ThrowIfNull(pergunta, $"Pergunta com o ID: '{request.PerguntaId}' não encontrada");
 
         return await Task.FromResult(PerguntaResponse.MapFromEntity(pergunta));
     }

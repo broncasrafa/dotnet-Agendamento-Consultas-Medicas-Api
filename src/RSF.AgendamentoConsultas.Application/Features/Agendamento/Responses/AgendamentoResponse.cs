@@ -40,13 +40,13 @@ public class AgendamentoResponse
         return new AgendamentoResponse
         {
             Id = entity.AgendamentoConsultaId,
-            AgendamentoDependente = entity.AgendamentoDependente,
+            AgendamentoDependente = entity.AgendamentoDependente ?? false,
             TelefoneContato = entity.TelefoneContato,
             MotivoConsulta = entity.MotivoConsulta,
             DataConsulta = entity.DataConsulta,
             HorarioConsulta = entity.HorarioConsulta,
             ValorConsulta = entity.ValorConsulta,
-            PrimeiraVez = entity.PrimeiraVez,
+            PrimeiraVez = entity.PrimeiraVez ?? false,
             DuracaoEmMinutosConsulta = entity.DuracaoEmMinutosConsulta,
             Observacoes = entity.Observacoes,
             NotaCancelamento = entity.NotaCancelamento,
