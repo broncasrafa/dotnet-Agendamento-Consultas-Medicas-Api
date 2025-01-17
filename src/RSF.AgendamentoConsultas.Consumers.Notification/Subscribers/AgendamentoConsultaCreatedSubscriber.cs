@@ -8,8 +8,6 @@ using RSF.AgendamentoConsultas.Notifications.Templates;
 using RSF.AgendamentoConsultas.Domain.MessageBus.Bus;
 using RSF.AgendamentoConsultas.Domain.Notifications;
 using RSF.AgendamentoConsultas.Domain.MessageBus.Events;
-using RabbitMQ.Client;
-using RabbitMQ.Client.Events;
 
 namespace RSF.AgendamentoConsultas.Consumers.Notification.Subscribers;
 
@@ -32,6 +30,8 @@ public sealed class AgendamentoConsultaCreatedSubscriber : IHostedService
 
     public Task StartAsync(CancellationToken cancellationToken)
     {
+        _logger.LogInformation($"[{DateTime.Now}] Consuming message from queue '{_options.Value.AgendamentoQueueName}'");
+
         using var scope = _serviceProvider.CreateScope();
         var _eventBus = scope.ServiceProvider.GetRequiredService<IEventBus>();
 

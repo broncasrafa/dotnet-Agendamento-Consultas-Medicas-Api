@@ -8,7 +8,7 @@ public class Pergunta
     public int EspecialidadeId { get; private set; }
     public int PacienteId { get; private set; }
     public string Texto { get; private set; }
-    public bool TermosUsoPolitica { get; private set; }
+    public bool? TermosUsoPolitica { get; private set; }
     public DateTime CreatedAt { get; private set; }
 
     public Especialidade Especialidade { get; set; }

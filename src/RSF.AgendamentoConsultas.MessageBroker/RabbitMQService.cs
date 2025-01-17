@@ -11,9 +11,8 @@ using RabbitMQ.Client.Events;
 
 namespace RSF.AgendamentoConsultas.MessageBroker;
 
-public sealed class RabbitMQService : IEventBus//, IDisposable
+public sealed class RabbitMQService : IEventBus
 {
-    //private readonly IConnection _connection;
     private readonly IModel _channel;
     private readonly ILogger<RabbitMQService> _logger;
     private readonly RabbitMQConnection _connection;
@@ -22,20 +21,8 @@ public sealed class RabbitMQService : IEventBus//, IDisposable
     {
         _logger = logger;
         _connection = connection;
-
-        var factory = new ConnectionFactory
-        {
-            HostName = options.Value.Host,
-            UserName = options.Value.UserName,
-            Password = options.Value.Password,
-            VirtualHost = options.Value.VirtualHost,
-            Port = options.Value.Port
-        };
-
-        //_connection = factory.CreateConnection("rabbitmq-client-publisher");
-        //_channel = _connection.CreateModel();
-
         _channel = _connection.CreateChannel();
+
         _logger.LogInformation("RabbitMQ connection established.");
     }
 
@@ -61,6 +48,8 @@ public sealed class RabbitMQService : IEventBus//, IDisposable
 
     public void Subscribe(string queueName, Func<string, Task> onMessageReceived)
     {
+        _logger.LogInformation("[{DateTimeNow}] Subscribed to queue {QueueName}", DateTime.Now, queueName);
+
         _channel.QueueDeclare(queue: queueName, durable: true, exclusive: false, autoDelete: false, arguments: null);
 
         var consumer = new EventingBasicConsumer(_channel);
@@ -83,13 +72,5 @@ public sealed class RabbitMQService : IEventBus//, IDisposable
         };
 
         _channel.BasicConsume(queue: queueName, autoAck: false, consumer: consumer);
-
-        _logger.LogInformation("[{DateTimeNow}] Subscribed to queue {QueueName}", DateTime.Now, queueName);
     }
-
-    //public void Dispose()
-    //{
-    //    _channel?.Close();
-    //    _connection?.Close();
-    //}
 }
