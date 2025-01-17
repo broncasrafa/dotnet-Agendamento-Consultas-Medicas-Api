@@ -11,4 +11,5 @@ public class RabbitMQSettings
     
     public string PerguntasQueueName { get; set; }
     public string RespostasQueueName { get; set; }    
+    public string AgendamentoQueueName { get; set; }    
 }

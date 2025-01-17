@@ -1,9 +1,8 @@
 ﻿using Microsoft.Extensions.Configuration;
 using RSF.AgendamentoConsultas.Domain.Interfaces;
 using RSF.AgendamentoConsultas.Domain.Interfaces.Common;
-using RSF.AgendamentoConsultas.Domain.MessageBus;
 using RSF.AgendamentoConsultas.Domain.MessageBus.Bus;
-using RSF.AgendamentoConsultas.Domain.Events;
+using RSF.AgendamentoConsultas.Domain.MessageBus.Events;
 using RSF.AgendamentoConsultas.Shareable.Exceptions;
 using MediatR;
 using OperationResult;
@@ -16,21 +15,21 @@ public class CreatePerguntaRequestHandler : IRequestHandler<CreatePerguntaReques
     private readonly IEspecialidadeRepository _especialidadeRepository;
     private readonly IBaseRepository<Domain.Entities.Pergunta> _perguntaRepository;
     //private readonly IEventBus _eventBus;
-    private readonly IRabbitMQService _eventBus;
-    private readonly IConfiguration configuration;
+    private readonly IEventBus _eventBus;
+    private readonly IConfiguration _configuration;
 
     public CreatePerguntaRequestHandler(
         IPacienteRepository pacienteRepository,
         IEspecialidadeRepository especialidadeRepository,
         IBaseRepository<Domain.Entities.Pergunta> especialistaPerguntaRepository,
-        IRabbitMQService eventBus,
+        IEventBus eventBus,
         IConfiguration configuration)
     {
         _pacienteRepository = pacienteRepository;
         _especialidadeRepository = especialidadeRepository;
         _perguntaRepository = especialistaPerguntaRepository;
         _eventBus = eventBus;
-        this.configuration = configuration;
+        _configuration = configuration;
     }
 
     public async Task<Result<bool>> Handle(CreatePerguntaRequest request, CancellationToken cancellationToken)
@@ -47,7 +46,7 @@ public class CreatePerguntaRequestHandler : IRequestHandler<CreatePerguntaReques
 
         // envia mensagem para a fila de Perguntas criadas
         var @event = new PerguntaCreatedEvent(request.EspecialidadeId, especialidade.NomePlural, request.PacienteId, paciente.Nome, paciente.Email, pergunta.PerguntaId, request.Pergunta);
-        _eventBus.Publish(@event, configuration.GetSection("RabbitMQ:PerguntasQueueName").Value);
+        _eventBus.Publish(@event, _configuration.GetSection("RabbitMQ:PerguntasQueueName").Value);
         
         return await Task.FromResult(rowsAffected > 0);
     }

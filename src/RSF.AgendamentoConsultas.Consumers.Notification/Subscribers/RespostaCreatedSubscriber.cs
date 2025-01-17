@@ -4,13 +4,13 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.DependencyInjection;
-using RSF.AgendamentoConsultas.Domain.Events;
 using RSF.AgendamentoConsultas.Domain.Notifications;
 using RSF.AgendamentoConsultas.MessageBroker.Configurations;
 using RSF.AgendamentoConsultas.Shareable.Extensions;
 using RSF.AgendamentoConsultas.Notifications.Templates;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
+using RSF.AgendamentoConsultas.Domain.MessageBus.Events;
 
 namespace RSF.AgendamentoConsultas.Consumers.Notification.Subscribers;
 

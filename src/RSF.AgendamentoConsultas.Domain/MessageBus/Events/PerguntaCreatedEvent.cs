@@ -1,6 +1,4 @@
-﻿using RSF.AgendamentoConsultas.Domain.MessageBus.Events;
-
-namespace RSF.AgendamentoConsultas.Domain.Events;
+﻿namespace RSF.AgendamentoConsultas.Domain.MessageBus.Events;
 
 public class PerguntaCreatedEvent : Event
 {

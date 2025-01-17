@@ -1,8 +1,8 @@
 ﻿using Microsoft.Extensions.Configuration;
 using RSF.AgendamentoConsultas.Domain.Interfaces;
 using RSF.AgendamentoConsultas.Domain.Interfaces.Common;
-using RSF.AgendamentoConsultas.Domain.MessageBus;
-using RSF.AgendamentoConsultas.Domain.Events;
+using RSF.AgendamentoConsultas.Domain.MessageBus.Bus;
+using RSF.AgendamentoConsultas.Domain.MessageBus.Events;
 using RSF.AgendamentoConsultas.Shareable.Exceptions;
 using MediatR;
 using OperationResult;
@@ -15,7 +15,7 @@ public class CreateRespostaRequestHandler : IRequestHandler<CreateRespostaReques
     private readonly IPerguntaRepository _perguntaRepository;
     private readonly IEspecialistaRepository _especialistaRepository;
     private readonly IPacienteRepository _pacienteRepository;
-    private readonly IRabbitMQService _eventBus;
+    private readonly IEventBus _eventBus;
     private readonly IConfiguration _configuration;
 
     public CreateRespostaRequestHandler(
@@ -23,7 +23,7 @@ public class CreateRespostaRequestHandler : IRequestHandler<CreateRespostaReques
         IPerguntaRepository perguntaRepository,
         IEspecialistaRepository especialistaRepository,
         IPacienteRepository pacienteRepository,
-        IRabbitMQService eventBus,
+        IEventBus eventBus,
         IConfiguration configuration)
     {
         _perguntaRespostaRepository = perguntaRespostaRepository;

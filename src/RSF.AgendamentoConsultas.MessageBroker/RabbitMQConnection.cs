@@ -11,21 +11,25 @@ public sealed class RabbitMQConnection : IDisposable
     private readonly IConnection _connection;
     private readonly ILogger<RabbitMQConnection> _logger;
 
-    public RabbitMQConnection(IOptions<RabbitMQOptions> options, ILogger<RabbitMQConnection> logger)
+    public RabbitMQConnection(IOptions<RabbitMQSettings> options, ILogger<RabbitMQConnection> logger)
     {
         _logger = logger;
 
-        _logger.LogDebug("Creating RabbitMQ Connection");
+        _logger.LogInformation($"[{DateTime.Now}] Creating RabbitMQ Connection");
 
-        if (string.IsNullOrWhiteSpace(options.Value.ConnectionString))
-            throw new InvalidOperationException("A configuração 'ConnectionString' do RabbitMQ não foi fornecida corretamente.");
+        if (string.IsNullOrWhiteSpace(options.Value.Host))
+            throw new InvalidOperationException("A configuração 'Host' do RabbitMQ não foi fornecida corretamente.");
 
         var factory = new ConnectionFactory
         {
-            HostName = options.Value.ConnectionString
+            HostName = options.Value.Host,
+            UserName = options.Value.UserName,
+            Password = options.Value.Password,
+            VirtualHost = options.Value.VirtualHost,
+            Port = options.Value.Port
         };
 
-        _connection = factory.CreateConnection();
+        _connection = factory.CreateConnection("rabbitmq-client-consumer");
     }
 
     public IModel CreateChannel()

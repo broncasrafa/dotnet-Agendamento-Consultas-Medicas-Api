@@ -1,6 +1,9 @@
-﻿using RSF.AgendamentoConsultas.Domain.Entities;
+﻿using Microsoft.Extensions.Configuration;
+using RSF.AgendamentoConsultas.Domain.Entities;
 using RSF.AgendamentoConsultas.Domain.Interfaces;
 using RSF.AgendamentoConsultas.Domain.Interfaces.Common;
+using RSF.AgendamentoConsultas.Domain.MessageBus.Bus;
+using RSF.AgendamentoConsultas.Domain.MessageBus.Events;
 using RSF.AgendamentoConsultas.Shareable.Exceptions;
 using MediatR;
 using OperationResult;
@@ -14,26 +17,32 @@ public class CreateAgendamentoRequestHandler : IRequestHandler<CreateAgendamento
     private readonly IBaseRepository<Domain.Entities.TipoConsulta> _tipoConsultaRepository;
     private readonly IBaseRepository<Domain.Entities.TipoAgendamento> _tipoAgendamentoRepository;
     private readonly IPacienteRepository _pacienteRepository;
+    private readonly IEventBus _eventBus;
+    private readonly IConfiguration configuration;
 
     public CreateAgendamentoRequestHandler(
         IAgendamentoConsultaRepository agendamentoConsultaRepository,
         IEspecialistaRepository especialistaRepository,
         IBaseRepository<Domain.Entities.TipoConsulta> tipoConsultaRepository,
         IBaseRepository<Domain.Entities.TipoAgendamento> tipoAgendamentoRepository,
-        IPacienteRepository pacienteRepository)
+        IPacienteRepository pacienteRepository,
+        IEventBus eventBus,
+        IConfiguration configuration)
     {
         _agendamentoConsultaRepository = agendamentoConsultaRepository;
         _especialistaRepository = especialistaRepository;
         _tipoConsultaRepository = tipoConsultaRepository;
         _tipoAgendamentoRepository = tipoAgendamentoRepository;
         _pacienteRepository = pacienteRepository;
+        _eventBus = eventBus;
+        this.configuration = configuration;
     }
 
     public async Task<Result<int>> Handle(CreateAgendamentoRequest request, CancellationToken cancellationToken)
     {
         await ValidateAsync(request);
 
-        var agendamento = new AgendamentoConsulta(
+        var newAgendamento = new AgendamentoConsulta(
             especialistaId: request.EspecialistaId,
             especialidadeId: request.EspecialidadeId,
             localAtendimentoId: request.LocalAtendimentoId,
@@ -49,10 +58,36 @@ public class CreateAgendamentoRequestHandler : IRequestHandler<CreateAgendamento
             dependenteId: request.DependenteId,
             planoMedicoId: request.PlanoMedicoId);
 
-        var rowsAffected = await _agendamentoConsultaRepository.AddAsync(agendamento);
+        var rowsAffected = await _agendamentoConsultaRepository.AddAsync(newAgendamento);
+
+        var agendamento = await _agendamentoConsultaRepository.GetByIdAsync(newAgendamento.AgendamentoConsultaId);
 
         // pode disparar uma mensagem para a fila de AgendamentoConsultas (o especialista recebe um email de uma nova consulta para ele(onde ele pode aceitar ou recusar, propor um novo horario)
-        // e o paciente recebe um e-mail
+        var @event = new AgendamentoConsultaCreatedEvent
+        (
+            agendamentoConsultaId: agendamento.AgendamentoConsultaId,
+            dataAgendamento: agendamento.CreatedAt.ToShortDateString(),
+            tipoAgendamento: agendamento.TipoAgendamento.Descricao,
+            tipoConsulta: agendamento.TipoConsulta.Descricao,
+            especialidade: agendamento.Especialidade.NomePlural,
+            especialista: agendamento.Especialista.Nome,
+            especialistaEmail: agendamento.Especialista.Email,
+            paciente: agendamento.Paciente.Nome,
+            convenioMedico: agendamento.PlanoMedico?.ConvenioMedico?.Nome ?? agendamento.PlanoMedicoDependente?.ConvenioMedico?.Nome,
+            motivoConsulta: agendamento.MotivoConsulta,
+            dataConsulta: agendamento.DataConsulta.ToShortDateString(),
+            horarioConsulta: agendamento.HorarioConsulta,
+            primeiraVez: agendamento.PrimeiraVez ?? false,
+            localAtendimentoNome: agendamento.LocalAtendimento.Nome,
+            localAtendimentoLogradouro: agendamento.LocalAtendimento.Logradouro,
+            localAtendimentoComplemento: agendamento.LocalAtendimento.Complemento,
+            localAtendimentoBairro: agendamento.LocalAtendimento.Bairro,
+            localAtendimentoCep: agendamento.LocalAtendimento.Cep,
+            localAtendimentoCidade: agendamento.LocalAtendimento.Cidade,
+            localAtendimentoEstado: agendamento.LocalAtendimento.Estado
+        );
+
+        _eventBus.Publish<AgendamentoConsultaCreatedEvent>(@event, configuration.GetSection("RabbitMQ:AgendamentoQueueName").Value);
 
         return await Task.FromResult(rowsAffected);
     }

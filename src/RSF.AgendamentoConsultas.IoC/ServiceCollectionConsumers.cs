@@ -1,7 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-
 using RSF.AgendamentoConsultas.Consumers.Notification.Subscribers;
 
 namespace RSF.AgendamentoConsultas.IoC;
@@ -13,6 +12,7 @@ public static class ServiceCollectionConsumers
     {
         services.AddHostedService<PerguntaCreatedSubscriber>();
         services.AddHostedService<RespostaCreatedSubscriber>();
+        services.AddHostedService<AgendamentoConsultaCreatedSubscriber>();
         
         return services;
     }

@@ -2,25 +2,26 @@
 using System.Text.Json;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using RSF.AgendamentoConsultas.Domain.MessageBus;
 using RSF.AgendamentoConsultas.MessageBroker.Configurations;
+using RSF.AgendamentoConsultas.Domain.MessageBus.Bus;
 using RSF.AgendamentoConsultas.Domain.MessageBus.Events;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
-using System.Threading.Channels;
+
 
 namespace RSF.AgendamentoConsultas.MessageBroker;
 
-public sealed class RabbitMQService : IRabbitMQService, IDisposable
+public sealed class RabbitMQService : IEventBus//, IDisposable
 {
-    private readonly IConnection _connection;
+    //private readonly IConnection _connection;
     private readonly IModel _channel;
     private readonly ILogger<RabbitMQService> _logger;
+    private readonly RabbitMQConnection _connection;
 
-
-    public RabbitMQService(IOptions<RabbitMQSettings> options, ILogger<RabbitMQService> logger)
+    public RabbitMQService(IOptions<RabbitMQSettings> options, ILogger<RabbitMQService> logger, RabbitMQConnection connection)
     {
         _logger = logger;
+        _connection = connection;
 
         var factory = new ConnectionFactory
         {
@@ -31,9 +32,10 @@ public sealed class RabbitMQService : IRabbitMQService, IDisposable
             Port = options.Value.Port
         };
 
-        _connection = factory.CreateConnection("rabbitmq-client-publisher");
-        _channel = _connection.CreateModel();
+        //_connection = factory.CreateConnection("rabbitmq-client-publisher");
+        //_channel = _connection.CreateModel();
 
+        _channel = _connection.CreateChannel();
         _logger.LogInformation("RabbitMQ connection established.");
     }
 
@@ -49,7 +51,7 @@ public sealed class RabbitMQService : IRabbitMQService, IDisposable
             
             _channel.BasicPublish(exchange: exchange, routingKey: routingKey, body: body);
 
-            _logger.LogInformation("Message published to {Exchange} with Routing Key: {RoutingKey}", exchange, routingKey);
+            _logger.LogInformation("Message published to Routing Key: {RoutingKey}", routingKey);
         }
         catch (Exception ex)
         {
@@ -59,11 +61,16 @@ public sealed class RabbitMQService : IRabbitMQService, IDisposable
 
     public void Subscribe(string queueName, Func<string, Task> onMessageReceived)
     {
+        _channel.QueueDeclare(queue: queueName, durable: true, exclusive: false, autoDelete: false, arguments: null);
+
         var consumer = new EventingBasicConsumer(_channel);
         consumer.Received += async (model, ea) =>
         {
             var body = ea.Body.ToArray();
             var message = Encoding.UTF8.GetString(body);
+
+            _logger.LogInformation("[{DateTimeNow}] Message received: {Message}", DateTime.Now, message);
+
             try
             {
                 await onMessageReceived(message);
@@ -77,12 +84,12 @@ public sealed class RabbitMQService : IRabbitMQService, IDisposable
 
         _channel.BasicConsume(queue: queueName, autoAck: false, consumer: consumer);
 
-        _logger.LogInformation("Subscribed to queue {QueueName}", queueName);
+        _logger.LogInformation("[{DateTimeNow}] Subscribed to queue {QueueName}", DateTime.Now, queueName);
     }
 
-    public void Dispose()
-    {
-        _channel?.Close();
-        _connection?.Close();
-    }
+    //public void Dispose()
+    //{
+    //    _channel?.Close();
+    //    _connection?.Close();
+    //}
 }

@@ -25,7 +25,13 @@ public abstract class MailTemplateBase
 
         using var response = await _s3Client.GetObjectAsync(request);
         using var reader = new StreamReader(response.ResponseStream);
-        return await reader.ReadToEndAsync();
+        var template = await reader.ReadToEndAsync();
+
+        var logo1 = await GetPreSignedUrlFromS3Async(bucketName: "rsfrancisco.agendamentoconsultas.images", key: "logo_1.png");
+        var logo2 = await GetPreSignedUrlFromS3Async(bucketName: "rsfrancisco.agendamentoconsultas.images", key: "logo_3.png");
+
+        template = template.Replace("{{Logo1}}", logo1).Replace("{{Logo2}}", logo2);
+        return template;
     }
 
     protected async Task<string> GetPreSignedUrlFromS3Async(string bucketName, string key)
