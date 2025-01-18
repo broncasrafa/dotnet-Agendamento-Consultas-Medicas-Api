@@ -1,7 +1,7 @@
 ﻿using RSF.AgendamentoConsultas.Shareable.Validations.Validators;
 using FluentValidation;
 
-namespace RSF.AgendamentoConsultas.Application.Features.Agendamento.Command;
+namespace RSF.AgendamentoConsultas.Application.Features.Agendamento.Command.CreateAgendamento;
 
 public class CreateAgendamentoRequestValidator : AbstractValidator<CreateAgendamentoRequest>
 {
@@ -43,7 +43,7 @@ public class CreateAgendamentoRequestValidator : AbstractValidator<CreateAgendam
 
         RuleFor(c => c.MotivoConsulta)
             .NotEmpty().WithMessage("O Motivo da consulta é obrigatório, não deve ser nulo ou vazio")
-            .MinimumLength(5).WithMessage("O Motivo da cnsulta deve ter pelo menos 5 caracteres");
+            .MinimumLength(5).WithMessage("O Motivo da consulta deve ter pelo menos 5 caracteres");
 
         RuleFor(c => c.ValorConsulta)
             .ValorMonetarioValidations(field: "valor da consulta");

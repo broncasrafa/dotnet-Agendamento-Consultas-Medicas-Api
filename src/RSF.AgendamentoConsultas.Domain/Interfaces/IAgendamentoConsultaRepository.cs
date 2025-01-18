@@ -5,7 +5,8 @@ namespace RSF.AgendamentoConsultas.Domain.Interfaces;
 
 public interface IAgendamentoConsultaRepository : IBaseRepository<AgendamentoConsulta>
 {
-    ValueTask<IReadOnlyList<AgendamentoConsulta>> GetAllByPacienteIdAsync(int pacienteId);
     new ValueTask<AgendamentoConsulta> GetByIdAsync(int agendamentoId);
     ValueTask<AgendamentoConsulta> GetByIdAsync(int agendamentoId, int pacienteId);
+    ValueTask<AgendamentoConsulta> GetByIdAsync(int agendamentoId, int pacienteId, int dependenteId);
+    ValueTask<IReadOnlyList<AgendamentoConsulta>> GetAllByPacienteIdAsync(int pacienteId);
 }

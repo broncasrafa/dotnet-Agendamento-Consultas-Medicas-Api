@@ -48,7 +48,19 @@ public class AgendamentoConsultaRepository : BaseRepository<AgendamentoConsulta>
         => await _Context.Agendamentos
             .AsNoTracking()
             .Include(e => e.Especialista)
+            .Include(ee => ee.Especialidade).ThenInclude(g => g.EspecialidadeGrupo)
+            .Include(el => el.LocalAtendimento)
             .Include(p => p.Paciente)
             .Include(d => d.Dependente)
             .FirstOrDefaultAsync(c => c.AgendamentoConsultaId == agendamentoId && c.PacienteId == pacienteId);
+
+    public async ValueTask<AgendamentoConsulta> GetByIdAsync(int agendamentoId, int pacienteId, int dependenteId)
+        => await _Context.Agendamentos
+            .AsNoTracking()
+            .Include(e => e.Especialista)
+            .Include(ee => ee.Especialidade).ThenInclude(g => g.EspecialidadeGrupo)
+            .Include(el => el.LocalAtendimento)
+            .Include(p => p.Paciente)
+            .Include(d => d.Dependente)
+            .FirstOrDefaultAsync(c => c.AgendamentoConsultaId == agendamentoId && c.PacienteId == pacienteId && c.DependenteId == dependenteId);
 }

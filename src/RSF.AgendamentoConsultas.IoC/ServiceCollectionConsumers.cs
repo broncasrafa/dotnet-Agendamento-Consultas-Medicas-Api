@@ -12,7 +12,8 @@ public static class ServiceCollectionConsumers
     {
         services.AddHostedService<PerguntaCreatedSubscriber>();
         services.AddHostedService<RespostaCreatedSubscriber>();
-        services.AddHostedService<AgendamentoConsultaCreatedSubscriber>();
+        services.AddHostedService<AgendamentoCreatedSubscriber>();
+        services.AddHostedService<AgendamentoCanceledByPacienteSubscriber>();
         
         return services;
     }

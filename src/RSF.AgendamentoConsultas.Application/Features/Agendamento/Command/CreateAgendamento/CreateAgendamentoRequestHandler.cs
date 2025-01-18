@@ -8,7 +8,7 @@ using RSF.AgendamentoConsultas.Shareable.Exceptions;
 using MediatR;
 using OperationResult;
 
-namespace RSF.AgendamentoConsultas.Application.Features.Agendamento.Command;
+namespace RSF.AgendamentoConsultas.Application.Features.Agendamento.Command.CreateAgendamento;
 
 public class CreateAgendamentoRequestHandler : IRequestHandler<CreateAgendamentoRequest, Result<int>>
 {
@@ -18,7 +18,7 @@ public class CreateAgendamentoRequestHandler : IRequestHandler<CreateAgendamento
     private readonly IBaseRepository<Domain.Entities.TipoAgendamento> _tipoAgendamentoRepository;
     private readonly IPacienteRepository _pacienteRepository;
     private readonly IEventBus _eventBus;
-    private readonly IConfiguration configuration;
+    private readonly IConfiguration _configuration;
 
     public CreateAgendamentoRequestHandler(
         IAgendamentoConsultaRepository agendamentoConsultaRepository,
@@ -35,7 +35,7 @@ public class CreateAgendamentoRequestHandler : IRequestHandler<CreateAgendamento
         _tipoAgendamentoRepository = tipoAgendamentoRepository;
         _pacienteRepository = pacienteRepository;
         _eventBus = eventBus;
-        this.configuration = configuration;
+        _configuration = configuration;
     }
 
     public async Task<Result<int>> Handle(CreateAgendamentoRequest request, CancellationToken cancellationToken)
@@ -87,7 +87,7 @@ public class CreateAgendamentoRequestHandler : IRequestHandler<CreateAgendamento
             localAtendimentoEstado: agendamento.LocalAtendimento.Estado
         );
 
-        _eventBus.Publish<AgendamentoConsultaCreatedEvent>(@event, configuration.GetSection("RabbitMQ:AgendamentoQueueName").Value);
+        _eventBus.Publish(@event, _configuration.GetSection("RabbitMQ:AgendamentoQueueName").Value);
 
         return await Task.FromResult(rowsAffected);
     }

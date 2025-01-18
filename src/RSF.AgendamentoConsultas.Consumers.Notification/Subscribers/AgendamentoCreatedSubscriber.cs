@@ -11,15 +11,15 @@ using RSF.AgendamentoConsultas.Domain.MessageBus.Events;
 
 namespace RSF.AgendamentoConsultas.Consumers.Notification.Subscribers;
 
-public sealed class AgendamentoConsultaCreatedSubscriber : IHostedService
+public sealed class AgendamentoCreatedSubscriber : IHostedService
 {
     //private readonly IModel _channel;
-    private readonly ILogger<AgendamentoConsultaCreatedSubscriber> _logger;
+    private readonly ILogger<AgendamentoCreatedSubscriber> _logger;
     private readonly IOptions<RabbitMQSettings> _options;
     private readonly IServiceProvider _serviceProvider;
 
-    public AgendamentoConsultaCreatedSubscriber(
-        ILogger<AgendamentoConsultaCreatedSubscriber> logger,
+    public AgendamentoCreatedSubscriber(
+        ILogger<AgendamentoCreatedSubscriber> logger,
         IOptions<RabbitMQSettings> options,
         IServiceProvider serviceProvider)
     {

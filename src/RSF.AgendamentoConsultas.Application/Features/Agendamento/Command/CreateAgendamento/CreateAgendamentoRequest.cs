@@ -2,7 +2,7 @@
 
 using OperationResult;
 
-namespace RSF.AgendamentoConsultas.Application.Features.Agendamento.Command;
+namespace RSF.AgendamentoConsultas.Application.Features.Agendamento.Command.CreateAgendamento;
 
 public record CreateAgendamentoRequest(
     int EspecialistaId,

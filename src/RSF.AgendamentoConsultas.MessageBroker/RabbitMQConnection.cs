@@ -29,7 +29,7 @@ public sealed class RabbitMQConnection : IDisposable
             Port = options.Value.Port
         };
 
-        _connection = factory.CreateConnection("rabbitmq-client-consumer");
+        _connection = factory.CreateConnection(options.Value.ClientProviderName);
     }
 
     public IModel CreateChannel()

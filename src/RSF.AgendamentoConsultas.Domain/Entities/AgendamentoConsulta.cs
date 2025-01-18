@@ -1,4 +1,5 @@
-﻿using RSF.AgendamentoConsultas.Domain.Validation;
+﻿using RSF.AgendamentoConsultas.Domain.Exceptions;
+using RSF.AgendamentoConsultas.Domain.Validation;
 using RSF.AgendamentoConsultas.Shareable.Enums;
 
 namespace RSF.AgendamentoConsultas.Domain.Entities;
@@ -96,10 +97,15 @@ public class AgendamentoConsulta
     {
         DomainValidation.NotNullOrEmpty(notaCancelamento, nameof(NotaCancelamento));
 
+        if (StatusConsultaId != (int)ETipoStatusConsulta.Solicitado &&
+            StatusConsultaId != (int)ETipoStatusConsulta.Confirmado)
+            throw new EntityValidationException($"Status da Consulta inválido para cancelamento");
+
         NotaCancelamento = notaCancelamento;
         StatusConsultaId = (int)ETipoStatusConsulta.Cancelado;
         UpdatedAt = DateTime.Now;
     }
+
     public void ExpirarProfissional(string notaCancelamento)
     {
         DomainValidation.NotNullOrEmpty(notaCancelamento, nameof(NotaCancelamento));
