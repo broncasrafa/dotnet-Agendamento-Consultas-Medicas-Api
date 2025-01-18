@@ -41,7 +41,7 @@ public sealed class AgendamentoCreatedSubscriber : IHostedService
 
             var mailSender = scope.ServiceProvider.GetRequiredService<AgendamentoCreatedEmail>();            
 
-            var @event = JsonSerializer.Deserialize<AgendamentoConsultaCreatedEvent>(message);
+            var @event = JsonSerializer.Deserialize<AgendamentoCreatedEvent>(message);
 
             await mailSender.SendEmailAsync(new MailTo(@event.Especialista, @event.EspecialistaEmail),
                 agendamentoConsultaId: @event.AgendamentoConsultaId,

@@ -4,6 +4,8 @@ using RSF.AgendamentoConsultas.Api.Extensions;
 using RSF.AgendamentoConsultas.Application.Features.Agendamento.Responses;
 using RSF.AgendamentoConsultas.Application.Features.Agendamento.Query.GetAgendamentoById;
 using RSF.AgendamentoConsultas.Application.Features.Agendamento.Command.CreateAgendamento;
+using RSF.AgendamentoConsultas.Application.Features.Agendamento.Command.CancelAgendamentoByPaciente;
+using RSF.AgendamentoConsultas.Application.Features.Agendamento.Command.CancelAgendamentoByEspecialista;
 using MediatR;
 
 namespace RSF.AgendamentoConsultas.Api.Endpoints;
@@ -26,10 +28,10 @@ internal static class AgendamentoConsultaEndpoints
             .WithSummary("Adicionar um agendamento de uma consulta")
             .WithOpenApi();
 
-        routes.MapPost("/cancelamento/paciente", static async (IMediator mediator, [FromBody] CreateAgendamentoRequest request, CancellationToken cancellationToken)
+        routes.MapPost("/cancelamento/paciente", static async (IMediator mediator, [FromBody] CancelAgendamentoByPacienteRequest request, CancellationToken cancellationToken)
             => await mediator.SendCommand(request, cancellationToken: cancellationToken))
             .WithName("CancelamentoAgendamentoConsultaPaciente")
-            .Accepts<CreateAgendamentoRequest>("application/json")
+            .Accepts<CancelAgendamentoByPacienteRequest>("application/json")
             .Produces<ApiResponse<int>>(StatusCodes.Status200OK)
             .Produces<ProblemDetails>(StatusCodes.Status400BadRequest)
             .Produces<ProblemDetails>(StatusCodes.Status404NotFound)
@@ -37,10 +39,10 @@ internal static class AgendamentoConsultaEndpoints
             .WithSummary("Cancelamento do agendamento de uma consulta pelo paciente")
             .WithOpenApi();
 
-        routes.MapPost("/cancelamento/especialista", static async (IMediator mediator, [FromBody] CreateAgendamentoRequest request, CancellationToken cancellationToken)
+        routes.MapPost("/cancelamento/especialista", static async (IMediator mediator, [FromBody] CancelAgendamentoByEspecialistaRequest request, CancellationToken cancellationToken)
             => await mediator.SendCommand(request, cancellationToken: cancellationToken))
             .WithName("CancelamentoAgendamentoConsultaEspecialista")
-            .Accepts<CreateAgendamentoRequest>("application/json")
+            .Accepts<CancelAgendamentoByEspecialistaRequest>("application/json")
             .Produces<ApiResponse<int>>(StatusCodes.Status200OK)
             .Produces<ProblemDetails>(StatusCodes.Status400BadRequest)
             .Produces<ProblemDetails>(StatusCodes.Status404NotFound)

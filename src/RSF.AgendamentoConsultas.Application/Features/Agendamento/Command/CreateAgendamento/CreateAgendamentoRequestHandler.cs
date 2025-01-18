@@ -63,7 +63,7 @@ public class CreateAgendamentoRequestHandler : IRequestHandler<CreateAgendamento
         var agendamento = await _agendamentoConsultaRepository.GetByIdAsync(newAgendamento.AgendamentoConsultaId);
 
         // pode disparar uma mensagem para a fila de AgendamentoConsultas (o especialista recebe um email de uma nova consulta para ele(onde ele pode aceitar ou recusar, propor um novo horario)
-        var @event = new AgendamentoConsultaCreatedEvent
+        var @event = new AgendamentoCreatedEvent
         (
             agendamentoConsultaId: agendamento.AgendamentoConsultaId,
             dataAgendamento: agendamento.CreatedAt.ToShortDateString(),

@@ -101,6 +101,9 @@ public class AgendamentoConsulta
             StatusConsultaId != (int)ETipoStatusConsulta.Confirmado)
             throw new EntityValidationException($"Status da Consulta inválido para cancelamento");
 
+        if (DataConsulta <= DateTime.Now)
+            throw new EntityValidationException($"Data da Consulta inválido para cancelamento");
+
         NotaCancelamento = notaCancelamento;
         StatusConsultaId = (int)ETipoStatusConsulta.Cancelado;
         UpdatedAt = DateTime.Now;

@@ -9,18 +9,17 @@ using RSF.AgendamentoConsultas.Domain.MessageBus.Bus;
 using RSF.AgendamentoConsultas.Domain.Notifications;
 using RSF.AgendamentoConsultas.Domain.MessageBus.Events;
 
-
 namespace RSF.AgendamentoConsultas.Consumers.Notification.Subscribers;
 
-public class AgendamentoCanceledByPacienteSubscriber : IHostedService
+public class AgendamentoCanceledByEspecialistaSubscriber : IHostedService
 {
-    private readonly ILogger<AgendamentoCanceledByPacienteSubscriber> _logger;
+    private readonly ILogger<AgendamentoCanceledByEspecialistaSubscriber> _logger;
     private readonly IOptions<RabbitMQSettings> _options;
     private readonly IServiceProvider _serviceProvider;
 
-    public AgendamentoCanceledByPacienteSubscriber(
-        ILogger<AgendamentoCanceledByPacienteSubscriber> logger, 
-        IOptions<RabbitMQSettings> options, 
+    public AgendamentoCanceledByEspecialistaSubscriber(
+        ILogger<AgendamentoCanceledByEspecialistaSubscriber> logger,
+        IOptions<RabbitMQSettings> options,
         IServiceProvider serviceProvider)
     {
         _logger = logger;
@@ -30,7 +29,7 @@ public class AgendamentoCanceledByPacienteSubscriber : IHostedService
 
     public Task StartAsync(CancellationToken cancellationToken)
     {
-        var queueName = _options.Value.AgendamentoCanceladoPacienteQueueName;
+        var queueName = _options.Value.AgendamentoCanceladoEspecialistaQueueName;
 
         _logger.LogInformation($"[{DateTime.Now}] Consuming message from queue '{queueName}'");
 
@@ -41,19 +40,18 @@ public class AgendamentoCanceledByPacienteSubscriber : IHostedService
         {
             using var scope = _serviceProvider.CreateScope();
 
-            var mailSender = scope.ServiceProvider.GetRequiredService<AgendamentoCanceledByPacienteEmail>();
+            var mailSender = scope.ServiceProvider.GetRequiredService<AgendamentoCanceledByEspecialistaEmail>();
 
-            var @event = JsonSerializer.Deserialize<AgendamentoCanceledByPacienteEvent>(message);
+            var @event = JsonSerializer.Deserialize<AgendamentoCanceledByEspecialistaEvent>(message);
 
             await mailSender.SendEmailAsync(
                 new MailTo(@event.PacienteNome, @event.PacienteEmail),
-                @event.PacienteNome, 
-                @event.EspecialistaNome, 
-                @event.Especialidade, 
-                @event.DataConsulta, 
+                @event.PacienteNome,
+                @event.EspecialistaNome,
+                @event.Especialidade,
+                @event.DataConsulta,
                 @event.HorarioConsulta,
-                @event.LocalAtendimento, 
-                @event.NotaCancelamento);
+                @event.LocalAtendimento);
 
             await Task.CompletedTask;
         });

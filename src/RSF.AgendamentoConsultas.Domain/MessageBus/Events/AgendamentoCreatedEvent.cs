@@ -1,8 +1,6 @@
-﻿using RSF.AgendamentoConsultas.Domain.Entities;
+﻿namespace RSF.AgendamentoConsultas.Domain.MessageBus.Events;
 
-namespace RSF.AgendamentoConsultas.Domain.MessageBus.Events;
-
-public class AgendamentoConsultaCreatedEvent : Event
+public class AgendamentoCreatedEvent : Event
 {    
     public int AgendamentoConsultaId { get; private set; }
     public string DataAgendamento { get; private set; }
@@ -25,7 +23,7 @@ public class AgendamentoConsultaCreatedEvent : Event
     public string LocalAtendimentoCidade { get; private set; }
     public string LocalAtendimentoEstado { get; private set; }
 
-    public AgendamentoConsultaCreatedEvent(
+    public AgendamentoCreatedEvent(
         int agendamentoConsultaId,
         string dataAgendamento,
         string tipoAgendamento,

@@ -1,6 +1,6 @@
 ﻿namespace RSF.AgendamentoConsultas.Domain.MessageBus.Events
 {
-    public class AgendamentoConsultaCanceledByPacienteEvent : Event
+    public class AgendamentoCanceledByPacienteEvent : Event
     {        
         public string PacienteNome { get; private set; }
         public string PacienteEmail { get; private set; }
@@ -11,7 +11,7 @@
         public string LocalAtendimento { get; private set; }
         public string NotaCancelamento { get; private set; }
 
-        public AgendamentoConsultaCanceledByPacienteEvent(
+        public AgendamentoCanceledByPacienteEvent(
             string pacienteNome, 
             string pacienteEmail, 
             string especialistaNome, 

@@ -18,7 +18,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Folder Include="Features\Agendamento\Command\CancelAgendamentoByEspecialista\" />
 		<Folder Include="Features\Especialista\Command\" />
 		<Folder Include="Features\Paciente\Query\GetPacienteByIdPerguntas\" />
 		<Folder Include="Features\PerguntasRespostasReacoes\Query\" />

@@ -54,7 +54,7 @@ public class CancelAgendamentoByPacienteRequestHandler : IRequestHandler<CancelA
 
         if (rowsAffected > 0)
         {
-            var @event = new AgendamentoConsultaCanceledByPacienteEvent(
+            var @event = new AgendamentoCanceledByPacienteEvent(
                 paciente.Nome,
                 paciente.Email,
                 agendamento.Especialista.Nome,
@@ -64,7 +64,7 @@ public class CancelAgendamentoByPacienteRequestHandler : IRequestHandler<CancelA
                 agendamento.LocalAtendimento.Nome,
                 agendamento.NotaCancelamento);
 
-            _eventBus.Publish<AgendamentoConsultaCanceledByPacienteEvent>(@event, _configuration.GetSection("RabbitMQ:AgendamentoCanceladoPacienteQueueName").Value);
+            _eventBus.Publish<AgendamentoCanceledByPacienteEvent>(@event, _configuration.GetSection("RabbitMQ:AgendamentoCanceladoPacienteQueueName").Value);
         }           
 
         return await Task.FromResult(rowsAffected > 0);

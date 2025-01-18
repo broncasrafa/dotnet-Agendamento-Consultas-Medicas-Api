@@ -63,7 +63,6 @@ public static class ServiceCollectionInfrastructure
 
     private static void AddRabbitMQ(this IServiceCollection services, IConfiguration configuration)
     {
-        services.Configure<RabbitMQOptions>(configuration.GetSection("RabbitMQ"));
         services.Configure<RabbitMQSettings>(configuration.GetSection("RabbitMQ"));
 
         services.AddSingleton<RabbitMQConnection>();
@@ -87,5 +86,6 @@ public static class ServiceCollectionInfrastructure
         services.AddTransient<RespostaCreatedEmail>();
         services.AddTransient<AgendamentoCreatedEmail>();
         services.AddTransient<AgendamentoCanceledByPacienteEmail>();
+        services.AddTransient<AgendamentoCanceledByEspecialistaEmail>();
     }
 }

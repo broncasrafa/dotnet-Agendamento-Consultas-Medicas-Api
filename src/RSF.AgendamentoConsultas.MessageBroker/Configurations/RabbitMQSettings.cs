@@ -14,4 +14,5 @@ public class RabbitMQSettings
     public string RespostasQueueName { get; set; }    
     public string AgendamentoQueueName { get; set; }    
     public string AgendamentoCanceladoPacienteQueueName { get; set; }    
+    public string AgendamentoCanceladoEspecialistaQueueName { get; set; }    
 }
