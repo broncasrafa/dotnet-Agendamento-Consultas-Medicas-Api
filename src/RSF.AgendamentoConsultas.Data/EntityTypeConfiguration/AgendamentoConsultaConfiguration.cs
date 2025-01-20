@@ -33,7 +33,8 @@ public class AgendamentoConsultaConfiguration : IEntityTypeConfiguration<Agendam
         builder.Property(c => c.DuracaoEmMinutosConsulta).IsRequired(false).HasColumnType("int");
         builder.Property(c => c.Observacoes).IsRequired(false).HasColumnType("varchar(max)");
         builder.Property(c => c.NotaCancelamento).IsRequired(false).HasMaxLength(1000);
-        builder.Property(c => c.ConfirmedAt).IsRequired(false).HasColumnType("datetime");
+        builder.Property(c => c.ConfirmedByPacienteAt).IsRequired(false).HasColumnType("datetime");
+        builder.Property(c => c.ConfirmedByEspecialistaAt).IsRequired(false).HasColumnType("datetime");
         builder.Property(c => c.CreatedAt).IsRequired().HasColumnType("datetime").HasDefaultValueSql("(getdate())");
         builder.Property(c => c.UpdatedAt).IsRequired(false).HasColumnType("datetime");
 

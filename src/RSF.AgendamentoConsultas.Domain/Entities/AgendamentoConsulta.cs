@@ -31,7 +31,8 @@ public class AgendamentoConsulta
     public string Observacoes { get; set; }
     public string NotaCancelamento { get; set; }
     public DateTime CreatedAt { get; set; }
-    public DateTime? ConfirmedAt { get; set; }
+    public DateTime? ConfirmedByPacienteAt { get; set; }
+    public DateTime? ConfirmedByEspecialistaAt { get; set; }
     public DateTime? UpdatedAt { get; set; }
 
     public Especialista Especialista { get; set; }
@@ -88,9 +89,31 @@ public class AgendamentoConsulta
 
 
 
-    public void Confirmar()
+    public void ConfirmarPaciente()
     {
+        if (StatusConsultaId != (int)ETipoStatusConsulta.Solicitado)
+            throw new EntityValidationException($"Status da Consulta inválido para confirmação");
+
+        if (DataConsulta <= DateTime.Now)
+            throw new EntityValidationException($"Data da Consulta inválido para confirmação");
+
+        if (!ConfirmedByEspecialistaAt.HasValue)
+            throw new EntityValidationException($"Agendamento não confirmado pelo especialista");
+
         StatusConsultaId = (int)ETipoStatusConsulta.Confirmado;
+        ConfirmedByPacienteAt = DateTime.Now;
+        UpdatedAt = DateTime.Now;
+    }
+    public void ConfirmarProfissional()
+    {
+        if (StatusConsultaId != (int)ETipoStatusConsulta.Solicitado)
+            throw new EntityValidationException($"Status da Consulta inválido para confirmação");
+
+        if (DataConsulta <= DateTime.Now)
+            throw new EntityValidationException($"Data da Consulta inválido para confirmação");
+
+        StatusConsultaId = (int)ETipoStatusConsulta.Confirmado;
+        ConfirmedByEspecialistaAt = DateTime.Now;
         UpdatedAt = DateTime.Now;
     }
     public void Cancelar(string notaCancelamento)

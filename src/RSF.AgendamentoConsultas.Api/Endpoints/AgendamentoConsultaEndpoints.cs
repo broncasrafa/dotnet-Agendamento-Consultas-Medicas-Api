@@ -6,6 +6,8 @@ using RSF.AgendamentoConsultas.Application.Features.Agendamento.Query.GetAgendam
 using RSF.AgendamentoConsultas.Application.Features.Agendamento.Command.CreateAgendamento;
 using RSF.AgendamentoConsultas.Application.Features.Agendamento.Command.CancelAgendamentoByPaciente;
 using RSF.AgendamentoConsultas.Application.Features.Agendamento.Command.CancelAgendamentoByEspecialista;
+using RSF.AgendamentoConsultas.Application.Features.Agendamento.Command.ConfirmAgendamentoByPaciente;
+using RSF.AgendamentoConsultas.Application.Features.Agendamento.Command.ConfirmAgendamentoByEspecialista;
 using MediatR;
 
 namespace RSF.AgendamentoConsultas.Api.Endpoints;
@@ -27,8 +29,10 @@ internal static class AgendamentoConsultaEndpoints
             .WithDescription("Adicionar um agendamento de uma consulta")
             .WithSummary("Adicionar um agendamento de uma consulta")
             .WithOpenApi();
+        #endregion
 
-        routes.MapPost("/cancelamento/paciente", static async (IMediator mediator, [FromBody] CancelAgendamentoByPacienteRequest request, CancellationToken cancellationToken)
+        #region [ PUT ]
+        routes.MapPut("/cancelamento/paciente", static async (IMediator mediator, [FromBody] CancelAgendamentoByPacienteRequest request, CancellationToken cancellationToken)
             => await mediator.SendCommand(request, cancellationToken: cancellationToken))
             .WithName("CancelamentoAgendamentoConsultaPaciente")
             .Accepts<CancelAgendamentoByPacienteRequest>("application/json")
@@ -39,7 +43,7 @@ internal static class AgendamentoConsultaEndpoints
             .WithSummary("Cancelamento do agendamento de uma consulta pelo paciente")
             .WithOpenApi();
 
-        routes.MapPost("/cancelamento/especialista", static async (IMediator mediator, [FromBody] CancelAgendamentoByEspecialistaRequest request, CancellationToken cancellationToken)
+        routes.MapPut("/cancelamento/especialista", static async (IMediator mediator, [FromBody] CancelAgendamentoByEspecialistaRequest request, CancellationToken cancellationToken)
             => await mediator.SendCommand(request, cancellationToken: cancellationToken))
             .WithName("CancelamentoAgendamentoConsultaEspecialista")
             .Accepts<CancelAgendamentoByEspecialistaRequest>("application/json")
@@ -49,8 +53,29 @@ internal static class AgendamentoConsultaEndpoints
             .WithDescription("Cancelamento do agendamento de uma consulta pelo especialista")
             .WithSummary("Cancelamento do agendamento de uma consulta pelo especialista")
             .WithOpenApi();
-        #endregion
 
+        routes.MapPut("/confirmacao/paciente", static async (IMediator mediator, [FromBody] ConfirmAgendamentoByPacienteRequest request, CancellationToken cancellationToken)
+            => await mediator.SendCommand(request, cancellationToken: cancellationToken))
+            .WithName("ConfirmarAgendamentoConsultaPaciente")
+            .Accepts<ConfirmAgendamentoByPacienteRequest>("application/json")
+            .Produces<ApiResponse<int>>(StatusCodes.Status200OK)
+            .Produces<ProblemDetails>(StatusCodes.Status400BadRequest)
+            .Produces<ProblemDetails>(StatusCodes.Status404NotFound)
+            .WithDescription("Confirmação do agendamento de uma consulta pelo paciente")
+            .WithSummary("Confirmação do agendamento de uma consulta pelo paciente")
+            .WithOpenApi();
+
+        routes.MapPut("/confirmacao/especialista", static async (IMediator mediator, [FromBody] ConfirmAgendamentoByEspecialistaRequest request, CancellationToken cancellationToken)
+            => await mediator.SendCommand(request, cancellationToken: cancellationToken))
+            .WithName("ConfirmarAgendamentoConsultaEspecialista")
+            .Accepts<ConfirmAgendamentoByEspecialistaRequest>("application/json")
+            .Produces<ApiResponse<int>>(StatusCodes.Status200OK)
+            .Produces<ProblemDetails>(StatusCodes.Status400BadRequest)
+            .Produces<ProblemDetails>(StatusCodes.Status404NotFound)
+            .WithDescription("Confirmação do agendamento de uma consulta pelo especialista")
+            .WithSummary("Confirmação do agendamento de uma consulta pelo especialista")
+            .WithOpenApi();
+        #endregion
 
         #region [ GET ]
         routes.MapGet("/{id:int}", static async (IMediator mediator, [FromRoute] int id, CancellationToken cancellationToken)

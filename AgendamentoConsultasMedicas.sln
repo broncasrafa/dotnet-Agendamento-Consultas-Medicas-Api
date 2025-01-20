@@ -41,6 +41,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RSF.AgendamentoConsultas.No
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RSF.AgendamentoConsultas.Consumers.Notification", "src\RSF.AgendamentoConsultas.Consumers.Notification\RSF.AgendamentoConsultas.Consumers.Notification.csproj", "{3ECDD2D8-4BDD-440F-87F0-B02C760CD7DA}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "06 - Workers", "06 - Workers", "{522D3DD7-5D3C-4864-882F-F1F35FAC6B2E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
