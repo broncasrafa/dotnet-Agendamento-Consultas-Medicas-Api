@@ -18,7 +18,8 @@ public class AgendamentoResponse
     public string Observacoes { get; set; }
     public string NotaCancelamento { get; set; }
     public DateTime CreatedAt { get; set; }
-    public DateTime? ConfirmedAt { get; set; }
+    public DateTime? ConfirmedByPacienteAt { get; set; }
+    public DateTime? ConfirmedByEspecialistaAt { get; set; }
     public DateTime? UpdatedAt { get; set; }
     public string StatusConsulta { get; set; }
     public string TipoConsulta { get; set; }
@@ -51,7 +52,8 @@ public class AgendamentoResponse
             Observacoes = entity.Observacoes,
             NotaCancelamento = entity.NotaCancelamento,
             CreatedAt = entity.CreatedAt,
-            ConfirmedAt = entity.ConfirmedAt,
+            ConfirmedByPacienteAt = entity.ConfirmedByPacienteAt,
+            ConfirmedByEspecialistaAt = entity.ConfirmedByEspecialistaAt,
             UpdatedAt = entity.UpdatedAt,
             StatusConsulta = entity.StatusConsulta.Descricao.ToUpper(),
             TipoConsulta = entity.TipoConsulta.Descricao,

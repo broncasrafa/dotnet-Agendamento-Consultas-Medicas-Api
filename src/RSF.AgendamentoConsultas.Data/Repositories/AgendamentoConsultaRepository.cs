@@ -3,6 +3,7 @@ using RSF.AgendamentoConsultas.Data.Context;
 using RSF.AgendamentoConsultas.Data.Repositories.Common;
 using RSF.AgendamentoConsultas.Domain.Entities;
 using RSF.AgendamentoConsultas.Domain.Interfaces;
+using RSF.AgendamentoConsultas.Shareable.Enums;
 
 namespace RSF.AgendamentoConsultas.Data.Repositories;
 
@@ -63,4 +64,27 @@ public class AgendamentoConsultaRepository : BaseRepository<AgendamentoConsulta>
             .Include(p => p.Paciente)
             .Include(d => d.Dependente)
             .FirstOrDefaultAsync(c => c.AgendamentoConsultaId == agendamentoId && c.PacienteId == pacienteId && c.DependenteId == dependenteId);
+
+    public async ValueTask<IReadOnlyList<AgendamentoConsulta>> GetAllExpiredByPacienteAsync()
+    {
+        return await _Context.Agendamentos.AsNoTracking()            
+            .Where(c => 
+                c.ConfirmedByEspecialistaAt != null && 
+                c.StatusConsultaId == (int)ETipoStatusConsulta.Solicitado &&
+                c.ConfirmedByEspecialistaAt.Value.AddDays(1) > DateTime.Now
+            )
+            .ToListAsync();
+    }
+
+    public async ValueTask<IReadOnlyList<AgendamentoConsulta>> GetAllExpiredByEspecialistaAsync()
+    {
+        return await _Context.Agendamentos
+            .AsNoTracking()
+            .Include(c => c.Especialista)
+            .Where(c =>
+                c.StatusConsultaId == (int)ETipoStatusConsulta.Solicitado &&
+                c.DataConsulta < DateTime.Now
+            )
+            .ToListAsync();
+    }
 }

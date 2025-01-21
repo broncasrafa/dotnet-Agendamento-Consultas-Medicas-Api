@@ -207,6 +207,9 @@ dotnet_diagnostic.CA2227.severity = none
 # CA2254: o modelo deve ser uma expressão estática
 dotnet_diagnostic.CA2254.severity = none
 
+# CA5394: Não usar aleatoriedade não segura
+dotnet_diagnostic.CA5394.severity = none
+
 # IDE0320: Tornar a função anônima estática
 dotnet_diagnostic.IDE0320.severity = none
 

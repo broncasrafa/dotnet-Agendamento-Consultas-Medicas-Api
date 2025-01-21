@@ -100,6 +100,9 @@ public class AgendamentoConsulta
         if (!ConfirmedByEspecialistaAt.HasValue)
             throw new EntityValidationException($"Agendamento não confirmado pelo especialista");
 
+        if (ConfirmedByEspecialistaAt.Value.AddDays(1) > DateTime.Now)
+            throw new EntityValidationException($"Consulta cancelada automaticamente, pois não recebemos sua resposta para a confirmação em tempo hábil.");
+
         StatusConsultaId = (int)ETipoStatusConsulta.Confirmado;
         ConfirmedByPacienteAt = DateTime.Now;
         UpdatedAt = DateTime.Now;
@@ -111,8 +114,7 @@ public class AgendamentoConsulta
 
         if (DataConsulta <= DateTime.Now)
             throw new EntityValidationException($"Data da Consulta inválido para confirmação");
-
-        StatusConsultaId = (int)ETipoStatusConsulta.Confirmado;
+        
         ConfirmedByEspecialistaAt = DateTime.Now;
         UpdatedAt = DateTime.Now;
     }

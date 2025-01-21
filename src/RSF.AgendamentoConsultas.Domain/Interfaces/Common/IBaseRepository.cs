@@ -12,25 +12,31 @@ public interface IBaseRepository<T> where T : class
     /// Adiciona os dados da entidade
     /// </summary>
     /// <param name="entity">entidade</param>
-    /// <returns>a quantidade de linhas afetadas na transação (rowsAffected</returns>
+    /// <returns>a quantidade de linhas afetadas na transação (rowsAffected)</returns>
     ValueTask<int> AddAsync(T entity);
     /// <summary>
     /// Atualiza os dados da entidade
     /// </summary>
     /// <param name="entity">entidade</param>
-    /// <returns>a quantidade de linhas afetadas na transação (rowsAffected</returns>
+    /// <returns>a quantidade de linhas afetadas na transação (rowsAffected)</returns>
     ValueTask<int> UpdateAsync(T entity);
+    /// <summary>
+    /// Atualiza os dados da coleção de entidades
+    /// </summary>
+    /// <param name="collection">coleção de entidades</param>
+    /// <returns>a quantidade de linhas afetadas na transação (rowsAffected)</returns>
+    ValueTask<int> UpdateRangeAsync(IEnumerable<T> collection);
     /// <summary>
     /// Remove os dados da entidade
     /// </summary>
     /// <param name="entity">entidade</param>
-    /// <returns>a quantidade de linhas afetadas na transação (rowsAffected</returns>
+    /// <returns>a quantidade de linhas afetadas na transação (rowsAffected)</returns>
     ValueTask<int> RemoveAsync(T entity);
     /// <summary>
     /// Atualiza o status da entidade de ativo para inativo e vice versa
     /// </summary>
     /// <param name="entity">entidade</param>
-    /// <returns>a quantidade de linhas afetadas na transação (rowsAffected</returns>
+    /// <returns>a quantidade de linhas afetadas na transação (rowsAffected)</returns>
     ValueTask<int> ChangeStatusAsync(T entity);
     ValueTask<int> SaveChangesAsync();
 }

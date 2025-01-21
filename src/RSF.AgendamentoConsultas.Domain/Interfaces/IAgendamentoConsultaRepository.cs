@@ -9,4 +9,7 @@ public interface IAgendamentoConsultaRepository : IBaseRepository<AgendamentoCon
     ValueTask<AgendamentoConsulta> GetByIdAsync(int agendamentoId, int pacienteId);
     ValueTask<AgendamentoConsulta> GetByIdAsync(int agendamentoId, int pacienteId, int dependenteId);
     ValueTask<IReadOnlyList<AgendamentoConsulta>> GetAllByPacienteIdAsync(int pacienteId);
+
+    ValueTask<IReadOnlyList<AgendamentoConsulta>> GetAllExpiredByPacienteAsync();
+    ValueTask<IReadOnlyList<AgendamentoConsulta>> GetAllExpiredByEspecialistaAsync();
 }

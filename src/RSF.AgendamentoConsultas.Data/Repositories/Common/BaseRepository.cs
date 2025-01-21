@@ -44,6 +44,16 @@ public class BaseRepository<T> : IBaseRepository<T> where T : class
         return await Context.SaveChangesAsync().ConfigureAwait(false);
     }
 
+    public async ValueTask<int> UpdateRangeAsync(IEnumerable<T> collection)
+    {
+        if (collection == null || !collection.Any())
+            throw new ArgumentException("A coleção não pode ser nula ou vazia.", nameof(collection));
+
+        Context.Set<T>().UpdateRange(collection);
+        
+        return await Context.SaveChangesAsync().ConfigureAwait(false);
+    }
+
     public async ValueTask<int> RemoveAsync(T entity)
     {
         await ValueTask.FromResult(Context.Set<T>().Remove(entity)).ConfigureAwait(false);

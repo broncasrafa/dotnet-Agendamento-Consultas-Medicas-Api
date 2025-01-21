@@ -1,15 +1,15 @@
-﻿using RSF.AgendamentoConsultas.Domain.Interfaces.Common;
+﻿using RSF.AgendamentoConsultas.Application.Features.TipoStatusConsulta.Responses;
+using RSF.AgendamentoConsultas.Domain.Interfaces;
 using MediatR;
 using OperationResult;
-using RSF.AgendamentoConsultas.Application.Features.TipoStatusConsulta.Responses;
 
 namespace RSF.AgendamentoConsultas.Application.Features.TipoStatusConsulta.GetAll;
 
 public class SelectTipoStatusConsultaRequestHandler : IRequestHandler<SelectTipoStatusConsultaRequest, Result<IReadOnlyList<TipoStatusConsultaResponse>>>
 {
-    private readonly IBaseRepository<Domain.Entities.TipoStatusConsulta> _repository;
+    private readonly ITipoStatusConsultaRepository _repository;
 
-    public SelectTipoStatusConsultaRequestHandler(IBaseRepository<Domain.Entities.TipoStatusConsulta> repository) => _repository = repository;
+    public SelectTipoStatusConsultaRequestHandler(ITipoStatusConsultaRepository repository) => _repository = repository;
 
     public async Task<Result<IReadOnlyList<TipoStatusConsultaResponse>>> Handle(SelectTipoStatusConsultaRequest request, CancellationToken cancellationToken)
     {

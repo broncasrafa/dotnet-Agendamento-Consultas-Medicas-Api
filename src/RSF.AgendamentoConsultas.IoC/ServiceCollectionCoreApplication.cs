@@ -5,10 +5,10 @@ using Microsoft.Extensions.DependencyInjection;
 using RSF.AgendamentoConsultas.Shareable;
 using RSF.AgendamentoConsultas.Application;
 using RSF.AgendamentoConsultas.Application.Services.HasherPassword;
+using RSF.AgendamentoConsultas.Application.Behaviors.Pipelines;
 using MediatR;
 using FluentValidation;
 using AutoMapper;
-using RSF.AgendamentoConsultas.Application.Behaviors.Pipelines;
 
 namespace RSF.AgendamentoConsultas.IoC;
 
