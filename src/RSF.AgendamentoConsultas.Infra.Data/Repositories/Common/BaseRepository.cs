@@ -1,8 +1,8 @@
 ﻿using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 using RSF.AgendamentoConsultas.Infra.Data.Context;
-using RSF.AgendamentoConsultas.Core.Domain.Interfaces.Common;
 using RSF.AgendamentoConsultas.CrossCutting.Shareable.Extensions;
+using RSF.AgendamentoConsultas.Core.Domain.Interfaces.Repositories.Common;
 
 namespace RSF.AgendamentoConsultas.Infra.Data.Repositories.Common;
 

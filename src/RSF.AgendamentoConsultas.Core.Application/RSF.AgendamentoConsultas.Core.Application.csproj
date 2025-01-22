@@ -17,10 +17,4 @@
 		<ProjectReference Include="..\RSF.AgendamentoConsultas.CrossCutting.Shareable\RSF.AgendamentoConsultas.CrossCutting.Shareable.csproj" />
 	</ItemGroup>
 
-	<ItemGroup>
-		<Folder Include="Features\Especialista\Command\" />
-		<Folder Include="Features\Paciente\Query\GetPacienteByIdPerguntas\" />
-		<Folder Include="Features\PerguntasRespostasReacoes\Query\" />
-	</ItemGroup>
-
 </Project>

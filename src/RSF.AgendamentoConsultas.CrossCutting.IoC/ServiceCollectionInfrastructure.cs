@@ -1,21 +1,31 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using System.Text;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using RSF.AgendamentoConsultas.Core.Domain.Notifications;
+using RSF.AgendamentoConsultas.Core.Domain.MessageBus.Bus;
+using RSF.AgendamentoConsultas.Core.Domain.Entities;
 using RSF.AgendamentoConsultas.Infra.Data.Context;
 using RSF.AgendamentoConsultas.Infra.Data.Repositories;
 using RSF.AgendamentoConsultas.Infra.Data.Repositories.Common;
-using RSF.AgendamentoConsultas.Core.Domain.Interfaces;
-using RSF.AgendamentoConsultas.Core.Domain.Interfaces.Common;
-using RSF.AgendamentoConsultas.Core.Domain.Notifications;
-using RSF.AgendamentoConsultas.Core.Domain.MessageBus.Bus;
 using RSF.AgendamentoConsultas.Infra.MessageBroker;
 using RSF.AgendamentoConsultas.Infra.MessageBroker.Configurations;
 using RSF.AgendamentoConsultas.Infra.Notifications;
 using RSF.AgendamentoConsultas.Infra.Notifications.Configurations;
 using RSF.AgendamentoConsultas.Infra.Notifications.Templates;
+using RSF.AgendamentoConsultas.Infra.Identity.Context;
 using Amazon.S3;
+using RSF.AgendamentoConsultas.Infra.Identity.Configurations;
+using RSF.AgendamentoConsultas.Core.Domain.Interfaces.Repositories.Common;
+using RSF.AgendamentoConsultas.Core.Domain.Interfaces.Repositories;
+using RSF.AgendamentoConsultas.Core.Domain.Interfaces.Services;
+using RSF.AgendamentoConsultas.Infra.Identity.JWT;
 
 namespace RSF.AgendamentoConsultas.CrossCutting.IoC;
 
@@ -25,12 +35,35 @@ public static class ServiceCollectionInfrastructure
     public static IServiceCollection RegisterInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddDatabase(configuration);
+        services.AddIdentity(configuration);
         services.AddRepositories();
         services.AddRabbitMQ(configuration);
         services.AddAwsS3(configuration);
         services.AddMailSender(configuration);
+        services.AddJwtConfiguration(configuration);
 
         return services;
+    }
+
+    public static async Task SeedIdentityDatabaseAsync(this IServiceProvider serviceProvider)
+    {
+        using var scope = serviceProvider.CreateScope();
+        
+        var services = scope.ServiceProvider;
+
+        try
+        {
+            var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
+            var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+
+            await AppIdentityDbContextSeed.SeedAsync(userManager, roleManager);
+        }
+        catch (Exception ex)
+        {
+            var loggerFactory = services.GetService<ILoggerFactory>();
+            var logger = loggerFactory?.CreateLogger("SeedLogger");
+            logger!.LogError(ex, "Ocorreu um erro ao executar o seed do banco de dados.");
+        }
     }
 
     private static void AddDatabase(this IServiceCollection services, IConfiguration configuration)
@@ -43,6 +76,25 @@ public static class ServiceCollectionInfrastructure
                                     .EnableSensitiveDataLogging()
                                     .EnableDetailedErrors();
             });
+
+    private static void AddIdentity(this IServiceCollection services, IConfiguration configuration)
+    {
+        // Configurar o contexto de banco de dados
+        services.AddDbContext<AppIdentityDbContext>(options =>
+            options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
+
+        // Configurar o Identity
+        services.AddIdentity<ApplicationUser, IdentityRole>(options =>
+        {
+            options.Password.RequireDigit = true;
+            options.Password.RequireLowercase = true;
+            options.Password.RequireNonAlphanumeric = false;
+            options.Password.RequireUppercase = true;
+            options.Password.RequiredLength = 6;
+        })
+        .AddEntityFrameworkStores<AppIdentityDbContext>()
+        .AddDefaultTokenProviders();
+    }
 
     private static void AddRepositories(this IServiceCollection services)
     {
@@ -90,5 +142,51 @@ public static class ServiceCollectionInfrastructure
         services.AddTransient<AgendamentoCanceledByEspecialistaEmail>();
         services.AddTransient<AgendamentoExpiredByPacienteEmail>();
         services.AddTransient<AgendamentoExpiredByEspecialistaEmail>();
+    }
+
+
+    private static void AddJwtConfiguration(this IServiceCollection services, IConfiguration configuration)
+    {
+        services.Configure<JWTSettings>(configuration.GetSection("JWT"));
+
+        services.AddScoped<IJwtTokenService, JwtTokenService>();
+
+        services.AddAuthentication(c =>
+        {
+            c.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            c.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+        })
+        .AddJwtBearer(options =>
+        {
+            options.RequireHttpsMetadata = false;
+            options.SaveToken = false;
+            options.TokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateIssuerSigningKey = true,
+                ValidateIssuer = true,
+                ValidateAudience = true,
+                ValidateLifetime = true,
+                ClockSkew = TimeSpan.Zero,
+                ValidIssuer = configuration["Jwt:Issuer"],
+                ValidAudience = configuration["Jwt:Audience"],
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Key"]))
+            };
+            options.Events = new JwtBearerEvents
+            {
+                OnChallenge = context =>
+                {
+                    context.HandleResponse();
+                    // await AuthErrorHandler.HandleAuthError(context.HttpContext, StatusCodes.Status401Unauthorized);
+                    return Task.CompletedTask;
+                },
+                OnForbidden = context =>
+                {
+                    context.Response.StatusCode = StatusCodes.Status403Forbidden;
+                    context.Response.ContentType = "application/json";
+                    // await AuthErrorHandler.HandleAuthError(context.HttpContext, StatusCodes.Status403Forbidden);
+                    return Task.CompletedTask;
+                }
+            };
+        });
     }
 }

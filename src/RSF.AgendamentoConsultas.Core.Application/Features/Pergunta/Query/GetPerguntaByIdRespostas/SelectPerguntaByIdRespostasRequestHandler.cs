@@ -1,9 +1,9 @@
 ﻿using RSF.AgendamentoConsultas.Core.Application.Features.Pergunta.Responses;
 using RSF.AgendamentoConsultas.Core.Application.Features.PerguntasRespostas.Responses;
-using RSF.AgendamentoConsultas.Core.Domain.Interfaces;
 using RSF.AgendamentoConsultas.CrossCutting.Shareable.Exceptions;
 using MediatR;
 using OperationResult;
+using RSF.AgendamentoConsultas.Core.Domain.Interfaces.Repositories;
 
 namespace RSF.AgendamentoConsultas.Core.Application.Features.Pergunta.Query.GetPerguntaByIdRespostas;
 

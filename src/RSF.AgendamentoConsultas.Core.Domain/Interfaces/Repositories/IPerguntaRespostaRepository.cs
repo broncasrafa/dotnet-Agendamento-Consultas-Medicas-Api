@@ -1,7 +1,7 @@
 ﻿using RSF.AgendamentoConsultas.Core.Domain.Entities;
-using RSF.AgendamentoConsultas.Core.Domain.Interfaces.Common;
+using RSF.AgendamentoConsultas.Core.Domain.Interfaces.Repositories.Common;
 
-namespace RSF.AgendamentoConsultas.Core.Domain.Interfaces;
+namespace RSF.AgendamentoConsultas.Core.Domain.Interfaces.Repositories;
 
 public interface IPerguntaRespostaRepository : IBaseRepository<PerguntaResposta>
 {

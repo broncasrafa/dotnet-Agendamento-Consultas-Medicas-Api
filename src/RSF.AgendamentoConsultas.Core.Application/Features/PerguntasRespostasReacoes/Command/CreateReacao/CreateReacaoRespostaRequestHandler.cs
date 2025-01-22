@@ -1,8 +1,8 @@
-﻿using RSF.AgendamentoConsultas.Core.Domain.Interfaces;
-using RSF.AgendamentoConsultas.CrossCutting.Shareable.Exceptions;
+﻿using RSF.AgendamentoConsultas.CrossCutting.Shareable.Exceptions;
 using RSF.AgendamentoConsultas.CrossCutting.Shareable.Enums;
 using MediatR;
 using OperationResult;
+using RSF.AgendamentoConsultas.Core.Domain.Interfaces.Repositories;
 
 namespace RSF.AgendamentoConsultas.Core.Application.Features.PerguntasRespostasReacoes.Command.CreateReacao;
 

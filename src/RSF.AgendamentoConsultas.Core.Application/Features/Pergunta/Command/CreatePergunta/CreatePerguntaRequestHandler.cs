@@ -1,11 +1,11 @@
 ﻿using Microsoft.Extensions.Configuration;
-using RSF.AgendamentoConsultas.Core.Domain.Interfaces;
-using RSF.AgendamentoConsultas.Core.Domain.Interfaces.Common;
 using RSF.AgendamentoConsultas.Core.Domain.MessageBus.Bus;
 using RSF.AgendamentoConsultas.Core.Domain.MessageBus.Events;
 using RSF.AgendamentoConsultas.CrossCutting.Shareable.Exceptions;
 using MediatR;
 using OperationResult;
+using RSF.AgendamentoConsultas.Core.Domain.Interfaces.Repositories.Common;
+using RSF.AgendamentoConsultas.Core.Domain.Interfaces.Repositories;
 
 namespace RSF.AgendamentoConsultas.Core.Application.Features.Pergunta.Command.CreatePergunta;
 

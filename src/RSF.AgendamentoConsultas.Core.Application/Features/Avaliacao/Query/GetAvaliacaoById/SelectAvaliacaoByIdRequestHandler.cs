@@ -1,9 +1,9 @@
 ﻿using RSF.AgendamentoConsultas.CrossCutting.Shareable.Exceptions;
 using RSF.AgendamentoConsultas.Core.Domain.Entities;
-using RSF.AgendamentoConsultas.Core.Domain.Interfaces.Common;
 using MediatR;
 using OperationResult;
 using RSF.AgendamentoConsultas.Core.Application.Features.Avaliacao.Responses;
+using RSF.AgendamentoConsultas.Core.Domain.Interfaces.Repositories.Common;
 
 
 namespace RSF.AgendamentoConsultas.Core.Application.Features.Avaliacao.Query.GetAvaliacaoById;

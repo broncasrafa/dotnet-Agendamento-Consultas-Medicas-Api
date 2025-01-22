@@ -1,11 +1,13 @@
 ﻿using RSF.AgendamentoConsultas.Api.Endpoints;
+using RSF.AgendamentoConsultas.CrossCutting.IoC;
+
 using Swashbuckle.AspNetCore.SwaggerUI;
 
 namespace RSF.AgendamentoConsultas.Api.Extensions;
 
 internal static class AppConfigureExtension
 {
-    public static void Configure(this WebApplication app)
+    public static async Task Configure(this WebApplication app)
     {
         app.ConfigureSwaggerUI();
         app.UseHttpsRedirection();
@@ -16,6 +18,8 @@ internal static class AppConfigureExtension
         app.UseExceptionHandler();
         app.UseCors("AllowAllPolicy");
         app.MapEndpoints();
+
+        await app.Services.SeedIdentityDatabaseAsync();
     }
 
     public static IApplicationBuilder MapEndpoints(this WebApplication app)

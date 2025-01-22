@@ -1,7 +1,9 @@
-﻿using RSF.AgendamentoConsultas.Core.Domain.Interfaces.Common;
-using MediatR;
+﻿using MediatR;
+
 using OperationResult;
+
 using RSF.AgendamentoConsultas.Core.Application.Features.TipoAgendamento.Responses;
+using RSF.AgendamentoConsultas.Core.Domain.Interfaces.Repositories.Common;
 
 namespace RSF.AgendamentoConsultas.Core.Application.Features.TipoAgendamento.GetAll;
 

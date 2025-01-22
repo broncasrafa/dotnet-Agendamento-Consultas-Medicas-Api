@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using RSF.AgendamentoConsultas.Infra.Data.Context;
 using RSF.AgendamentoConsultas.Infra.Data.Repositories;
-using RSF.AgendamentoConsultas.Core.Domain.Interfaces;
 using RSF.AgendamentoConsultas.Core.Domain.MessageBus.Bus;
 using RSF.AgendamentoConsultas.Infra.MessageBroker;
 using RSF.AgendamentoConsultas.Infra.MessageBroker.Configurations;
@@ -11,6 +10,7 @@ using Hangfire;
 using Hangfire.Console;
 using Hangfire.Redis.StackExchange;
 using StackExchange.Redis;
+using RSF.AgendamentoConsultas.Core.Domain.Interfaces.Repositories;
 
 namespace RSF.AgendamentoConsultas.Workers.AgendamentosExpirados.DependencyInjection;
 

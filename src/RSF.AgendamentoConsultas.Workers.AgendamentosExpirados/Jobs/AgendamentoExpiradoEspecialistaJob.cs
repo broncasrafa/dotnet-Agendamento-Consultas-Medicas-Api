@@ -1,5 +1,4 @@
-﻿using RSF.AgendamentoConsultas.Core.Domain.Interfaces;
-using RSF.AgendamentoConsultas.Core.Domain.MessageBus.Events;
+﻿using RSF.AgendamentoConsultas.Core.Domain.MessageBus.Events;
 using RSF.AgendamentoConsultas.CrossCutting.Shareable.Enums;
 using RSF.AgendamentoConsultas.Infra.MessageBroker.Configurations;
 using Hangfire;
@@ -7,6 +6,7 @@ using Hangfire.Console;
 using Hangfire.Server;
 using Microsoft.Extensions.Options;
 using RSF.AgendamentoConsultas.Core.Domain.MessageBus.Bus;
+using RSF.AgendamentoConsultas.Core.Domain.Interfaces.Repositories;
 
 namespace RSF.AgendamentoConsultas.Workers.AgendamentosExpirados.Jobs;
 

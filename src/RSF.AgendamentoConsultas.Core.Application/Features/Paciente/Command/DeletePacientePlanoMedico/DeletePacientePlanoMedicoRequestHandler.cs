@@ -1,9 +1,9 @@
 ﻿using RSF.AgendamentoConsultas.Core.Domain.Entities;
-using RSF.AgendamentoConsultas.Core.Domain.Interfaces;
-using RSF.AgendamentoConsultas.Core.Domain.Interfaces.Common;
 using RSF.AgendamentoConsultas.CrossCutting.Shareable.Exceptions;
 using MediatR;
 using OperationResult;
+using RSF.AgendamentoConsultas.Core.Domain.Interfaces.Repositories.Common;
+using RSF.AgendamentoConsultas.Core.Domain.Interfaces.Repositories;
 
 namespace RSF.AgendamentoConsultas.Core.Application.Features.Paciente.Command.DeletePacientePlanoMedico;
 

@@ -1,9 +1,9 @@
 ﻿using RSF.AgendamentoConsultas.CrossCutting.Shareable.Exceptions;
-using RSF.AgendamentoConsultas.Core.Domain.Interfaces;
 using RSF.AgendamentoConsultas.Core.Application.Features.Paciente.Responses;
 using RSF.AgendamentoConsultas.Core.Application.Features.PacienteDependente.Responses;
 using MediatR;
 using OperationResult;
+using RSF.AgendamentoConsultas.Core.Domain.Interfaces.Repositories;
 
 namespace RSF.AgendamentoConsultas.Core.Application.Features.Paciente.Query.GetPacienteByIdDependentes;
 

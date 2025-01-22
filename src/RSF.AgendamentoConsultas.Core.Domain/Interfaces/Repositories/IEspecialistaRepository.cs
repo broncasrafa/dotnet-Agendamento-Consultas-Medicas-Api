@@ -1,8 +1,8 @@
 ﻿using RSF.AgendamentoConsultas.Core.Domain.Entities;
-using RSF.AgendamentoConsultas.Core.Domain.Interfaces.Common;
+using RSF.AgendamentoConsultas.Core.Domain.Interfaces.Repositories.Common;
 using RSF.AgendamentoConsultas.CrossCutting.Shareable.Results;
 
-namespace RSF.AgendamentoConsultas.Core.Domain.Interfaces;
+namespace RSF.AgendamentoConsultas.Core.Domain.Interfaces.Repositories;
 
 public interface IEspecialistaRepository : IBaseRepository<Especialista>
 {
@@ -14,6 +14,6 @@ public interface IEspecialistaRepository : IBaseRepository<Especialista>
     ValueTask<Especialista> GetByIdWithRespostasAsync(int id);
     ValueTask<PagedResult<Especialista>> GetAllPagedAsync(int pageNumber = 1, int pageSize = 10);
     ValueTask<PagedResult<Especialista>> GetAllByNamePagedAsync(string name, int pageNumber = 1, int pageSize = 10);
-    
+
     ValueTask<IReadOnlyList<Especialista>> GetAllByEspecialidadeIdAsync(int especialidadeId);
 }

@@ -1,8 +1,8 @@
-﻿using RSF.AgendamentoConsultas.Core.Domain.Interfaces;
-using RSF.AgendamentoConsultas.CrossCutting.Shareable.Results;
+﻿using RSF.AgendamentoConsultas.CrossCutting.Shareable.Results;
 using MediatR;
 using OperationResult;
 using RSF.AgendamentoConsultas.Core.Application.Features.Especialista.Responses;
+using RSF.AgendamentoConsultas.Core.Domain.Interfaces.Repositories;
 
 namespace RSF.AgendamentoConsultas.Core.Application.Features.Especialista.Query.GetByNamePaged;
 
