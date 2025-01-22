@@ -1,5 +1,9 @@
-﻿using RSF.AgendamentoConsultas.Domain.Interfaces;
+﻿using Microsoft.Extensions.Options;
+using RSF.AgendamentoConsultas.Domain.Interfaces;
+using RSF.AgendamentoConsultas.Domain.MessageBus.Bus;
+using RSF.AgendamentoConsultas.Domain.MessageBus.Events;
 using RSF.AgendamentoConsultas.Shareable.Enums;
+using RSF.AgendamentoConsultas.MessageBroker.Configurations;
 using Hangfire;
 using Hangfire.Console;
 using Hangfire.Server;
@@ -10,11 +14,16 @@ public class AgendamentoExpiradoPacienteJob : IHostedService
 {
     private readonly ILogger<AgendamentoExpiradoPacienteJob> _logger;
     private readonly IServiceProvider _serviceProvider;
+    private readonly IOptions<RabbitMQSettings> _options;
 
-    public AgendamentoExpiradoPacienteJob(ILogger<AgendamentoExpiradoPacienteJob> logger, IServiceProvider serviceProvider)
+    public AgendamentoExpiradoPacienteJob(
+        ILogger<AgendamentoExpiradoPacienteJob> logger, 
+        IServiceProvider serviceProvider, 
+        IOptions<RabbitMQSettings> options)
     {
         _logger = logger;
         _serviceProvider = serviceProvider;
+        _options = options;
     }
 
 
@@ -22,6 +31,7 @@ public class AgendamentoExpiradoPacienteJob : IHostedService
     {
         using var scope = _serviceProvider.CreateScope();
 
+        var eventBus = scope.ServiceProvider.GetRequiredService<IEventBus>();
         var repository = scope.ServiceProvider.GetRequiredService<IAgendamentoConsultaRepository>();
 
         var agendamentosExpirados = await repository.GetAllExpiredByPacienteAsync();
@@ -37,6 +47,23 @@ public class AgendamentoExpiradoPacienteJob : IHostedService
 
             var rowsAffected = await repository.UpdateRangeAsync(agendamentosExpirados);
 
+            agendamentosExpirados.ToList().ForEach(x => 
+            {
+                var @event = new AgendamentoExpiredByPacienteEvent
+                (
+                    x.Paciente.Nome,
+                    x.Paciente.Email,
+                    x.Especialista.Nome,
+                    x.Especialidade.Nome,
+                    x.DataConsulta.ToString("dd/MM/yyyy"),
+                    x.HorarioConsulta,
+                    x.LocalAtendimento.Nome,
+                    "Consulta cancelada automaticamente, pois não recebemos sua resposta para a confirmação em tempo hábil."
+                );
+
+                eventBus.Publish(@event, _options.Value.AgendamentoExpiradoPacienteQueueName);
+            });
+            
             context.WriteLine($"Agendamentos expirados: {rowsAffected}");
         }
         else

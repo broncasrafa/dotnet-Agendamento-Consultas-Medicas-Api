@@ -1,8 +1,12 @@
 ﻿using RSF.AgendamentoConsultas.Domain.Interfaces;
+using RSF.AgendamentoConsultas.Domain.MessageBus.Events;
 using RSF.AgendamentoConsultas.Shareable.Enums;
+using RSF.AgendamentoConsultas.MessageBroker.Configurations;
 using Hangfire;
 using Hangfire.Console;
 using Hangfire.Server;
+using Microsoft.Extensions.Options;
+using RSF.AgendamentoConsultas.Domain.MessageBus.Bus;
 
 namespace RSF.AgendamentoConsultas.Workers.AgendamentosExpirados.Jobs;
 
@@ -10,18 +14,23 @@ public class AgendamentoExpiradoEspecialistaJob : IHostedService
 {
     private readonly ILogger<AgendamentoExpiradoEspecialistaJob> _logger;
     private readonly IServiceProvider _serviceProvider;
+    private readonly IOptions<RabbitMQSettings> _options;
 
-    public AgendamentoExpiradoEspecialistaJob(ILogger<AgendamentoExpiradoEspecialistaJob> logger, IServiceProvider serviceProvider)
+    public AgendamentoExpiradoEspecialistaJob(
+        ILogger<AgendamentoExpiradoEspecialistaJob> logger, 
+        IServiceProvider serviceProvider, 
+        IOptions<RabbitMQSettings> options)
     {
         _logger = logger;
         _serviceProvider = serviceProvider;
+        _options = options;
     }
 
 
     public async Task ProcessTaskAsync(PerformContext? context)
     {
         using var scope = _serviceProvider.CreateScope();
-
+        var eventBus = scope.ServiceProvider.GetRequiredService<IEventBus>();
         var repository = scope.ServiceProvider.GetRequiredService<IAgendamentoConsultaRepository>();
 
         var agendamentosExpirados = await repository.GetAllExpiredByEspecialistaAsync();
@@ -35,6 +44,20 @@ public class AgendamentoExpiradoEspecialistaJob : IHostedService
             });
 
             var rowsAffected = await repository.UpdateRangeAsync(agendamentosExpirados);
+
+            agendamentosExpirados.ToList().ForEach(x => { 
+                var @event = new AgendamentoExpiredByEspecialistaEvent
+                (
+                    x.Paciente.Nome,
+                    x.Especialista.Nome,
+                    x.Especialista.Email,
+                    x.Especialidade.Nome,
+                    x.DataConsulta.ToString("dd/MM/yyyy"),
+                    x.HorarioConsulta,
+                    x.LocalAtendimento.Nome
+                );
+                eventBus.Publish(@event, _options.Value.AgendamentoExpiradoEspecialistaQueueName);
+            });
 
             context.WriteLine($"Agendamentos expirados: {rowsAffected}");
         } 

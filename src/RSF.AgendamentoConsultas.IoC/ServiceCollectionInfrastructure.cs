@@ -88,5 +88,7 @@ public static class ServiceCollectionInfrastructure
         services.AddTransient<AgendamentoCreatedEmail>();
         services.AddTransient<AgendamentoCanceledByPacienteEmail>();
         services.AddTransient<AgendamentoCanceledByEspecialistaEmail>();
+        services.AddTransient<AgendamentoExpiredByPacienteEmail>();
+        services.AddTransient<AgendamentoExpiredByEspecialistaEmail>();
     }
 }

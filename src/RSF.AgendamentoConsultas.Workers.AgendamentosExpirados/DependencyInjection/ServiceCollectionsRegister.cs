@@ -8,6 +8,9 @@ using Hangfire;
 using Hangfire.Console;
 using Hangfire.Redis.StackExchange;
 using StackExchange.Redis;
+using RSF.AgendamentoConsultas.Domain.MessageBus.Bus;
+using RSF.AgendamentoConsultas.MessageBroker;
+using RSF.AgendamentoConsultas.MessageBroker.Configurations;
 
 namespace RSF.AgendamentoConsultas.Workers.AgendamentosExpirados.DependencyInjection;
 
@@ -18,20 +21,7 @@ public static class ServiceCollectionsRegister
     {
         services.ConfigureHangfire(configuration);
         services.ConfigureJobs();
-
-
-        services.AddDbContext<AppDbContext>(options =>
-        {
-            options.UseLoggerFactory(LoggerFactory.Create(builder => builder.AddConsole()));
-            options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"),
-                        b => b.MigrationsAssembly(typeof(AppDbContext).Assembly.FullName))
-                                .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking)
-                                .EnableSensitiveDataLogging()
-                                .EnableDetailedErrors();
-        });
-
-        services.AddScoped<IAgendamentoConsultaRepository, AgendamentoConsultaRepository>();
-
+        services.ConfigureExternalServices(configuration);
         return services;
     }
 
@@ -57,5 +47,22 @@ public static class ServiceCollectionsRegister
     {
         services.AddHostedService<AgendamentoExpiradoPacienteJob>();
         services.AddHostedService<AgendamentoExpiradoEspecialistaJob>();
+    }
+    private static void ConfigureExternalServices(this IServiceCollection services, IConfiguration configuration)
+    {
+        services.AddDbContext<AppDbContext>(options =>
+        {
+            options.UseLoggerFactory(LoggerFactory.Create(builder => builder.AddConsole()));
+            options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"),
+                        b => b.MigrationsAssembly(typeof(AppDbContext).Assembly.FullName))
+                                .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking)
+                                .EnableSensitiveDataLogging()
+                                .EnableDetailedErrors();
+        });
+        services.AddScoped<IAgendamentoConsultaRepository, AgendamentoConsultaRepository>();
+
+        services.Configure<RabbitMQSettings>(configuration.GetSection("RabbitMQ"));
+        services.AddSingleton<RabbitMQConnection>();
+        services.AddScoped<IEventBus, RabbitMQService>();
     }
 }

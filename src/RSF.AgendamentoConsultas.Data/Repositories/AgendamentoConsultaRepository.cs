@@ -67,7 +67,12 @@ public class AgendamentoConsultaRepository : BaseRepository<AgendamentoConsulta>
 
     public async ValueTask<IReadOnlyList<AgendamentoConsulta>> GetAllExpiredByPacienteAsync()
     {
-        return await _Context.Agendamentos.AsNoTracking()            
+        return await _Context.Agendamentos
+            .AsNoTracking()
+            .Include(p => p.Paciente)
+            .Include(e => e.Especialista)
+            .Include(ee => ee.Especialidade).ThenInclude(g => g.EspecialidadeGrupo)
+            .Include(el => el.LocalAtendimento)
             .Where(c => 
                 c.ConfirmedByEspecialistaAt != null && 
                 c.StatusConsultaId == (int)ETipoStatusConsulta.Solicitado &&
@@ -80,7 +85,10 @@ public class AgendamentoConsultaRepository : BaseRepository<AgendamentoConsulta>
     {
         return await _Context.Agendamentos
             .AsNoTracking()
+            .Include(p => p.Paciente)
             .Include(c => c.Especialista)
+            .Include(ee => ee.Especialidade).ThenInclude(g => g.EspecialidadeGrupo)
+            .Include(el => el.LocalAtendimento)
             .Where(c =>
                 c.StatusConsultaId == (int)ETipoStatusConsulta.Solicitado &&
                 c.DataConsulta < DateTime.Now
