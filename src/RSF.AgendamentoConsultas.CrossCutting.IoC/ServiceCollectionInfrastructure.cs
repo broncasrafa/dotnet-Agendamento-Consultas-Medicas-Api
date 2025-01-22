@@ -2,15 +2,19 @@
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using RSF.AgendamentoConsultas.Core.Domain.Notifications;
 using RSF.AgendamentoConsultas.Core.Domain.MessageBus.Bus;
 using RSF.AgendamentoConsultas.Core.Domain.Entities;
+using RSF.AgendamentoConsultas.Core.Domain.Interfaces.Repositories.Common;
+using RSF.AgendamentoConsultas.Core.Domain.Interfaces.Repositories;
+using RSF.AgendamentoConsultas.Core.Domain.Interfaces.Services;
 using RSF.AgendamentoConsultas.Infra.Data.Context;
 using RSF.AgendamentoConsultas.Infra.Data.Repositories;
 using RSF.AgendamentoConsultas.Infra.Data.Repositories.Common;
@@ -20,12 +24,10 @@ using RSF.AgendamentoConsultas.Infra.Notifications;
 using RSF.AgendamentoConsultas.Infra.Notifications.Configurations;
 using RSF.AgendamentoConsultas.Infra.Notifications.Templates;
 using RSF.AgendamentoConsultas.Infra.Identity.Context;
-using Amazon.S3;
 using RSF.AgendamentoConsultas.Infra.Identity.Configurations;
-using RSF.AgendamentoConsultas.Core.Domain.Interfaces.Repositories.Common;
-using RSF.AgendamentoConsultas.Core.Domain.Interfaces.Repositories;
-using RSF.AgendamentoConsultas.Core.Domain.Interfaces.Services;
 using RSF.AgendamentoConsultas.Infra.Identity.JWT;
+using RSF.AgendamentoConsultas.Infra.Identity.AccountManager;
+using Amazon.S3;
 
 namespace RSF.AgendamentoConsultas.CrossCutting.IoC;
 
@@ -150,6 +152,7 @@ public static class ServiceCollectionInfrastructure
         services.Configure<JWTSettings>(configuration.GetSection("JWT"));
 
         services.AddScoped<IJwtTokenService, JwtTokenService>();
+        services.AddScoped<IAccountManagerService, AccountManagerService>();
 
         services.AddAuthentication(c =>
         {
@@ -173,20 +176,42 @@ public static class ServiceCollectionInfrastructure
             };
             options.Events = new JwtBearerEvents
             {
-                OnChallenge = context =>
+                OnChallenge = async context =>
                 {
                     context.HandleResponse();
-                    // await AuthErrorHandler.HandleAuthError(context.HttpContext, StatusCodes.Status401Unauthorized);
-                    return Task.CompletedTask;
+                    await HandleAuthError(context.HttpContext, StatusCodes.Status401Unauthorized);
                 },
-                OnForbidden = context =>
+                OnForbidden = async context =>
                 {
                     context.Response.StatusCode = StatusCodes.Status403Forbidden;
                     context.Response.ContentType = "application/json";
-                    // await AuthErrorHandler.HandleAuthError(context.HttpContext, StatusCodes.Status403Forbidden);
-                    return Task.CompletedTask;
+                    await HandleAuthError(context.HttpContext, StatusCodes.Status403Forbidden);
                 }
             };
         });
+    }
+
+
+    private static async Task HandleAuthError(HttpContext context, int statusCode)
+    {
+        var problemDetails = new ProblemDetails
+        {
+            Status = statusCode,
+            Instance = context.Request.Path,
+            Title = statusCode switch
+            {
+                StatusCodes.Status401Unauthorized => "You are not authenticated.",
+                StatusCodes.Status403Forbidden => "Access denied.",
+                _ => "Authentication error."
+            },
+            Detail = statusCode switch
+            {
+                StatusCodes.Status401Unauthorized => "Please send a valid token in the Authorization header of the request.",
+                StatusCodes.Status403Forbidden => "You do not have permission to access this resource.",
+                _ => "Please contact support for more information."
+            }
+        };
+
+        await context.Response.WriteAsJsonAsync(problemDetails);
     }
 }

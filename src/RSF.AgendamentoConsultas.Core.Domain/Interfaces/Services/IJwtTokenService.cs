@@ -5,5 +5,5 @@ namespace RSF.AgendamentoConsultas.Core.Domain.Interfaces.Services;
 
 public interface IJwtTokenService
 {
-    string GenerateTokenJwt(ApplicationUser user, IReadOnlyList<Claim> roleClaims, IReadOnlyList<Claim> userClaims);
+    string GenerateTokenJwt(ApplicationUser user, IList<Claim> roleClaims, IList<Claim> userClaims);
 }

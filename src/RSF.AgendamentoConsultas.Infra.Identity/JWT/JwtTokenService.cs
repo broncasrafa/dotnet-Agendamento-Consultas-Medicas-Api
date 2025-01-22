@@ -22,16 +22,16 @@ public class JwtTokenService : IJwtTokenService
         _options = options;
     }
 
-    public string GenerateTokenJwt(ApplicationUser user, IReadOnlyList<Claim> roleClaims, IReadOnlyList<Claim> userClaims)
+    public string GenerateTokenJwt(ApplicationUser user, IList<Claim> roleClaims, IList<Claim> userClaims)
     {
         _logger.LogInformation($"Generating JWT token for user: '{user.UserName}'");
 
         var claims = new List<Claim>
         {
-            new Claim(JwtRegisteredClaimNames.Sub, user.Email),
-            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-            new Claim(JwtRegisteredClaimNames.Email, user.Email),
-            new Claim("userId", user.Id),
+            new(JwtRegisteredClaimNames.Sub, user.Email),
+            new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+            new(JwtRegisteredClaimNames.Email, user.Email),
+            new("userId", user.Id),
         }.Union(userClaims)
          .Union(roleClaims);
 

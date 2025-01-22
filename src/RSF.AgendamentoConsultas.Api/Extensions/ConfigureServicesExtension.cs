@@ -8,6 +8,7 @@ using RSF.AgendamentoConsultas.CrossCutting.Shareable;
 using FluentValidation;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using Microsoft.Extensions.DependencyInjection;
 
 
 namespace RSF.AgendamentoConsultas.Api.Extensions;
@@ -33,6 +34,8 @@ internal static class ConfigureServicesExtension
         services.AddHealthChecks();
 
         services.AddHttpContextAccessor();
+
+        services.AddAuthorization();
 
         services.AddValidatorsFromAssemblyContaining<ShareableEntryPoint>();
 

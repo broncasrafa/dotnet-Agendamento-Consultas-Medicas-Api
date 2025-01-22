@@ -1,4 +1,6 @@
 ﻿using System.Text.RegularExpressions;
+
+using RSF.AgendamentoConsultas.CrossCutting.Shareable.Enums;
 using RSF.AgendamentoConsultas.CrossCutting.Shareable.Validations;
 using Slugify;
 
@@ -47,4 +49,22 @@ public static class Utilitarios
     /// <param name="data">datetime a ser formatada</param>
     public static string DataFormatadaExtenso(DateTime data)
         => data.ToString("dddd, dd 'de' MMMM 'às' HH:mm", new System.Globalization.CultureInfo("pt-BR"));
+
+
+    /// <summary>
+    /// Converte um tipo de acesso para uma string de role
+    /// </summary>
+    /// <param name="tipoAcesso">valor da string do perfil de acesso</param>
+    /// <returns>A string do enum <see cref="ETipoPerfilAcesso"/>ETipoPerfilAcesso</returns>
+    /// <exception cref="ArgumentNullException">Tipo de acesso nulo ou vazio</exception>
+    /// <exception cref="ArgumentException">Tipo de acesso inválido</exception>
+    public static string ConverterTipoAcessoParaRoleString(string tipoAcesso)
+    {
+        if (string.IsNullOrWhiteSpace(tipoAcesso)) throw new ArgumentNullException(nameof(tipoAcesso));
+
+        if (Enum.TryParse<ETipoPerfilAcesso>(tipoAcesso, true, out var perfilAcesso))
+            return perfilAcesso.ToString();
+
+        throw new ArgumentException($"O tipo de acesso '{tipoAcesso}' não é válido.");
+    }
 }

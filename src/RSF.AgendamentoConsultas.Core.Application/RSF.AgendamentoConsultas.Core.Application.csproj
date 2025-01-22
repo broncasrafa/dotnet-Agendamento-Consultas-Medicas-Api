@@ -17,4 +17,8 @@
 		<ProjectReference Include="..\RSF.AgendamentoConsultas.CrossCutting.Shareable\RSF.AgendamentoConsultas.CrossCutting.Shareable.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="Features\Account\Query\" />
+	</ItemGroup>
+
 </Project>

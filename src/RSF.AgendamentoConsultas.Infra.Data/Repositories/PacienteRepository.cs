@@ -19,6 +19,13 @@ public class PacienteRepository : BaseRepository<Paciente>, IPacienteRepository
                     .Include(c => c.PlanosMedicos).ThenInclude(cm => cm.ConvenioMedico)
                     .FirstOrDefaultAsync(p => p.PacienteId == pacienteId);
 
+    public async ValueTask<Paciente> GetByEmailAsync(string email)
+        => await _Context.Pacientes
+                    .AsNoTracking()
+                    .Include(c => c.Dependentes).ThenInclude(d => d.PlanosMedicos).ThenInclude(cm => cm.ConvenioMedico)
+                    .Include(c => c.PlanosMedicos).ThenInclude(cm => cm.ConvenioMedico)
+                    .FirstOrDefaultAsync(p => p.Email == email);
+
 
     public async ValueTask<IReadOnlyList<PacientePlanoMedico>> GetPlanosMedicosPacienteByIdAsync(int pacienteId)
     {
