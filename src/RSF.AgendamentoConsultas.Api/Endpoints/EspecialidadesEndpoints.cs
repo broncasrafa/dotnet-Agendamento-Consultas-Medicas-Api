@@ -1,13 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using RSF.AgendamentoConsultas.Api.Models;
 using RSF.AgendamentoConsultas.Api.Extensions;
-using RSF.AgendamentoConsultas.Application.Features.Especialidade.GetAll;
-using RSF.AgendamentoConsultas.Application.Features.Especialidade.GetById;
-using RSF.AgendamentoConsultas.Application.Features.Especialidade.GetByName;
-using RSF.AgendamentoConsultas.Application.Features.EspecialidadeGrupo.GetAll;
-using RSF.AgendamentoConsultas.Application.Features.EspecialidadeGrupo.GetById;
-using RSF.AgendamentoConsultas.Application.Features.Especialidade.Responses;
-using RSF.AgendamentoConsultas.Application.Features.EspecialidadeGrupo.Responses;
+using RSF.AgendamentoConsultas.Core.Application.Features.Especialidade.GetAll;
+using RSF.AgendamentoConsultas.Core.Application.Features.Especialidade.GetById;
+using RSF.AgendamentoConsultas.Core.Application.Features.Especialidade.GetByName;
+using RSF.AgendamentoConsultas.Core.Application.Features.EspecialidadeGrupo.GetAll;
+using RSF.AgendamentoConsultas.Core.Application.Features.EspecialidadeGrupo.GetById;
+using RSF.AgendamentoConsultas.Core.Application.Features.Especialidade.Responses;
+using RSF.AgendamentoConsultas.Core.Application.Features.EspecialidadeGrupo.Responses;
 using MediatR;
 
 namespace RSF.AgendamentoConsultas.Api.Endpoints;

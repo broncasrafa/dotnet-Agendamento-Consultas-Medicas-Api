@@ -11,11 +11,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "03 - Infra", "03 - Infra", 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "98 - Tests", "98 - Tests", "{911CAC9C-F16B-4697-A391-D8618F0A4AE9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RSF.AgendamentoConsultas.Domain", "src\RSF.AgendamentoConsultas.Domain\RSF.AgendamentoConsultas.Domain.csproj", "{35DBB00D-2528-4497-8071-6430F8348174}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RSF.AgendamentoConsultas.Core.Domain", "src\RSF.AgendamentoConsultas.Core.Domain\RSF.AgendamentoConsultas.Core.Domain.csproj", "{35DBB00D-2528-4497-8071-6430F8348174}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RSF.AgendamentoConsultas.Application", "src\RSF.AgendamentoConsultas.Application\RSF.AgendamentoConsultas.Application.csproj", "{D9EA27D6-4A17-466E-891D-331B7189097E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RSF.AgendamentoConsultas.Core.Application", "src\RSF.AgendamentoConsultas.Core.Application\RSF.AgendamentoConsultas.Core.Application.csproj", "{D9EA27D6-4A17-466E-891D-331B7189097E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RSF.AgendamentoConsultas.Data", "src\RSF.AgendamentoConsultas.Data\RSF.AgendamentoConsultas.Data.csproj", "{5C85E277-499F-43E6-9BFB-9B560DB15EC8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RSF.AgendamentoConsultas.Infra.Data", "src\RSF.AgendamentoConsultas.Infra.Data\RSF.AgendamentoConsultas.Infra.Data.csproj", "{5C85E277-499F-43E6-9BFB-9B560DB15EC8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RSF.AgendamentoConsultas.Api", "src\RSF.AgendamentoConsultas.Api\RSF.AgendamentoConsultas.Api.csproj", "{7DB7570D-37E9-41AF-B341-79AFC9DF52D7}"
 EndProject
@@ -29,21 +29,23 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "04 - CrossCutting", "04 - CrossCutting", "{CC1B6233-F76F-4A0A-84F1-26A2FCC6DF2D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RSF.AgendamentoConsultas.IoC", "src\RSF.AgendamentoConsultas.IoC\RSF.AgendamentoConsultas.IoC.csproj", "{1DD94646-3A65-4271-8B05-D2C2B3041654}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RSF.AgendamentoConsultas.CrossCutting.IoC", "src\RSF.AgendamentoConsultas.CrossCutting.IoC\RSF.AgendamentoConsultas.CrossCutting.IoC.csproj", "{1DD94646-3A65-4271-8B05-D2C2B3041654}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RSF.AgendamentoConsultas.Shareable", "src\RSF.AgendamentoConsultas.Shareable\RSF.AgendamentoConsultas.Shareable.csproj", "{B6065314-045E-4E7F-BF42-D6E23C4550EE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RSF.AgendamentoConsultas.CrossCutting.Shareable", "src\RSF.AgendamentoConsultas.CrossCutting.Shareable\RSF.AgendamentoConsultas.CrossCutting.Shareable.csproj", "{B6065314-045E-4E7F-BF42-D6E23C4550EE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RSF.AgendamentoConsultas.MessageBroker", "src\RSF.AgendamentoConsultas.MessageBroker\RSF.AgendamentoConsultas.MessageBroker.csproj", "{F6DB516C-89FD-430B-874C-ED7E25482E92}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RSF.AgendamentoConsultas.Infra.MessageBroker", "src\RSF.AgendamentoConsultas.Infra.MessageBroker\RSF.AgendamentoConsultas.Infra.MessageBroker.csproj", "{F6DB516C-89FD-430B-874C-ED7E25482E92}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "05 - Consumers", "05 - Consumers", "{F5563E86-F35D-413F-A733-9284C699F4A8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RSF.AgendamentoConsultas.Notifications", "src\RSF.AgendamentoConsultas.Notifications\RSF.AgendamentoConsultas.Notifications.csproj", "{605EF85F-E2A7-4F02-90EB-072529144D73}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RSF.AgendamentoConsultas.Infra.Notifications", "src\RSF.AgendamentoConsultas.Infra.Notifications\RSF.AgendamentoConsultas.Infra.Notifications.csproj", "{605EF85F-E2A7-4F02-90EB-072529144D73}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RSF.AgendamentoConsultas.Consumers.Notification", "src\RSF.AgendamentoConsultas.Consumers.Notification\RSF.AgendamentoConsultas.Consumers.Notification.csproj", "{3ECDD2D8-4BDD-440F-87F0-B02C760CD7DA}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "06 - Workers", "06 - Workers", "{522D3DD7-5D3C-4864-882F-F1F35FAC6B2E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RSF.AgendamentoConsultas.Workers.AgendamentosExpirados", "src\RSF.AgendamentoConsultas.Workers.AgendamentosExpirados\RSF.AgendamentoConsultas.Workers.AgendamentosExpirados.csproj", "{19A49FFF-5678-4F3B-A6D0-C24DB0A0ED9D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RSF.AgendamentoConsultas.Infra.Identity", "src\RSF.AgendamentoConsultas.Infra.Identity\RSF.AgendamentoConsultas.Infra.Identity.csproj", "{11BD100A-44C5-406A-810C-AB94FF613B45}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -91,6 +93,10 @@ Global
 		{19A49FFF-5678-4F3B-A6D0-C24DB0A0ED9D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{19A49FFF-5678-4F3B-A6D0-C24DB0A0ED9D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{19A49FFF-5678-4F3B-A6D0-C24DB0A0ED9D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{11BD100A-44C5-406A-810C-AB94FF613B45}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{11BD100A-44C5-406A-810C-AB94FF613B45}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{11BD100A-44C5-406A-810C-AB94FF613B45}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{11BD100A-44C5-406A-810C-AB94FF613B45}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -106,5 +112,6 @@ Global
 		{605EF85F-E2A7-4F02-90EB-072529144D73} = {26C51A3F-0826-4791-BFE6-32A3DC49AB34}
 		{3ECDD2D8-4BDD-440F-87F0-B02C760CD7DA} = {F5563E86-F35D-413F-A733-9284C699F4A8}
 		{19A49FFF-5678-4F3B-A6D0-C24DB0A0ED9D} = {522D3DD7-5D3C-4864-882F-F1F35FAC6B2E}
+		{11BD100A-44C5-406A-810C-AB94FF613B45} = {26C51A3F-0826-4791-BFE6-32A3DC49AB34}
 	EndGlobalSection
 EndGlobal

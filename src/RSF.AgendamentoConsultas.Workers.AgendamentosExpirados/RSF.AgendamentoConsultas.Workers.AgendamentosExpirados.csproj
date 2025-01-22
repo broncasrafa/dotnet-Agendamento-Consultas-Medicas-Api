@@ -16,9 +16,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\RSF.AgendamentoConsultas.Application\RSF.AgendamentoConsultas.Application.csproj" />
-	  <ProjectReference Include="..\RSF.AgendamentoConsultas.Data\RSF.AgendamentoConsultas.Data.csproj" />
-	  <ProjectReference Include="..\RSF.AgendamentoConsultas.MessageBroker\RSF.AgendamentoConsultas.MessageBroker.csproj" />
+	  <ProjectReference Include="..\RSF.AgendamentoConsultas.Core.Application\RSF.AgendamentoConsultas.Core.Application.csproj" />
+	  <ProjectReference Include="..\RSF.AgendamentoConsultas.Infra.Data\RSF.AgendamentoConsultas.Infra.Data.csproj" />
+	  <ProjectReference Include="..\RSF.AgendamentoConsultas.Infra.MessageBroker\RSF.AgendamentoConsultas.Infra.MessageBroker.csproj" />
 	</ItemGroup>
 
 </Project>

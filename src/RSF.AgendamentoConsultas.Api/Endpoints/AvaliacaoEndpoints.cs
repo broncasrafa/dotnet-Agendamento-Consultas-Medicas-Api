@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using RSF.AgendamentoConsultas.Api.Extensions;
 using RSF.AgendamentoConsultas.Api.Models;
-using RSF.AgendamentoConsultas.Application.Features.Avaliacao.Query.GetAvaliacaoById;
-using RSF.AgendamentoConsultas.Application.Features.Avaliacao.Responses;
-using RSF.AgendamentoConsultas.Application.Features.Avaliacao.Command.CreateAvaliacao;
+using RSF.AgendamentoConsultas.Core.Application.Features.Avaliacao.Query.GetAvaliacaoById;
+using RSF.AgendamentoConsultas.Core.Application.Features.Avaliacao.Responses;
+using RSF.AgendamentoConsultas.Core.Application.Features.Avaliacao.Command.CreateAvaliacao;
 using MediatR;
 
 namespace RSF.AgendamentoConsultas.Api.Endpoints;

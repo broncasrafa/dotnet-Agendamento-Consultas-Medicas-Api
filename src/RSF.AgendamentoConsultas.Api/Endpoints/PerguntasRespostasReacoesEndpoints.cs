@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using RSF.AgendamentoConsultas.Api.Extensions;
 using RSF.AgendamentoConsultas.Api.Models;
-using RSF.AgendamentoConsultas.Application.Features.PerguntasRespostasReacoes.Command.CreateReacao;
-using RSF.AgendamentoConsultas.Application.Features.PerguntasRespostasReacoes.Command.UpdateReacao;
+using RSF.AgendamentoConsultas.Core.Application.Features.PerguntasRespostasReacoes.Command.CreateReacao;
+using RSF.AgendamentoConsultas.Core.Application.Features.PerguntasRespostasReacoes.Command.UpdateReacao;
 using MediatR;
 
 namespace RSF.AgendamentoConsultas.Api.Endpoints;

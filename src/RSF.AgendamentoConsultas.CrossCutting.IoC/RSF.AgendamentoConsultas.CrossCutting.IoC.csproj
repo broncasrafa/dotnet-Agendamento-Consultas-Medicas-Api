@@ -1,0 +1,27 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="AutoMapper" Version="13.0.1" />
+		<PackageReference Include="MediatR" Version="9.0.0" />
+		<PackageReference Include="FluentValidation" Version="11.11.0" />
+		<PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.11.0" />
+		<PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="9.0.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\RSF.AgendamentoConsultas.Core.Domain\RSF.AgendamentoConsultas.Core.Domain.csproj" />
+		<ProjectReference Include="..\RSF.AgendamentoConsultas.Core.Application\RSF.AgendamentoConsultas.Core.Application.csproj" />
+		<ProjectReference Include="..\RSF.AgendamentoConsultas.Consumers.Notification\RSF.AgendamentoConsultas.Consumers.Notification.csproj" />
+		<ProjectReference Include="..\RSF.AgendamentoConsultas.Infra.MessageBroker\RSF.AgendamentoConsultas.Infra.MessageBroker.csproj" />
+		<ProjectReference Include="..\RSF.AgendamentoConsultas.Infra.Notifications\RSF.AgendamentoConsultas.Infra.Notifications.csproj" />
+		<ProjectReference Include="..\RSF.AgendamentoConsultas.Infra.Data\RSF.AgendamentoConsultas.Infra.Data.csproj" />
+		<ProjectReference Include="..\RSF.AgendamentoConsultas.Infra.Identity\RSF.AgendamentoConsultas.Infra.Identity.csproj" />
+	</ItemGroup>
+
+</Project>

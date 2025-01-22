@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 
 using FluentValidation;
-using RSF.AgendamentoConsultas.Shareable.Filters;
+using RSF.AgendamentoConsultas.CrossCutting.Shareable.Filters;
 
 namespace RSF.AgendamentoConsultas.Api.Filters;
 

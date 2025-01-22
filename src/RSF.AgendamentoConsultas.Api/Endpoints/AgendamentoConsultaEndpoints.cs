@@ -1,13 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using RSF.AgendamentoConsultas.Api.Models;
 using RSF.AgendamentoConsultas.Api.Extensions;
-using RSF.AgendamentoConsultas.Application.Features.Agendamento.Responses;
-using RSF.AgendamentoConsultas.Application.Features.Agendamento.Query.GetAgendamentoById;
-using RSF.AgendamentoConsultas.Application.Features.Agendamento.Command.CreateAgendamento;
-using RSF.AgendamentoConsultas.Application.Features.Agendamento.Command.CancelAgendamentoByPaciente;
-using RSF.AgendamentoConsultas.Application.Features.Agendamento.Command.CancelAgendamentoByEspecialista;
-using RSF.AgendamentoConsultas.Application.Features.Agendamento.Command.ConfirmAgendamentoByPaciente;
-using RSF.AgendamentoConsultas.Application.Features.Agendamento.Command.ConfirmAgendamentoByEspecialista;
+using RSF.AgendamentoConsultas.Core.Application.Features.Agendamento.Responses;
+using RSF.AgendamentoConsultas.Core.Application.Features.Agendamento.Query.GetAgendamentoById;
+using RSF.AgendamentoConsultas.Core.Application.Features.Agendamento.Command.CreateAgendamento;
+using RSF.AgendamentoConsultas.Core.Application.Features.Agendamento.Command.CancelAgendamentoByPaciente;
+using RSF.AgendamentoConsultas.Core.Application.Features.Agendamento.Command.CancelAgendamentoByEspecialista;
+using RSF.AgendamentoConsultas.Core.Application.Features.Agendamento.Command.ConfirmAgendamentoByPaciente;
+using RSF.AgendamentoConsultas.Core.Application.Features.Agendamento.Command.ConfirmAgendamentoByEspecialista;
 using MediatR;
 
 namespace RSF.AgendamentoConsultas.Api.Endpoints;

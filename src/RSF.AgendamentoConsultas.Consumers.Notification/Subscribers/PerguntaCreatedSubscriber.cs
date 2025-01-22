@@ -3,12 +3,12 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.DependencyInjection;
-using RSF.AgendamentoConsultas.Domain.Interfaces;
-using RSF.AgendamentoConsultas.Domain.Notifications;
-using RSF.AgendamentoConsultas.Domain.MessageBus.Events;
-using RSF.AgendamentoConsultas.MessageBroker.Configurations;
-using RSF.AgendamentoConsultas.Notifications.Templates;
-using RSF.AgendamentoConsultas.Domain.MessageBus.Bus;
+using RSF.AgendamentoConsultas.Core.Domain.Interfaces;
+using RSF.AgendamentoConsultas.Core.Domain.Notifications;
+using RSF.AgendamentoConsultas.Core.Domain.MessageBus.Events;
+using RSF.AgendamentoConsultas.Infra.MessageBroker.Configurations;
+using RSF.AgendamentoConsultas.Infra.Notifications.Templates;
+using RSF.AgendamentoConsultas.Core.Domain.MessageBus.Bus;
 
 namespace RSF.AgendamentoConsultas.Consumers.Notification.Subscribers;
 

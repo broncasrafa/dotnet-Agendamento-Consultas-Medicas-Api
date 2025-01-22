@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using RSF.AgendamentoConsultas.Shareable.Exceptions;
+using RSF.AgendamentoConsultas.CrossCutting.Shareable.Exceptions;
 
 namespace RSF.AgendamentoConsultas.Api.Middlewares;
 

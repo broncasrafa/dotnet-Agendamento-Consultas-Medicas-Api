@@ -1,7 +1,7 @@
 ﻿using System.Net;
 using RSF.AgendamentoConsultas.Api.Models;
-using RSF.AgendamentoConsultas.Shareable.Exceptions;
-using RSF.AgendamentoConsultas.Shareable.Filters;
+using RSF.AgendamentoConsultas.CrossCutting.Shareable.Exceptions;
+using RSF.AgendamentoConsultas.CrossCutting.Shareable.Filters;
 using MediatR;
 using OperationResult;
 using FluentValidation;

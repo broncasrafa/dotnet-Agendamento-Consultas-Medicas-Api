@@ -1,16 +1,16 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using RSF.AgendamentoConsultas.Api.Extensions;
 using RSF.AgendamentoConsultas.Api.Models;
-using RSF.AgendamentoConsultas.Shareable.Exceptions;
-using RSF.AgendamentoConsultas.Application.Features.PacienteDependente.Responses;
-using RSF.AgendamentoConsultas.Application.Features.PacienteDependente.Query.GetDependenteById;
-using RSF.AgendamentoConsultas.Application.Features.PacienteDependente.Query.GetDependenteByIdPlanosMedicos;
-using RSF.AgendamentoConsultas.Application.Features.PacienteDependente.Command.CreateDependente;
-using RSF.AgendamentoConsultas.Application.Features.PacienteDependente.Command.CreateDependentePlanoMedico;
-using RSF.AgendamentoConsultas.Application.Features.PacienteDependente.Command.DeleteDependente;
-using RSF.AgendamentoConsultas.Application.Features.PacienteDependente.Command.DeleteDependentePlanoMedico;
-using RSF.AgendamentoConsultas.Application.Features.PacienteDependente.Command.UpdateDependente;
-using RSF.AgendamentoConsultas.Application.Features.PacienteDependente.Command.UpdateDependentePlanoMedico;
+using RSF.AgendamentoConsultas.CrossCutting.Shareable.Exceptions;
+using RSF.AgendamentoConsultas.Core.Application.Features.PacienteDependente.Responses;
+using RSF.AgendamentoConsultas.Core.Application.Features.PacienteDependente.Query.GetDependenteById;
+using RSF.AgendamentoConsultas.Core.Application.Features.PacienteDependente.Query.GetDependenteByIdPlanosMedicos;
+using RSF.AgendamentoConsultas.Core.Application.Features.PacienteDependente.Command.CreateDependente;
+using RSF.AgendamentoConsultas.Core.Application.Features.PacienteDependente.Command.CreateDependentePlanoMedico;
+using RSF.AgendamentoConsultas.Core.Application.Features.PacienteDependente.Command.DeleteDependente;
+using RSF.AgendamentoConsultas.Core.Application.Features.PacienteDependente.Command.DeleteDependentePlanoMedico;
+using RSF.AgendamentoConsultas.Core.Application.Features.PacienteDependente.Command.UpdateDependente;
+using RSF.AgendamentoConsultas.Core.Application.Features.PacienteDependente.Command.UpdateDependentePlanoMedico;
 using MediatR;
 using FluentValidation;
 

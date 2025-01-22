@@ -1,12 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using RSF.AgendamentoConsultas.Api.Extensions;
 using RSF.AgendamentoConsultas.Api.Models;
-using RSF.AgendamentoConsultas.Application.Features.Pergunta.Responses;
-using RSF.AgendamentoConsultas.Application.Features.PerguntasRespostas.Responses;
-using RSF.AgendamentoConsultas.Application.Features.Pergunta.Command.CreatePergunta;
-using RSF.AgendamentoConsultas.Application.Features.Pergunta.Query.GetPerguntaById;
-using RSF.AgendamentoConsultas.Application.Features.Pergunta.Query.GetPerguntaByIdAndIdEspecialidade;
-using RSF.AgendamentoConsultas.Application.Features.Pergunta.Query.GetPerguntaByIdRespostas;
+using RSF.AgendamentoConsultas.Core.Application.Features.Pergunta.Responses;
+using RSF.AgendamentoConsultas.Core.Application.Features.PerguntasRespostas.Responses;
+using RSF.AgendamentoConsultas.Core.Application.Features.Pergunta.Command.CreatePergunta;
+using RSF.AgendamentoConsultas.Core.Application.Features.Pergunta.Query.GetPerguntaById;
+using RSF.AgendamentoConsultas.Core.Application.Features.Pergunta.Query.GetPerguntaByIdAndIdEspecialidade;
+using RSF.AgendamentoConsultas.Core.Application.Features.Pergunta.Query.GetPerguntaByIdRespostas;
 using MediatR;
 
 namespace RSF.AgendamentoConsultas.Api.Endpoints;
