@@ -28,12 +28,14 @@ public class JwtTokenService : IJwtTokenService
 
         var claims = new List<Claim>
         {
-            new(JwtRegisteredClaimNames.Sub, user.Email),
+            new(JwtRegisteredClaimNames.Sub, user.UserName),
             new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
             new(JwtRegisteredClaimNames.Email, user.Email),
-            new("userId", user.Id),
-        }.Union(userClaims)
-         .Union(roleClaims);
+            new("uid", user.Id),
+        };
+        // Adiciona claims do usuário e roles
+        claims.AddRange(userClaims);
+        claims.AddRange(roleClaims);
 
         try
         {
@@ -43,7 +45,7 @@ public class JwtTokenService : IJwtTokenService
             {
                 SigningCredentials = signingCredentials,
                 Subject = new ClaimsIdentity(claims),
-                Expires = DateTime.UtcNow.AddDays(_options.Value.DurationInDays),
+                Expires = DateTime.UtcNow.AddMinutes(_options.Value.DurationInMinutes),
                 Issuer = _options.Value.Issuer,
                 Audience = _options.Value.Audience,
             };
@@ -53,6 +55,7 @@ public class JwtTokenService : IJwtTokenService
         }
         catch (Exception ex)
         {
+            _logger.LogError(ex, "Error generating JWT token");
             throw new JwtTokenGeneratorErrorException(ex.Message);
         }
     }

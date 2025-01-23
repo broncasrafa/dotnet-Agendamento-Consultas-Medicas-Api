@@ -12,7 +12,7 @@ internal static class TipoAgendamentoEndpoints
 {
     public static IEndpointRouteBuilder MapTipoAgendamentoEndpoints(this IEndpointRouteBuilder builder)
     {
-        var routes = builder.MapGroup("api/tipos/agendamento").WithTags("Tipos de Agendamento");
+        var routes = builder.MapGroup("api/tipos/agendamento").WithTags("Tipos de Agendamento").AllowAnonymous();
 
         routes.MapGet("/", static async (IMediator mediator, CancellationToken cancellationToken) => await mediator.SendCommand(new SelectTipoAgendamentoRequest(), cancellationToken: cancellationToken))
             .WithName("GetAllTipoAgendamento")

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using RSF.AgendamentoConsultas.Api.Models;
 using RSF.AgendamentoConsultas.Api.Extensions;
+using RSF.AgendamentoConsultas.CrossCutting.Shareable.Enums;
 using RSF.AgendamentoConsultas.Core.Application.Features.Agendamento.Responses;
 using RSF.AgendamentoConsultas.Core.Application.Features.Agendamento.Query.GetAgendamentoById;
 using RSF.AgendamentoConsultas.Core.Application.Features.Agendamento.Command.CreateAgendamento;
@@ -28,6 +29,10 @@ internal static class AgendamentoConsultaEndpoints
             .Produces<ProblemDetails>(StatusCodes.Status404NotFound)
             .WithDescription("Adicionar um agendamento de uma consulta")
             .WithSummary("Adicionar um agendamento de uma consulta")
+            .RequireAuthorization(policy => {
+                policy.RequireRole(ETipoPerfilAcesso.Administrador.ToString());
+                policy.RequireRole(ETipoPerfilAcesso.Paciente.ToString());
+            })
             .WithOpenApi();
         #endregion
 
@@ -41,6 +46,10 @@ internal static class AgendamentoConsultaEndpoints
             .Produces<ProblemDetails>(StatusCodes.Status404NotFound)
             .WithDescription("Cancelamento do agendamento de uma consulta pelo paciente")
             .WithSummary("Cancelamento do agendamento de uma consulta pelo paciente")
+            .RequireAuthorization(policy => {
+                policy.RequireRole(ETipoPerfilAcesso.Administrador.ToString());
+                policy.RequireRole(ETipoPerfilAcesso.Paciente.ToString());
+            })
             .WithOpenApi();
 
         routes.MapPut("/cancelamento/especialista", static async (IMediator mediator, [FromBody] CancelAgendamentoByEspecialistaRequest request, CancellationToken cancellationToken)
@@ -52,6 +61,10 @@ internal static class AgendamentoConsultaEndpoints
             .Produces<ProblemDetails>(StatusCodes.Status404NotFound)
             .WithDescription("Cancelamento do agendamento de uma consulta pelo especialista")
             .WithSummary("Cancelamento do agendamento de uma consulta pelo especialista")
+            .RequireAuthorization(policy => {
+                policy.RequireRole(ETipoPerfilAcesso.Administrador.ToString());
+                policy.RequireRole(ETipoPerfilAcesso.Profissional.ToString());
+            })
             .WithOpenApi();
 
         routes.MapPut("/confirmacao/paciente", static async (IMediator mediator, [FromBody] ConfirmAgendamentoByPacienteRequest request, CancellationToken cancellationToken)
@@ -63,6 +76,10 @@ internal static class AgendamentoConsultaEndpoints
             .Produces<ProblemDetails>(StatusCodes.Status404NotFound)
             .WithDescription("Confirmação do agendamento de uma consulta pelo paciente")
             .WithSummary("Confirmação do agendamento de uma consulta pelo paciente")
+            .RequireAuthorization(policy => {
+                policy.RequireRole(ETipoPerfilAcesso.Administrador.ToString());
+                policy.RequireRole(ETipoPerfilAcesso.Paciente.ToString());
+            })
             .WithOpenApi();
 
         routes.MapPut("/confirmacao/especialista", static async (IMediator mediator, [FromBody] ConfirmAgendamentoByEspecialistaRequest request, CancellationToken cancellationToken)
@@ -74,6 +91,10 @@ internal static class AgendamentoConsultaEndpoints
             .Produces<ProblemDetails>(StatusCodes.Status404NotFound)
             .WithDescription("Confirmação do agendamento de uma consulta pelo especialista")
             .WithSummary("Confirmação do agendamento de uma consulta pelo especialista")
+            .RequireAuthorization(policy => {
+                policy.RequireRole(ETipoPerfilAcesso.Administrador.ToString());
+                policy.RequireRole(ETipoPerfilAcesso.Profissional.ToString());
+            })
             .WithOpenApi();
         #endregion
 
@@ -85,6 +106,12 @@ internal static class AgendamentoConsultaEndpoints
             .Produces<ProblemDetails>(StatusCodes.Status404NotFound)
             .WithDescription("Obter os dados do Agendamento da consulta pelo ID especificado")
             .WithSummary("Obter os dados do Agendamento da consulta pelo ID especificado")
+            .RequireAuthorization(policy => {
+                policy.RequireRole(ETipoPerfilAcesso.Administrador.ToString());
+                policy.RequireRole(ETipoPerfilAcesso.Paciente.ToString());
+                policy.RequireRole(ETipoPerfilAcesso.Profissional.ToString());
+                policy.RequireRole(ETipoPerfilAcesso.Consultor.ToString());
+            })
             .WithOpenApi();        
         #endregion
         

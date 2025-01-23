@@ -13,7 +13,7 @@ internal static class RegiaoEndpoints
 {
     public static IEndpointRouteBuilder MapRegiaoEndpoints(this IEndpointRouteBuilder builder)
     {
-        var routes = builder.MapGroup("api/common/regioes").WithTags("Commons");
+        var routes = builder.MapGroup("api/common/regioes").WithTags("Commons").AllowAnonymous();
 
         routes.MapGet("/", static async (IMediator mediator, CancellationToken cancellationToken) => await mediator.SendCommand(new SelectRegiaoRequest(), cancellationToken: cancellationToken))
             .WithName("GetAllRegioes")

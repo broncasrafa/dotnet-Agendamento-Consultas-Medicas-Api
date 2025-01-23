@@ -12,7 +12,7 @@ internal static class TipoConsultaEndpoints
 {
     public static IEndpointRouteBuilder MapTipoConsultaEndpoints(this IEndpointRouteBuilder builder)
     {
-        var routes = builder.MapGroup("api/tipos/consulta").WithTags("Tipos de Consulta");
+        var routes = builder.MapGroup("api/tipos/consulta").WithTags("Tipos de Consulta").AllowAnonymous();
 
         routes.MapGet("/", static async (IMediator mediator, CancellationToken cancellationToken) => await mediator.SendCommand(new SelectTipoConsultaRequest(), cancellationToken: cancellationToken))
             .WithName("GetAllTipoConsulta")

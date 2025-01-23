@@ -14,7 +14,7 @@ internal static class ConvenioMedicoEndpoints
 {
     public static IEndpointRouteBuilder MapConvenioMedicoEndpoints(this IEndpointRouteBuilder builder)
     {
-        var routes = builder.MapGroup("api/convenios-medicos").WithTags("Convenio Medico");
+        var routes = builder.MapGroup("api/convenios-medicos").WithTags("Convenio Medico").AllowAnonymous();
 
         routes.MapGet("/", static async (IMediator mediator, CancellationToken cancellationToken) => await mediator.SendCommand(new SelectConvenioMedicoRequest(), cancellationToken: cancellationToken))
             .WithName("GetAllConvenioMedicos")

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using RSF.AgendamentoConsultas.Api.Extensions;
 using RSF.AgendamentoConsultas.Api.Models;
+using RSF.AgendamentoConsultas.CrossCutting.Shareable.Enums;
 using RSF.AgendamentoConsultas.Core.Application.Features.PerguntasRespostas.Responses;
 using RSF.AgendamentoConsultas.Core.Application.Features.PerguntasRespostas.Query.GetRespostasById;
 using RSF.AgendamentoConsultas.Core.Application.Features.PerguntasRespostas.Command.CreateResposta;
@@ -24,6 +25,10 @@ internal static class PerguntasRespostasEndpoints
             .Produces<ProblemDetails>(StatusCodes.Status404NotFound)
             .WithDescription("Adicionar uma Resposta a pergunta feita ao Especialista pelo ID especificado da Pergunta")
             .WithSummary("Adicionar uma Resposta a pergunta feita ao Especialista pelo ID especificado da Pergunta")
+            .RequireAuthorization(policy => {
+                policy.RequireRole(ETipoPerfilAcesso.Administrador.ToString());
+                policy.RequireRole(ETipoPerfilAcesso.Profissional.ToString());
+            })
             .WithOpenApi();
         #endregion
 
@@ -31,6 +36,7 @@ internal static class PerguntasRespostasEndpoints
         routes.MapGet("/{id:int}", static async (IMediator mediator, [FromRoute] int id, CancellationToken cancellationToken)
             => await mediator.SendCommand(new SelectRespostaByIdRequest(id), cancellationToken: cancellationToken))
             .WithName("GetRespostaById")
+            .AllowAnonymous()
             .Produces<ApiResponse<RespostaResponse>>(StatusCodes.Status200OK)
             .Produces<ProblemDetails>(StatusCodes.Status404NotFound)
             .WithDescription("Obter os dados da Resposta a pergunta feita ao Especialista pelo ID especificado")

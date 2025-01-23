@@ -159,36 +159,38 @@ public static class ServiceCollectionInfrastructure
             c.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
             c.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
         })
-        .AddJwtBearer(options =>
-        {
-            options.RequireHttpsMetadata = false;
-            options.SaveToken = false;
-            options.TokenValidationParameters = new TokenValidationParameters
+            .AddJwtBearer(options =>
             {
-                ValidateIssuerSigningKey = true,
-                ValidateIssuer = true,
-                ValidateAudience = true,
-                ValidateLifetime = true,
-                ClockSkew = TimeSpan.Zero,
-                ValidIssuer = configuration["Jwt:Issuer"],
-                ValidAudience = configuration["Jwt:Audience"],
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Key"]))
-            };
-            options.Events = new JwtBearerEvents
-            {
-                OnChallenge = async context =>
+                options.RequireHttpsMetadata = false;
+                options.SaveToken = false;
+                options.TokenValidationParameters = new TokenValidationParameters
                 {
-                    context.HandleResponse();
-                    await HandleAuthError(context.HttpContext, StatusCodes.Status401Unauthorized);
-                },
-                OnForbidden = async context =>
+                    ValidateIssuerSigningKey = true,
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ClockSkew = TimeSpan.Zero,
+                    ValidIssuer = configuration["Jwt:Issuer"],
+                    ValidAudience = configuration["Jwt:Audience"],
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Key"]))
+                };
+                options.Events = new JwtBearerEvents
                 {
-                    context.Response.StatusCode = StatusCodes.Status403Forbidden;
-                    context.Response.ContentType = "application/json";
-                    await HandleAuthError(context.HttpContext, StatusCodes.Status403Forbidden);
-                }
-            };
-        });
+                    OnChallenge = async context =>
+                    {
+                        context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                        context.Response.ContentType = "application/json";
+                        context.HandleResponse();
+                        await HandleAuthError(context.HttpContext, StatusCodes.Status401Unauthorized);
+                    },
+                    OnForbidden = async context =>
+                    {
+                        context.Response.StatusCode = StatusCodes.Status403Forbidden;
+                        context.Response.ContentType = "application/json";
+                        await HandleAuthError(context.HttpContext, StatusCodes.Status403Forbidden);
+                    }
+                };
+            });
     }
 
 
@@ -200,15 +202,15 @@ public static class ServiceCollectionInfrastructure
             Instance = context.Request.Path,
             Title = statusCode switch
             {
-                StatusCodes.Status401Unauthorized => "You are not authenticated.",
-                StatusCodes.Status403Forbidden => "Access denied.",
-                _ => "Authentication error."
+                StatusCodes.Status401Unauthorized => "Você não está autenticado.",
+                StatusCodes.Status403Forbidden => "Acesso negado.",
+                _ => "Erro de autenticação."
             },
             Detail = statusCode switch
             {
-                StatusCodes.Status401Unauthorized => "Please send a valid token in the Authorization header of the request.",
-                StatusCodes.Status403Forbidden => "You do not have permission to access this resource.",
-                _ => "Please contact support for more information."
+                StatusCodes.Status401Unauthorized => "Envie um token válido no header da requisição de autorização.",
+                StatusCodes.Status403Forbidden => "Você não tem permissão para acessar este recurso.",
+                _ => "Por favor contate o suporte para mais informações."
             }
         };
 

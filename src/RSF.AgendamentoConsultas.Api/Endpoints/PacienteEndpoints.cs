@@ -16,9 +16,10 @@ using RSF.AgendamentoConsultas.Core.Application.Features.Paciente.Command.Update
 using RSF.AgendamentoConsultas.Core.Application.Features.Paciente.Command.UpdatePacientePlanoMedico;
 using RSF.AgendamentoConsultas.Core.Application.Features.Paciente.Command.DeletePaciente;
 using RSF.AgendamentoConsultas.Core.Application.Features.Paciente.Command.DeletePacientePlanoMedico;
+using RSF.AgendamentoConsultas.Core.Application.Features.Paciente.Command.DeletePacienteAgendamento;
+using RSF.AgendamentoConsultas.CrossCutting.Shareable.Enums;
 using MediatR;
 using FluentValidation;
-using RSF.AgendamentoConsultas.Core.Application.Features.Paciente.Command.DeletePacienteAgendamento;
 
 namespace RSF.AgendamentoConsultas.Api.Endpoints;
 
@@ -26,7 +27,12 @@ internal static class PacienteEndpoints
 {
     public static IEndpointRouteBuilder MapPacienteEndpoints(this IEndpointRouteBuilder builder)
     {
-        var routes = builder.MapGroup("api/pacientes").WithTags("Pacientes");
+        var routes = builder.MapGroup("api/pacientes")
+                            .WithTags("Pacientes")
+                            .RequireAuthorization(policy => {
+                                policy.RequireRole(ETipoPerfilAcesso.Administrador.ToString());
+                                policy.RequireRole(ETipoPerfilAcesso.Paciente.ToString());
+                            });
 
         #region [ GET ]
 
@@ -82,6 +88,7 @@ internal static class PacienteEndpoints
             .Produces<ProblemDetails>(StatusCodes.Status404NotFound)
             .WithDescription("Adicionar um Paciente")
             .WithSummary("Adicionar um Paciente ")
+            .AllowAnonymous()
             .WithOpenApi();
 
 
@@ -121,7 +128,6 @@ internal static class PacienteEndpoints
             .WithSummary("Atualizar os dados de um Paciente pelo ID especificado")
             .WithOpenApi();
 
-
         routes.MapPut("/{id:int}/planos-medicos", static async (IMediator mediator, [FromBody] UpdatePacientePlanoMedicoRequest request, [FromRoute] int id, CancellationToken cancellationToken)
             =>
             {
@@ -158,7 +164,6 @@ internal static class PacienteEndpoints
             .WithSummary("Deleta os dados de um Paciente pelo ID especificado")
             .WithOpenApi();
 
-
         routes.MapDelete("/{id:int}/planos-medicos", static async (IMediator mediator, [FromBody] DeletePacientePlanoMedicoRequest request, [FromRoute] int id, CancellationToken cancellationToken)
             =>
             {
@@ -175,7 +180,6 @@ internal static class PacienteEndpoints
             .WithDescription("Deleta os dados do Plano Medico do Paciente pelo ID especificado")
             .WithSummary("Deleta os dados do Plano Medico do Paciente pelo ID especificado")
             .WithOpenApi();
-
 
         routes.MapDelete("/{id:int}/agendamentos", static async (IMediator mediator, [FromBody] DeletePacienteAgendamentoRequest request, [FromRoute] int id, CancellationToken cancellationToken)
             =>

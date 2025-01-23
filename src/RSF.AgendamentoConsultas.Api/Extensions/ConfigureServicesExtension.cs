@@ -9,6 +9,8 @@ using FluentValidation;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 
 
 namespace RSF.AgendamentoConsultas.Api.Extensions;
@@ -35,7 +37,11 @@ internal static class ConfigureServicesExtension
 
         services.AddHttpContextAccessor();
 
-        services.AddAuthorization();
+        services.AddAuthorizationBuilder()
+            .SetFallbackPolicy(new AuthorizationPolicyBuilder()
+                .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme)
+                .RequireAuthenticatedUser()
+                .Build());
 
         services.AddValidatorsFromAssemblyContaining<ShareableEntryPoint>();
 
