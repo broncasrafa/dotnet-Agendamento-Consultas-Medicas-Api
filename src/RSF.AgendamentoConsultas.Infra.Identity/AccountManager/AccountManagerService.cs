@@ -1,9 +1,12 @@
-﻿using System.Security.Claims;
+﻿using System.Linq.Expressions;
+using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using RSF.AgendamentoConsultas.Core.Domain.Entities;
 using RSF.AgendamentoConsultas.Core.Domain.Interfaces.Services;
 using RSF.AgendamentoConsultas.Core.Domain.Models;
+using RSF.AgendamentoConsultas.CrossCutting.Shareable.Enums;
 using RSF.AgendamentoConsultas.CrossCutting.Shareable.Exceptions;
 using RSF.AgendamentoConsultas.CrossCutting.Shareable.Helpers;
 
@@ -25,11 +28,19 @@ public class AccountManagerService : IAccountManagerService
         _userManager = userManager;
     }
 
-    public async Task<UsuarioAutenticadoModel> CheckIfAlreadyExistsAsync(string email)
+    public async Task<UsuarioAutenticadoModel> CheckIfAlreadyExistsByEmailAsync(string email)
     {
         var user = await _userManager.FindByEmailAsync(email);
         return UsuarioAutenticadoModel.MapFromEntity(user);
     }
+    public async Task<UsuarioAutenticadoModel> CheckIfAlreadyExistsByDocumentoAsync(string documento)
+    {
+        var user = await _userManager.Users.SingleOrDefaultAsync(c => c.Documento == documento);
+        return UsuarioAutenticadoModel.MapFromEntity(user);
+    }
+
+    public async Task<UsuarioAutenticadoModel> CheckIfAlreadyExistsByFilterAsync(Expression<Func<ApplicationUser, bool>> filter)
+        => UsuarioAutenticadoModel.MapFromEntity(await _userManager.Users.SingleOrDefaultAsync(filter));
 
     public async Task<UsuarioAutenticadoModel> LoginAsync(string email, string password)
     {
@@ -50,17 +61,18 @@ public class AccountManagerService : IAccountManagerService
         return response;
     }
 
-    public async Task<UsuarioAutenticadoModel> RegisterAsync(string nomeCompleto, string cpf, string username, string email, string telefone, string password, string tipoAcesso)
+    public async Task<UsuarioAutenticadoModel> RegisterAsync(string nomeCompleto, string documento, string username, string email, string telefone, string genero, string password, ETipoPerfilAcesso tipoAcesso)
     {
         var user = await _userManager.FindByEmailAsync(email);
         AlreadyExistsException.ThrowIfExists(user, "Usuário já cadastrado");
 
         var newUser = new ApplicationUser
         {
+            NomeCompleto = nomeCompleto,
             UserName = username,
-            Nome = nomeCompleto,
-            CPF = cpf.RemoverFormatacaoSomenteNumeros(),
+            Documento = documento,
             Email = email,
+            Genero = genero,
             PhoneNumber = telefone.RemoverFormatacaoSomenteNumeros(),
             IsActive = true
         };
@@ -68,10 +80,12 @@ public class AccountManagerService : IAccountManagerService
         var result = await _userManager.CreateAsync(newUser, password);
         if (result.Succeeded)
         {
-            await _userManager.AddToRoleAsync(newUser, Utilitarios.ConverterTipoAcessoParaRoleString(tipoAcesso));
+            await _userManager.AddToRoleAsync(newUser, tipoAcesso.ToString());
+
             return UsuarioAutenticadoModel.MapFromEntity(newUser);
         }
         
         throw new InvalidOperationException($"Erro ao criar usuário: {string.Join(", ", result.Errors.Select(x => x.Description))}");
     }
+    
 }

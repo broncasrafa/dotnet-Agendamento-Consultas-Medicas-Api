@@ -1,6 +1,4 @@
-﻿using Newtonsoft.Json.Linq;
-
-using RSF.AgendamentoConsultas.Core.Domain.Entities;
+﻿using RSF.AgendamentoConsultas.Core.Domain.Entities;
 
 namespace RSF.AgendamentoConsultas.Core.Domain.Models;
 
@@ -9,7 +7,7 @@ public class UsuarioAutenticadoModel
     public string Token { get; set; }
     public string Id { get; set; }
     public string Nome { get; set; }
-    public string CPF { get; set; }
+    public string Documento { get; set; }
     public string Username { get; set; }
     public string Email { get; set; }
     public string Telefone { get; set; }
@@ -20,8 +18,8 @@ public class UsuarioAutenticadoModel
         => user is null ? default! : new UsuarioAutenticadoModel
         {
             Id = user.Id,
-            Nome = user.Nome,
-            CPF = user.CPF,
+            Nome = user.NomeCompleto,
+            Documento = user.Documento,
             Username = user.UserName,
             Email = user.Email,
             Telefone = user.PhoneNumber,
@@ -36,8 +34,8 @@ public class UsuarioAutenticadoModel
         {
             Token = token,
             Id = user.Id,
-            Nome = user.Nome,
-            CPF = user.CPF,
+            Nome = user.NomeCompleto,
+            Documento = user.Documento,
             Username = user.UserName,
             Email = user.Email,
             Telefone = user.PhoneNumber,

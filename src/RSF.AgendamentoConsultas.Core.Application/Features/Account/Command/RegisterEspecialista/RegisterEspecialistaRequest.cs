@@ -2,16 +2,15 @@
 using MediatR;
 using OperationResult;
 
-namespace RSF.AgendamentoConsultas.Core.Application.Features.Account.Command.Register;
+namespace RSF.AgendamentoConsultas.Core.Application.Features.Account.Command.RegisterEspecialista;
 
-public record RegisterRequest(
+public record RegisterEspecialistaRequest(
     string NomeCompleto,
-    string CPF,
     string Username,
     string Email,
-    string Telefone,
     string Genero,
-    string TipoAcesso,
+    string Licenca,
+    string Telefone,
     string Password,
     string ConfirmPassword) : IRequest<Result<AuthenticatedUserResponse>>;
 

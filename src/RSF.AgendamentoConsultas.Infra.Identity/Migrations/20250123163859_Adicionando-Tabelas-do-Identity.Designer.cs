@@ -12,7 +12,7 @@ using RSF.AgendamentoConsultas.Infra.Identity.Context;
 namespace RSF.AgendamentoConsultas.Infra.Identity.Migrations
 {
     [DbContext(typeof(AppIdentityDbContext))]
-    [Migration("20250122175717_Adicionando-Tabelas-do-Identity")]
+    [Migration("20250123163859_Adicionando-Tabelas-do-Identity")]
     partial class AdicionandoTabelasdoIdentity
     {
         /// <inheritdoc />
@@ -166,15 +166,15 @@ namespace RSF.AgendamentoConsultas.Infra.Identity.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
 
-                    b.Property<string>("CPF")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("CreatedAt")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("Documento")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
                         .HasMaxLength(256)
@@ -183,13 +183,19 @@ namespace RSF.AgendamentoConsultas.Infra.Identity.Migrations
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
 
+                    b.Property<string>("Genero")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool?>("IsActive")
+                        .HasColumnType("bit");
+
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
 
                     b.Property<DateTimeOffset?>("LockoutEnd")
                         .HasColumnType("datetimeoffset");
 
-                    b.Property<string>("Nome")
+                    b.Property<string>("NomeCompleto")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("NormalizedEmail")

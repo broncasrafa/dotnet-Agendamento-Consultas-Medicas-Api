@@ -67,4 +67,21 @@ public static class Utilitarios
 
         throw new ArgumentException($"O tipo de acesso '{tipoAcesso}' não é válido.");
     }
+
+    /// <summary>
+    /// Converte um tipo de acesso para uma string de role
+    /// </summary>
+    /// <param name="tipoAcesso">valor da string do perfil de acesso</param>
+    /// <returns>A string do enum <see cref="ETipoPerfilAcesso"/>ETipoPerfilAcesso</returns>
+    /// <exception cref="ArgumentNullException">Tipo de acesso nulo ou vazio</exception>
+    /// <exception cref="ArgumentException">Tipo de acesso inválido</exception>
+    public static ETipoPerfilAcesso ConverterTipoAcessoParaRoleEnum(string tipoAcesso)
+    {
+        if (string.IsNullOrWhiteSpace(tipoAcesso)) throw new ArgumentNullException(nameof(tipoAcesso));
+
+        if (Enum.TryParse<ETipoPerfilAcesso>(tipoAcesso, true, out var perfilAcesso))
+            return perfilAcesso;
+
+        throw new ArgumentException($"O tipo de acesso '{tipoAcesso}' não é válido.");
+    }
 }

@@ -1,8 +1,6 @@
-﻿using MediatR;
-
+﻿using RSF.AgendamentoConsultas.Core.Application.Features.Paciente.Responses;
+using MediatR;
 using OperationResult;
-
-using RSF.AgendamentoConsultas.Core.Application.Features.Paciente.Responses;
 
 namespace RSF.AgendamentoConsultas.Core.Application.Features.Paciente.Command.CreatePaciente;
 

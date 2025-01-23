@@ -31,9 +31,10 @@ public static class AppIdentityDbContextSeed
         {
             var defaultUserAdmin = new ApplicationUser
             {
+                NomeCompleto = "Rafael Francisco",
                 UserName = "rsfrancisco",
-                Nome = "Rafael Francisco",
-                CPF = "22335037838",
+                Documento = "22335037838",
+                Genero = "Masculino",
                 Email = "rsfrancisco.applications@gmail.com",
                 PhoneNumber = "11960641048",
                 EmailConfirmed = true,

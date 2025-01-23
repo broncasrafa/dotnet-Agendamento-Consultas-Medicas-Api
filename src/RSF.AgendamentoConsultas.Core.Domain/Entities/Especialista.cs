@@ -42,7 +42,21 @@ public class Especialista
     {        
     }
 
-    public Especialista(string tipo, string nome, string licenca, string email, string foto, string sharedUrl, bool? agendaOnline, bool? perfilVerificado, bool? permitirPergunta, bool? telemedicinaOnline, bool? telemedicinaAtivo, string telemedicinaPreco, decimal? telemedicinaPrecoNumber, decimal? avaliacao, string experienciaProfissional, string formacaoAcademica, string genero, string tratamento)
+    public Especialista(string nome, string licenca, string email, string genero,
+        string? tipo = null,
+        string? foto = null, 
+        string? sharedUrl = null, 
+        bool? agendaOnline = null, 
+        bool? perfilVerificado = null, 
+        bool? permitirPergunta = null, 
+        bool? telemedicinaOnline = null, 
+        bool? telemedicinaAtivo = null, 
+        string? telemedicinaPreco = null, 
+        decimal? telemedicinaPrecoNumber = null,
+        decimal? avaliacao = null, 
+        string? experienciaProfissional = null, 
+        string? formacaoAcademica = null,        
+        string? tratamento = null)
     {
         Tipo = tipo;
         Code = Utilitarios.GenerateSlugifyString(nome);
@@ -100,9 +114,9 @@ public class Especialista
     {
         DomainValidation.NotNullOrEmpty(Nome, nameof(Nome));
         DomainValidation.NotNullOrEmpty(Licenca, nameof(Licenca));
-        DomainValidation.PossiblesValidTypes(TypeValids.VALID_CATEGORIAS, value: Tipo, nameof(Nome));
-        DomainValidation.PossiblesValidTypes(TypeValids.VALID_GENEROS, value: Genero, nameof(Genero));
-        DomainValidation.PossiblesValidTypes(TypeValids.VALID_TRATAMENTOS, value: Tratamento, nameof(Tratamento));
         DomainValidation.PossibleValidEmailAddress(Email, nameof(Email));
+        DomainValidation.PossiblesValidTypes(TypeValids.VALID_GENEROS, value: Genero, nameof(Genero));
+        if (!string.IsNullOrWhiteSpace(Tipo)) DomainValidation.PossiblesValidTypes(TypeValids.VALID_CATEGORIAS, value: Tipo, nameof(Tipo));
+        if (!string.IsNullOrWhiteSpace(Tratamento)) DomainValidation.PossiblesValidTypes(TypeValids.VALID_TRATAMENTOS, value: Tratamento, nameof(Tratamento));
     }
 }

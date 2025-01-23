@@ -11,8 +11,6 @@ namespace RSF.AgendamentoConsultas.Infra.Identity.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            #region [ Tables ]
-            // IdentityRole
             migrationBuilder.CreateTable(
                 name: "IdentityRole",
                 columns: table => new
@@ -27,24 +25,25 @@ namespace RSF.AgendamentoConsultas.Infra.Identity.Migrations
                     table.PrimaryKey("PK_IdentityRole", x => x.Id);
                 });
 
-            // IdentityUser
             migrationBuilder.CreateTable(
                 name: "IdentityUser",
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Nome = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CPF = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    NomeCompleto = table.Column<string>(type: "nvarchar(455)", nullable: true),
+                    Documento = table.Column<string>(type: "nvarchar(30)", nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "(getdate())"),
-                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),                    
+                    PhoneNumber = table.Column<string>(type: "nvarchar(12)", nullable: true),
+                    Genero = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IsActive = table.Column<bool>(type: "bit", nullable: true, defaultValueSql: "((1))"),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: true, defaultValueSql: "((getdate()))"),                    
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedEmail = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     EmailConfirmed = table.Column<bool>(type: "bit", nullable: false),
                     PhoneNumberConfirmed = table.Column<bool>(type: "bit", nullable: false),
-                    PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: true),                                        
+                    PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     SecurityStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     TwoFactorEnabled = table.Column<bool>(type: "bit", nullable: false),
@@ -57,7 +56,6 @@ namespace RSF.AgendamentoConsultas.Infra.Identity.Migrations
                     table.PrimaryKey("PK_IdentityUser", x => x.Id);
                 });
 
-            // IdentityRoleClaim
             migrationBuilder.CreateTable(
                 name: "IdentityRoleClaim",
                 columns: table => new
@@ -79,7 +77,6 @@ namespace RSF.AgendamentoConsultas.Infra.Identity.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            // IdentityUserClaim
             migrationBuilder.CreateTable(
                 name: "IdentityUserClaim",
                 columns: table => new
@@ -101,7 +98,6 @@ namespace RSF.AgendamentoConsultas.Infra.Identity.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            // IdentityUserLogin
             migrationBuilder.CreateTable(
                 name: "IdentityUserLogin",
                 columns: table => new
@@ -122,7 +118,6 @@ namespace RSF.AgendamentoConsultas.Infra.Identity.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            // IdentityUserRole
             migrationBuilder.CreateTable(
                 name: "IdentityUserRole",
                 columns: table => new
@@ -147,7 +142,6 @@ namespace RSF.AgendamentoConsultas.Infra.Identity.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            // IdentityUserToken
             migrationBuilder.CreateTable(
                 name: "IdentityUserToken",
                 columns: table => new
@@ -167,9 +161,7 @@ namespace RSF.AgendamentoConsultas.Infra.Identity.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
-            #endregion
 
-            #region [ Indexes ]
             migrationBuilder.CreateIndex(
                 name: "RoleNameIndex",
                 table: "IdentityRole",
@@ -208,7 +200,6 @@ namespace RSF.AgendamentoConsultas.Infra.Identity.Migrations
                 name: "IX_IdentityUserRole_RoleId",
                 table: "IdentityUserRole",
                 column: "RoleId");
-            #endregion
         }
 
         /// <inheritdoc />

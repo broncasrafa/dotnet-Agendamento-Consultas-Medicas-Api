@@ -2,16 +2,16 @@
 using MediatR;
 using OperationResult;
 
-namespace RSF.AgendamentoConsultas.Core.Application.Features.Account.Command.Register;
+namespace RSF.AgendamentoConsultas.Core.Application.Features.Account.Command.RegisterPaciente;
 
-public record RegisterRequest(
+public record RegisterPacienteRequest(
     string NomeCompleto,
     string CPF,
     string Username,
     string Email,
     string Telefone,
     string Genero,
-    string TipoAcesso,
+    DateTime DataNascimento,
     string Password,
     string ConfirmPassword) : IRequest<Result<AuthenticatedUserResponse>>;
 
