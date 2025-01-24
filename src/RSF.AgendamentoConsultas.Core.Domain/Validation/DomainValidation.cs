@@ -164,4 +164,13 @@ public static class DomainValidation
                 throw new EntityValidationException($"{fieldName} com valor inválido.");
         }
     }
+
+    public static void PossibleValidFullName(string value, string fieldName)
+    {
+        if (string.IsNullOrWhiteSpace(value))
+            throw new EntityValidationException($"{fieldName} não pode ser nulo ou vazio.");
+
+        if (!value.Trim().Contains(' '))
+            throw new EntityValidationException($"{fieldName} inválido.");
+    }
 }

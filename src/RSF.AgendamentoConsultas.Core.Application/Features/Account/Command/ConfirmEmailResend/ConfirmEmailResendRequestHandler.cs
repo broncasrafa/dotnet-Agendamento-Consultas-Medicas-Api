@@ -9,6 +9,9 @@ using OperationResult;
 
 namespace RSF.AgendamentoConsultas.Core.Application.Features.Account.Command.ConfirmEmailResend;
 
+/// <summary>
+/// Handler para reenviar o codigo de confirmação de e-mail para o usuário
+/// </summary>
 public class ConfirmEmailResendRequestHandler : IRequestHandler<ConfirmEmailResendRequest, Result<bool>>
 {
     private readonly IEventBus _eventBus;

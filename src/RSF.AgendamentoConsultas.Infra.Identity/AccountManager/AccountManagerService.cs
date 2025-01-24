@@ -33,7 +33,7 @@ public class AccountManagerService : IAccountManagerService
         _userManager = userManager;
     }
 
-
+    
     public async Task<ApplicationUser> GetUserAsync(ClaimsPrincipal authenticatedUser)
         => await _userManager.GetUserAsync(authenticatedUser);
 
@@ -61,19 +61,18 @@ public class AccountManagerService : IAccountManagerService
 
         var result = await _userManager.ChangePasswordAsync(user, currentPassword, newPassword);
 
-        if (result.Succeeded)
-        {
-            _logger.LogInformation("Usuário {UserId} alterou a senha com sucesso.", user.Id);
-
-            // invalida os tokens ativos, forçando o logout em dispositivos conectados.
-            await _userManager.UpdateSecurityStampAsync(user);
-        }
-        else
+        if (!result.Succeeded)
         {
             var errors = string.Join(", ", result.Errors.Select(e => e.Description));
             _logger.LogWarning("Usuário {UserId} falhou ao alterar a senha. Erros: {Errors}", user.Id, errors);
-            ChangePasswordErrosException.ThrowIfErrors($"Falha ao alterar a senha do usuário '{user.Id}': {errors})");
+            IdentityOperationErrorsException.ThrowIfErrors($"Falha ao alterar a senha do usuário '{user.Id}': {errors})");            
         }
+
+
+        _logger.LogInformation("Usuário {UserId} alterou a senha com sucesso.", user.Id);
+
+        // invalida os tokens ativos, forçando o logout em dispositivos conectados.
+        await _userManager.UpdateSecurityStampAsync(user);
 
         return result.Succeeded;
     }
@@ -152,5 +151,21 @@ public class AccountManagerService : IAccountManagerService
         NotFoundException.ThrowIfNull(user, $"Usuário com o e-mail: '{email}' não encontrado");
 
         return await _userManager.GenerateEmailConfirmationTokenAsync(user);
+    }
+
+    public async Task<bool> UpdateUserAsync(ApplicationUser user)
+    {
+        var updateResult = await _userManager.UpdateAsync(user);
+
+        if (!updateResult.Succeeded)
+        {
+            var errors = string.Join("; ", updateResult.Errors.Select(e => e.Description));
+            _logger.LogWarning("Erro ao atualizar os dados do usuário {UserId}: {Errors}", user.Id, errors);
+
+            IdentityOperationErrorsException.ThrowIfErrors($"Falha ao alterar os dados do usuário '{user.Id}': {errors})");
+        }
+
+        _logger.LogInformation("Usuário {UserId} atualizado com sucesso.", user.Id);
+        return true;
     }
 }

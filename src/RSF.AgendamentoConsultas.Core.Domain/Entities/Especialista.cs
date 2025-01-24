@@ -5,30 +5,30 @@ namespace RSF.AgendamentoConsultas.Core.Domain.Entities;
 
 public class Especialista
 {
-    public int EspecialistaId { get; private set; }
-    public string UserId { get; private set; }
-    public string Tipo { get; private set; }
-    public string Code { get; private set; }
-    public string CodeId { get; private set; }
-    public string EspecCodeId { get; private set; }
-    public string Nome { get; private set; }
-    public string Licenca { get; private set; }    
-    public string Email { get; private set; }
-    public string Foto { get; private set; }
-    public string SharedUrl { get; private set; }
-    public bool? Ativo { get; private set; }
-    public bool? AgendaOnline { get; private set; }
-    public bool? PerfilVerificado { get; private set; }
-    public bool? PermitirPergunta { get; private set; }
-    public bool? TelemedicinaOnline { get; private set; }
-    public bool? TelemedicinaAtivo { get; private set; }
-    public string TelemedicinaPreco { get; private set; }
-    public decimal? TelemedicinaPrecoNumber { get; private set; }
-    public decimal? Avaliacao { get; private set; }
-    public string ExperienciaProfissional { get; private set; }
-    public string FormacaoAcademica { get; private set; }
-    public string Genero { get; private set; }
-    public string Tratamento { get; private set; }
+    public int EspecialistaId { get; set; }
+    public string UserId { get; set; }
+    public string Tipo { get; set; }
+    public string Code { get; set; }
+    public string CodeId { get; set; }
+    public string EspecCodeId { get; set; }
+    public string Nome { get; set; }
+    public string Licenca { get; set; }    
+    public string Email { get; set; }
+    public string Foto { get; set; }
+    public string SharedUrl { get; set; }
+    public bool? Ativo { get; set; }
+    public bool? AgendaOnline { get; set; }
+    public bool? PerfilVerificado { get; set; }
+    public bool? PermitirPergunta { get; set; }
+    public bool? TelemedicinaOnline { get; set; }
+    public bool? TelemedicinaAtivo { get; set; }
+    public string TelemedicinaPreco { get; set; }
+    public decimal? TelemedicinaPrecoNumber { get; set; }
+    public decimal? Avaliacao { get; set; }
+    public string ExperienciaProfissional { get; set; }
+    public string FormacaoAcademica { get; set; }
+    public string Genero { get; set; }
+    public string Tratamento { get; set; }
 
     public ICollection<EspecialistaEspecialidade> Especialidades { get; set; }
     public ICollection<EspecialistaConvenioMedico> ConveniosMedicosAtendidos { get; set; }

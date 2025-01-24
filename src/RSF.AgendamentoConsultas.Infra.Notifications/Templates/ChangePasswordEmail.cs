@@ -7,7 +7,7 @@ public class ChangePasswordEmail(IMailSender mailSender, IAmazonS3 s3Client) : M
 {
     public async Task SendEmailAsync(MailTo to, string nomeUsuario)
     {
-        var htmlBody = await GetHtmlTemplateFromS3Async(key: "reseted_password_template.html");
+        var htmlBody = await GetHtmlTemplateFromS3Async(key: "change_password_template.html");
         htmlBody = htmlBody
             .Replace("{{NomeUsuario}}", nomeUsuario);
 

@@ -12,6 +12,8 @@ using RSF.AgendamentoConsultas.Core.Application.Features.Account.Command.ResetPa
 using RSF.AgendamentoConsultas.Core.Application.Features.Account.Command.ConfirmEmail;
 using RSF.AgendamentoConsultas.Core.Application.Features.Account.Command.ConfirmEmailResend;
 using RSF.AgendamentoConsultas.Core.Application.Features.Account.Command.ChangePassword;
+using RSF.AgendamentoConsultas.Core.Application.Features.Account.Command.UpdateAuthenticatedUserInfo;
+using RSF.AgendamentoConsultas.Core.Application.Features.Account.Query.GetAuthenticatedUserInfo;
 using MediatR;
 
 namespace RSF.AgendamentoConsultas.Api.Endpoints;
@@ -127,6 +129,34 @@ internal static class AccountEndpoints
             .Produces<ProblemDetails>(StatusCodes.Status400BadRequest)
             .WithDescription("Realizar a alteração de senha do usuário logado")
             .WithSummary("Realizar a alteração de senha do usuário logado")
+            .RequireAuthorization()
+            .WithOpenApi();
+        #endregion
+
+        #region [ GET ]
+        routes.MapGet("/manage/info", static async (IMediator mediator, CancellationToken cancellationToken)
+            => await mediator.SendCommand(new SelectAuthenticatedUserInfoRequest(), cancellationToken: cancellationToken))
+            .WithName("GetManageUserInfo")
+            .Produces<ApiResponse<AuthenticatedUserResponse>>(StatusCodes.Status200OK)
+            .Produces<ProblemDetails>(StatusCodes.Status404NotFound)
+            .Produces<ProblemDetails>(StatusCodes.Status401Unauthorized)
+            .WithDescription("Obter os dados do usuário logado na plataforma")
+            .WithSummary("Obter os dados do usuário logado na plataforma")
+            .RequireAuthorization()
+            .WithOpenApi();
+        #endregion
+
+        #region [ PUT ]
+        routes.MapPut("/manage/info", static async (IMediator mediator, [FromBody] UpdateAuthenticatedUserInfoRequest request, CancellationToken cancellationToken)
+            => await mediator.SendCommand(request, cancellationToken: cancellationToken))
+            .WithName("UpdateManageUserInfo")
+            .Accepts<UpdateAuthenticatedUserInfoRequest>("application/json")
+            .Produces<ApiResponse<bool>>(StatusCodes.Status200OK)
+            .Produces<ProblemDetails>(StatusCodes.Status400BadRequest)
+            .Produces<ProblemDetails>(StatusCodes.Status404NotFound)
+            .Produces<ProblemDetails>(StatusCodes.Status401Unauthorized)
+            .WithDescription("Atualizar os dados do usuário logado na plataforma")
+            .WithSummary("Atualizar os dados do usuário logado na plataforma")
             .RequireAuthorization()
             .WithOpenApi();
         #endregion
