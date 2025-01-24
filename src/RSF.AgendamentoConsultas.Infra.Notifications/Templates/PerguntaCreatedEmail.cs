@@ -19,7 +19,7 @@ public class PerguntaCreatedEmail : MailTemplateBase
         int especialistaId,
         string especialistaNome)
     {
-        var htmlBody = await GetHtmlTemplateFromS3Async(bucketName: "rsfrancisco.agendamentoconsultas.emailtemplates", key: "pergunta_created_template.html");
+        var htmlBody = await GetHtmlTemplateFromS3Async(key: "pergunta_created_template.html");
         
         htmlBody = htmlBody
             .Replace("{{PacienteNome}}", pacienteNome)

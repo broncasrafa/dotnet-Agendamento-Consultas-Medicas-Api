@@ -32,6 +32,7 @@ public class RegisterPacienteRequestHandler: IRequestHandler<RegisterPacienteReq
         var newUser = await _accountManagerService.RegisterAsync(request.NomeCompleto, request.CPF, request.Username, request.Email, request.Telefone, request.Genero, request.Password, ETipoPerfilAcesso.Paciente);
 
         var newPaciente = new Domain.Entities.Paciente(
+            userId: newUser.Id,
             nome: request.NomeCompleto,
             cpf: request.CPF,
             email: request.Email,

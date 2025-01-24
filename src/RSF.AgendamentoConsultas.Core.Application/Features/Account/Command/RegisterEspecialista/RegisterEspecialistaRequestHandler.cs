@@ -30,6 +30,7 @@ public class RegisterEspecialistaRequestHandler: IRequestHandler<RegisterEspecia
         var newUser = await _accountManagerService.RegisterAsync(request.NomeCompleto, request.Licenca, request.Username, request.Email, request.Telefone, request.Genero, request.Password, ETipoPerfilAcesso.Profissional);
 
         var newEspecialista = new Domain.Entities.Especialista(
+            userId: newUser.Id,
             nome: request.NomeCompleto, 
             licenca: request.Licenca, 
             email: request.Email, 

@@ -6,6 +6,7 @@ namespace RSF.AgendamentoConsultas.Core.Domain.Entities;
 public class Especialista
 {
     public int EspecialistaId { get; private set; }
+    public string UserId { get; private set; }
     public string Tipo { get; private set; }
     public string Code { get; private set; }
     public string CodeId { get; private set; }
@@ -34,7 +35,6 @@ public class Especialista
     public ICollection<EspecialistaLocalAtendimento> LocaisAtendimento { get; set; }
     public ICollection<EspecialistaTags> Tags { get; set; }
     public ICollection<EspecialistaAvaliacao> Avaliacoes { get; set; }
-    //public ICollection<Pergunta> Perguntas { get; set; }
     public ICollection<PerguntaResposta> Respostas { get; set; }
     
 
@@ -42,7 +42,7 @@ public class Especialista
     {        
     }
 
-    public Especialista(string nome, string licenca, string email, string genero,
+    public Especialista(string userId, string nome, string licenca, string email, string genero,
         string? tipo = null,
         string? foto = null, 
         string? sharedUrl = null, 
@@ -58,6 +58,7 @@ public class Especialista
         string? formacaoAcademica = null,        
         string? tratamento = null)
     {
+        UserId = userId;
         Tipo = tipo;
         Code = Utilitarios.GenerateSlugifyString(nome);
         CodeId = Guid.NewGuid().ToString();
@@ -112,6 +113,7 @@ public class Especialista
 
     private void Validate()
     {
+        DomainValidation.NotNullOrEmpty(UserId, nameof(UserId));
         DomainValidation.NotNullOrEmpty(Nome, nameof(Nome));
         DomainValidation.NotNullOrEmpty(Licenca, nameof(Licenca));
         DomainValidation.PossibleValidEmailAddress(Email, nameof(Email));

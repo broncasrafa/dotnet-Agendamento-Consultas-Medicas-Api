@@ -10,7 +10,6 @@ using RSF.AgendamentoConsultas.Core.Application.Features.Paciente.Query.GetPacie
 using RSF.AgendamentoConsultas.Core.Application.Features.Paciente.Query.GetPacienteByIdPlanosMedicos;
 using RSF.AgendamentoConsultas.Core.Application.Features.Paciente.Query.GetPacienteByIdAgendamentos;
 using RSF.AgendamentoConsultas.Core.Application.Features.Paciente.Query.GetPacienteByIdAvaliacoes;
-using RSF.AgendamentoConsultas.Core.Application.Features.Paciente.Command.CreatePaciente;
 using RSF.AgendamentoConsultas.Core.Application.Features.Paciente.Command.CreatePacientePlanoMedico;
 using RSF.AgendamentoConsultas.Core.Application.Features.Paciente.Command.UpdatePaciente;
 using RSF.AgendamentoConsultas.Core.Application.Features.Paciente.Command.UpdatePacientePlanoMedico;
@@ -79,18 +78,6 @@ internal static class PacienteEndpoints
         #endregion
 
         #region [ POST ]
-
-        routes.MapPost("/", static async (IMediator mediator, [FromBody] CreatePacienteRequest request, CancellationToken cancellationToken) => await mediator.SendCommand(request, cancellationToken: cancellationToken))
-            .WithName("CreatePaciente")
-            .Accepts<CreatePacienteRequest>("application/json")
-            .Produces<ApiResponse<PacienteResponse>>(StatusCodes.Status200OK)
-            .Produces<ProblemDetails>(StatusCodes.Status400BadRequest)
-            .Produces<ProblemDetails>(StatusCodes.Status404NotFound)
-            .WithDescription("Adicionar um Paciente")
-            .WithSummary("Adicionar um Paciente ")
-            .AllowAnonymous()
-            .WithOpenApi();
-
 
         routes.MapPost("/{id:int}/planos-medicos", static async (IMediator mediator, [FromBody] CreatePacientePlanoMedicoRequest request, [FromRoute] int id, CancellationToken cancellationToken) =>
         {

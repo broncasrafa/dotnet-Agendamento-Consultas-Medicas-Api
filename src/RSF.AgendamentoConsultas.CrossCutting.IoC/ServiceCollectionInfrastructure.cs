@@ -144,6 +144,7 @@ public static class ServiceCollectionInfrastructure
         services.AddTransient<AgendamentoCanceledByEspecialistaEmail>();
         services.AddTransient<AgendamentoExpiredByPacienteEmail>();
         services.AddTransient<AgendamentoExpiredByEspecialistaEmail>();
+        services.AddTransient<ForgotPasswordEmail>();
     }
 
 

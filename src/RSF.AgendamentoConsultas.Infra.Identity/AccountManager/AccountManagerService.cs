@@ -19,8 +19,8 @@ public class AccountManagerService : IAccountManagerService
     private readonly UserManager<ApplicationUser> _userManager;
 
     public AccountManagerService(
-        ILogger<AccountManagerService> logger, 
-        IJwtTokenService jwtTokenService, 
+        ILogger<AccountManagerService> logger,
+        IJwtTokenService jwtTokenService,
         UserManager<ApplicationUser> userManager)
     {
         _logger = logger;
@@ -28,20 +28,20 @@ public class AccountManagerService : IAccountManagerService
         _userManager = userManager;
     }
 
-    public async Task<UsuarioAutenticadoModel> CheckIfAlreadyExistsByEmailAsync(string email)
-    {
-        var user = await _userManager.FindByEmailAsync(email);
-        return UsuarioAutenticadoModel.MapFromEntity(user);
-    }
-    public async Task<UsuarioAutenticadoModel> CheckIfAlreadyExistsByDocumentoAsync(string documento)
-    {
-        var user = await _userManager.Users.SingleOrDefaultAsync(c => c.Documento == documento);
-        return UsuarioAutenticadoModel.MapFromEntity(user);
-    }
+    
+    public async Task<ApplicationUser> CheckIfAlreadyExistsByFilterAsync(Expression<Func<ApplicationUser, bool>> filter)
+        => await _userManager.Users.SingleOrDefaultAsync(filter);
 
-    public async Task<UsuarioAutenticadoModel> CheckIfAlreadyExistsByFilterAsync(Expression<Func<ApplicationUser, bool>> filter)
-        => UsuarioAutenticadoModel.MapFromEntity(await _userManager.Users.SingleOrDefaultAsync(filter));
+    public async Task<ApplicationUser> FindByEmailAsync(string email) 
+        => await _userManager.FindByEmailAsync(email);
 
+    public async Task<ApplicationUser> FindByFilterAsync(Expression<Func<ApplicationUser, bool>> filter)
+        => await _userManager.Users.SingleOrDefaultAsync(filter);
+
+
+    public async Task<string> ForgotPasswordAsync(ApplicationUser user)
+        => await _userManager.GeneratePasswordResetTokenAsync(user);
+    
     public async Task<UsuarioAutenticadoModel> LoginAsync(string email, string password)
     {
         var user = await _userManager.FindByEmailAsync(email);
@@ -84,8 +84,8 @@ public class AccountManagerService : IAccountManagerService
 
             return UsuarioAutenticadoModel.MapFromEntity(newUser);
         }
-        
+
         throw new InvalidOperationException($"Erro ao criar usuário: {string.Join(", ", result.Errors.Select(x => x.Description))}");
     }
-    
+
 }

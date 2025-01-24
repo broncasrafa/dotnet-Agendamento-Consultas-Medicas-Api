@@ -12,7 +12,7 @@ public class RespostaCreatedEmail : MailTemplateBase
 
     public async Task SendEmailAsync(MailTo to, string pacienteNome, string especialistaNome, string especialidadeNome, int respostaId, string resposta)
     {
-        var htmlBody = await GetHtmlTemplateFromS3Async(bucketName: "rsfrancisco.agendamentoconsultas.emailtemplates", key: "resposta_created_template.html");
+        var htmlBody = await GetHtmlTemplateFromS3Async(key: "resposta_created_template.html");
 
         htmlBody = htmlBody
             .Replace("{{PacienteNome}}", pacienteNome)

@@ -13,6 +13,7 @@ public class PacienteConfiguration : IEntityTypeConfiguration<Paciente>
         builder.HasKey(e => e.PacienteId);
 
         builder.Property(c => c.PacienteId).HasColumnName("Id");
+        builder.Property(c => c.UserId).HasMaxLength(455);
         builder.Property(c => c.Nome).IsRequired().HasMaxLength(255);
         builder.Property(c => c.CPF).HasMaxLength(11);
         builder.Property(c => c.Email).HasMaxLength(255);
@@ -27,7 +28,6 @@ public class PacienteConfiguration : IEntityTypeConfiguration<Paciente>
         builder.Property(c => c.TermoUsoAceito).HasColumnType("bit").HasDefaultValueSql("((0))");
         builder.Property(c => c.CreatedAt).HasColumnType("datetime").HasDefaultValueSql("(getdate())").IsRequired();
         builder.Property(c => c.UpdatedAt).HasColumnType("datetime");
-        builder.Property(c => c.Password).HasColumnName("PasswordHash").IsRequired(false);
         builder.Property(c => c.IsActive).IsRequired().HasColumnType("bit").HasDefaultValueSql("((1))");
 
         builder.HasMany(p => p.PlanosMedicos)

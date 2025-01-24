@@ -34,7 +34,7 @@ public class AgendamentoCreatedEmail : MailTemplateBase
         string localAtendimentoEstado)
     {
 
-        var htmlBody = await GetHtmlTemplateFromS3Async(bucketName: "rsfrancisco.agendamentoconsultas.emailtemplates", key: "agendamento_created_template.html");
+        var htmlBody = await GetHtmlTemplateFromS3Async(key: "agendamento_created_template.html");
 
         htmlBody = htmlBody
             .Replace("{{AgendamentoConsultaId}}", agendamentoConsultaId.ToString())

@@ -7,8 +7,10 @@ namespace RSF.AgendamentoConsultas.Core.Domain.Interfaces.Services;
 
 public interface IAccountManagerService
 {
+    Task<ApplicationUser> FindByEmailAsync(string email);
+    Task<ApplicationUser> FindByFilterAsync(Expression<Func<ApplicationUser, bool>> filter);
     Task<UsuarioAutenticadoModel> LoginAsync(string email, string password);
     Task<UsuarioAutenticadoModel> RegisterAsync(string nomeCompleto, string documento, string username, string email, string telefone, string genero, string password, ETipoPerfilAcesso tipoAcesso);
-    Task<UsuarioAutenticadoModel> CheckIfAlreadyExistsByFilterAsync(Expression<Func<ApplicationUser, bool>> filter);
-    
+    Task<ApplicationUser> CheckIfAlreadyExistsByFilterAsync(Expression<Func<ApplicationUser, bool>> filter);
+    Task<string> ForgotPasswordAsync(ApplicationUser user);
 }

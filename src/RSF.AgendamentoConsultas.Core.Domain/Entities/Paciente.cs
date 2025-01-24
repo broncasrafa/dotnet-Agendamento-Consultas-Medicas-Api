@@ -5,6 +5,7 @@ namespace RSF.AgendamentoConsultas.Core.Domain.Entities;
 public class Paciente
 {
     public int PacienteId { get; set; }
+    public string UserId { get; private set; }
     public string Nome { get; set; }
     public string CPF { get; set; }
     public string Email { get; set; }
@@ -31,8 +32,9 @@ public class Paciente
 
     protected Paciente() { }
 
-    public Paciente(string nome, string cpf, string email, string telefone, string genero, string dataNascimento, string nomeSocial = null, decimal? peso = null, decimal? altura = null, bool? telefoneVerificado = null, bool? emailVerificado = null, bool? termoUsoAceito = null)
+    public Paciente(string userId, string nome, string cpf, string email, string telefone, string genero, string dataNascimento, string nomeSocial = null, decimal? peso = null, decimal? altura = null, bool? telefoneVerificado = null, bool? emailVerificado = null, bool? termoUsoAceito = null)
     {
+        UserId = userId;
         Nome = nome;
         CPF = cpf;
         Email = email;
@@ -74,6 +76,7 @@ public class Paciente
 
     void Validate(bool validatePassword = true)
     {
+        DomainValidation.NotNullOrEmpty(UserId, nameof(UserId));
         DomainValidation.NotNullOrEmpty(Nome, nameof(Nome));
         DomainValidation.NotNullOrEmpty(CPF, nameof(CPF));
         DomainValidation.NotNullOrEmpty(Email, nameof(Email));

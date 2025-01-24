@@ -13,6 +13,7 @@ public class EspecialistaConfiguration : IEntityTypeConfiguration<Especialista>
         builder.HasKey(e => e.EspecialistaId);
 
         builder.Property(c => c.EspecialistaId).HasColumnName("Id");
+        builder.Property(c => c.UserId).HasMaxLength(455);
         builder.Property(c => c.Tipo).HasMaxLength(455);
         builder.Property(c => c.Code).HasMaxLength(455);
         builder.Property(c => c.CodeId).HasMaxLength(455);

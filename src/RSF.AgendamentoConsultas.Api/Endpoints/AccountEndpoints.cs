@@ -1,5 +1,4 @@
-﻿using MediatR;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using RSF.AgendamentoConsultas.Api.Models;
 using RSF.AgendamentoConsultas.Api.Extensions;
 using RSF.AgendamentoConsultas.CrossCutting.Shareable.Enums;
@@ -8,6 +7,11 @@ using RSF.AgendamentoConsultas.Core.Application.Features.Account.Command.Login;
 using RSF.AgendamentoConsultas.Core.Application.Features.Account.Command.Register;
 using RSF.AgendamentoConsultas.Core.Application.Features.Account.Command.RegisterPaciente;
 using RSF.AgendamentoConsultas.Core.Application.Features.Account.Command.RegisterEspecialista;
+using RSF.AgendamentoConsultas.Core.Application.Features.Account.Command.ForgotPassword;
+using RSF.AgendamentoConsultas.Core.Application.Features.Account.Command.ResetPassword;
+using RSF.AgendamentoConsultas.Core.Application.Features.Account.Command.ConfirmEmail;
+using RSF.AgendamentoConsultas.Core.Application.Features.Account.Command.ConfirmEmailResend;
+using MediatR;
 
 namespace RSF.AgendamentoConsultas.Api.Endpoints;
 
@@ -61,6 +65,55 @@ internal static class AccountEndpoints
             .Produces<ProblemDetails>(StatusCodes.Status400BadRequest)
             .WithDescription("Realizar o registro de Especialistas na plataforma")
             .WithSummary("Realizar o registro de Especialistas na plataforma")
+            .AllowAnonymous()
+            .WithOpenApi();
+
+
+        routes.MapPost("/forgot-password", static async (IMediator mediator, [FromBody] ForgotPasswordRequest request, CancellationToken cancellationToken)
+            => await mediator.SendCommand(request, cancellationToken: cancellationToken))
+            .WithName("ForgotPassword")
+            .Accepts<ForgotPasswordRequest>("application/json")
+            .Produces<ApiResponse<bool>>(StatusCodes.Status200OK)
+            .Produces<ProblemDetails>(StatusCodes.Status400BadRequest)
+            .Produces<ProblemDetails>(StatusCodes.Status404NotFound)
+            .WithDescription("Receber o código de reset de senha")
+            .WithSummary("Receber o código de reset de senha")
+            .AllowAnonymous()
+            .WithOpenApi();
+
+        routes.MapPost("/reset-password", static async (IMediator mediator, [FromBody] ResetPasswordRequest request, CancellationToken cancellationToken)
+            => await mediator.SendCommand(request, cancellationToken: cancellationToken))
+            .WithName("ResetPassword")
+            .Accepts<ResetPasswordRequest>("application/json")
+            .Produces<ApiResponse<bool>>(StatusCodes.Status200OK)
+            .Produces<ProblemDetails>(StatusCodes.Status404NotFound)
+            .Produces<ProblemDetails>(StatusCodes.Status400BadRequest)
+            .WithDescription("Receber a troca de senha informando o código de reset de senha")
+            .WithSummary("Receber a troca de senha informando o código de reset de senha")
+            .AllowAnonymous()
+            .WithOpenApi();
+
+        routes.MapPost("/confirm-email", static async (IMediator mediator, [FromBody] ConfirmEmailRequest request, CancellationToken cancellationToken)
+            => await mediator.SendCommand(request, cancellationToken: cancellationToken))
+            .WithName("ConfirmEmail")
+            .Accepts<ConfirmEmailRequest>("application/json")
+            .Produces<ApiResponse<bool>>(StatusCodes.Status200OK)
+            .Produces<ProblemDetails>(StatusCodes.Status404NotFound)
+            .Produces<ProblemDetails>(StatusCodes.Status400BadRequest)
+            .WithDescription("Confirmar o e-mail informando o código de confirmação")
+            .WithSummary("Confirmar o e-mail informando o código de confirmação")
+            .AllowAnonymous()
+            .WithOpenApi();
+
+        routes.MapPost("/resend-confirmation-email", static async (IMediator mediator, [FromBody] ConfirmEmailResendRequest request, CancellationToken cancellationToken)
+            => await mediator.SendCommand(request, cancellationToken: cancellationToken))
+            .WithName("ConfirmEmailResend")
+            .Accepts<ConfirmEmailResendRequest>("application/json")
+            .Produces<ApiResponse<bool>>(StatusCodes.Status200OK)
+            .Produces<ProblemDetails>(StatusCodes.Status404NotFound)
+            .Produces<ProblemDetails>(StatusCodes.Status400BadRequest)
+            .WithDescription("Reenviar o código de confirmação de e-mail")
+            .WithSummary("Reenviar o código de confirmação de e-mail")
             .AllowAnonymous()
             .WithOpenApi();
         #endregion

@@ -15,11 +15,11 @@ public abstract class MailTemplateBase
         _s3Client = s3Client;
     }
 
-    protected async Task<string> GetHtmlTemplateFromS3Async(string bucketName, string key)
+    protected async Task<string> GetHtmlTemplateFromS3Async(string key)
     {
         var request = new GetObjectRequest
         {
-            BucketName = bucketName,
+            BucketName = "rsfrancisco.agendamentoconsultas.emailtemplates",
             Key = key
         };
 

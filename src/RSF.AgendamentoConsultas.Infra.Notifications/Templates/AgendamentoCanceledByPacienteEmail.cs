@@ -20,7 +20,7 @@ public class AgendamentoCanceledByPacienteEmail : MailTemplateBase
         string localAtendimento,
         string notaCancelamento)
     {
-        var htmlBody = await GetHtmlTemplateFromS3Async(bucketName: "rsfrancisco.agendamentoconsultas.emailtemplates", key: "agendamento_canceled_by_paciente_template.html");
+        var htmlBody = await GetHtmlTemplateFromS3Async(key: "agendamento_canceled_by_paciente_template.html");
         htmlBody = htmlBody
             .Replace("{{PacienteNome}}", pacienteNome)
             .Replace("{{EspecialistaNome}}", especialistaNome)
