@@ -13,4 +13,5 @@ public interface IAccountManagerService
     Task<UsuarioAutenticadoModel> RegisterAsync(string nomeCompleto, string documento, string username, string email, string telefone, string genero, string password, ETipoPerfilAcesso tipoAcesso);
     Task<ApplicationUser> CheckIfAlreadyExistsByFilterAsync(Expression<Func<ApplicationUser, bool>> filter);
     Task<string> ForgotPasswordAsync(ApplicationUser user);
+    Task<bool> ResetPasswordAsync(ApplicationUser user, string resetCode, string newPassword);
 }

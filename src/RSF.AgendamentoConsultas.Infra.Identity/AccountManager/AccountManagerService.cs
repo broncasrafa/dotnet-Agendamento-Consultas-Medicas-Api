@@ -38,10 +38,15 @@ public class AccountManagerService : IAccountManagerService
     public async Task<ApplicationUser> FindByFilterAsync(Expression<Func<ApplicationUser, bool>> filter)
         => await _userManager.Users.SingleOrDefaultAsync(filter);
 
-
     public async Task<string> ForgotPasswordAsync(ApplicationUser user)
         => await _userManager.GeneratePasswordResetTokenAsync(user);
     
+    public async Task<bool> ResetPasswordAsync(ApplicationUser user, string resetCode, string newPassword)
+    {
+        var result = await _userManager.ResetPasswordAsync(user, resetCode, newPassword);
+        return result.Succeeded;
+    }
+
     public async Task<UsuarioAutenticadoModel> LoginAsync(string email, string password)
     {
         var user = await _userManager.FindByEmailAsync(email);
