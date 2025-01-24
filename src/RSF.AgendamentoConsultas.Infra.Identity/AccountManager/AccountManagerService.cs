@@ -1,6 +1,9 @@
 ﻿using System.Linq.Expressions;
 using System.Security.Claims;
+using System.Text;
+
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using RSF.AgendamentoConsultas.Core.Domain.Entities;
@@ -93,4 +96,33 @@ public class AccountManagerService : IAccountManagerService
         throw new InvalidOperationException($"Erro ao criar usuário: {string.Join(", ", result.Errors.Select(x => x.Description))}");
     }
 
+    public async Task<bool> ConfirmEmailAsync(string userId, string code)
+    {
+        var user = await _userManager.FindByIdAsync(userId);
+        NotFoundException.ThrowIfNull(user, $"Usuário com o ID: '{userId}' não encontrado");
+
+        var decodedCode = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(code));
+        var result = await _userManager.ConfirmEmailAsync(user, decodedCode);
+
+        return result.Succeeded;
+    }
+
+    public async Task<string> ResendEmailConfirmationTokenAsync(string email)
+    {
+        var user = await _userManager.FindByEmailAsync(email);
+        NotFoundException.ThrowIfNull(user, $"Usuário com o e-mail: '{email}' não encontrado");
+
+        AlreadyExistsException.ThrowIfExists(await _userManager.IsEmailConfirmedAsync(user), $"O e-mail '{email}' já foi confirmado.");
+        
+        return await _userManager.GenerateEmailConfirmationTokenAsync(user);
+    }
+
+    public async Task<string> GetEmailConfirmationTokenAsync(string email)
+    {
+        var user = await _userManager.FindByEmailAsync(email);
+        
+        NotFoundException.ThrowIfNull(user, $"Usuário com o e-mail: '{email}' não encontrado");
+
+        return await _userManager.GenerateEmailConfirmationTokenAsync(user);
+    }
 }

@@ -17,4 +17,9 @@ public class AlreadyExistsException : BaseException
         if (obj is not null)
             throw new AlreadyExistsException(exceptionMessage);
     }
+    public static void ThrowIfExists(bool? exists, string exceptionMessage)
+    {
+        if (exists.HasValue && exists.Value)
+            throw new AlreadyExistsException(exceptionMessage);
+    }
 }

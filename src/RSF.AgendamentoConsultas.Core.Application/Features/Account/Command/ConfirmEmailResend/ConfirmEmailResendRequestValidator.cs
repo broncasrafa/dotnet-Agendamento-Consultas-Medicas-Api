@@ -1,13 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using RSF.AgendamentoConsultas.CrossCutting.Shareable.Validations.Validators;
+using FluentValidation;
 
+namespace RSF.AgendamentoConsultas.Core.Application.Features.Account.Command.ConfirmEmailResend;
 
-namespace RSF.AgendamentoConsultas.Core.Application.Features.Account.Command.ConfirmEmailResend
+public class ConfirmEmailResendRequestValidator : AbstractValidator<ConfirmEmailResendRequest>
 {
-    public class ConfirmEmailResendRequestValidator
+    public ConfirmEmailResendRequestValidator()
     {
+        RuleFor(c => c.Email).Cascade(CascadeMode.Stop)
+            .EmailValidations();
     }
 }

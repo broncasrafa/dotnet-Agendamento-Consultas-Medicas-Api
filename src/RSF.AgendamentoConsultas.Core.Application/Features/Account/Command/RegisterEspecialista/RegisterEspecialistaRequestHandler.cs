@@ -1,6 +1,9 @@
-﻿using RSF.AgendamentoConsultas.Core.Application.Features.Account.Responses;
+﻿using Microsoft.Extensions.Configuration;
+using RSF.AgendamentoConsultas.Core.Application.Features.Account.Responses;
 using RSF.AgendamentoConsultas.Core.Domain.Interfaces.Services;
 using RSF.AgendamentoConsultas.Core.Domain.Interfaces.Repositories;
+using RSF.AgendamentoConsultas.Core.Domain.MessageBus.Bus;
+using RSF.AgendamentoConsultas.Core.Domain.MessageBus.Events;
 using RSF.AgendamentoConsultas.CrossCutting.Shareable.Exceptions;
 using RSF.AgendamentoConsultas.CrossCutting.Shareable.Enums;
 using MediatR;
@@ -12,11 +15,19 @@ public class RegisterEspecialistaRequestHandler: IRequestHandler<RegisterEspecia
 {
     private readonly IAccountManagerService _accountManagerService;
     private readonly IEspecialistaRepository _especialistaRepository;
+    private readonly IEventBus _eventBus;
+    private readonly IConfiguration _configuration;
 
-    public RegisterEspecialistaRequestHandler(IAccountManagerService accountManagerService, IEspecialistaRepository especialistaRepository)
+    public RegisterEspecialistaRequestHandler(
+        IAccountManagerService accountManagerService, 
+        IEspecialistaRepository especialistaRepository, 
+        IEventBus eventBus, 
+        IConfiguration configuration)
     {
         _accountManagerService = accountManagerService;
         _especialistaRepository = especialistaRepository;
+        _eventBus = eventBus;
+        _configuration = configuration;
     }
 
     public async Task<Result<AuthenticatedUserResponse>> Handle(RegisterEspecialistaRequest request, CancellationToken cancellationToken)
@@ -38,7 +49,15 @@ public class RegisterEspecialistaRequestHandler: IRequestHandler<RegisterEspecia
 
         await _especialistaRepository.AddAsync(newEspecialista);
 
-        var response = new AuthenticatedUserResponse(usuario: newUser);        
+        var code = await _accountManagerService.GetEmailConfirmationTokenAsync(request.Email);
+
+        if (!string.IsNullOrWhiteSpace(code))
+        {
+            var @event = new EmailConfirmationCreatedEvent(usuario: newUser, code);
+            _eventBus.Publish(@event, _configuration.GetSection("RabbitMQ:EmailConfirmationQueueName").Value);
+        }
+
+        var response = new AuthenticatedUserResponse(usuario: newUser);
         return await Task.FromResult(response);
     }
 }

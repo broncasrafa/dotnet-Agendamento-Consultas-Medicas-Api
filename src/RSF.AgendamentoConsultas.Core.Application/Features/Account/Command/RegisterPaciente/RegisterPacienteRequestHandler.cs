@@ -1,6 +1,9 @@
-﻿using RSF.AgendamentoConsultas.Core.Application.Features.Account.Responses;
+﻿using Microsoft.Extensions.Configuration;
+using RSF.AgendamentoConsultas.Core.Application.Features.Account.Responses;
 using RSF.AgendamentoConsultas.Core.Domain.Interfaces.Services;
 using RSF.AgendamentoConsultas.Core.Domain.Interfaces.Repositories;
+using RSF.AgendamentoConsultas.Core.Domain.MessageBus.Bus;
+using RSF.AgendamentoConsultas.Core.Domain.MessageBus.Events;
 using RSF.AgendamentoConsultas.CrossCutting.Shareable.Exceptions;
 using RSF.AgendamentoConsultas.CrossCutting.Shareable.Enums;
 using MediatR;
@@ -12,13 +15,19 @@ public class RegisterPacienteRequestHandler: IRequestHandler<RegisterPacienteReq
 {
     private readonly IAccountManagerService _accountManagerService;
     private readonly IPacienteRepository _pacienteRepository;
+    private readonly IEventBus _eventBus;
+    private readonly IConfiguration _configuration;
 
     public RegisterPacienteRequestHandler(
-        IAccountManagerService accountManagerService, 
-        IPacienteRepository pacienteRepository)
+        IAccountManagerService accountManagerService,
+        IPacienteRepository pacienteRepository,
+        IEventBus eventBus,
+        IConfiguration configuration)
     {
         _accountManagerService = accountManagerService;
         _pacienteRepository = pacienteRepository;
+        _eventBus = eventBus;
+        _configuration = configuration;
     }
 
     public async Task<Result<AuthenticatedUserResponse>> Handle(RegisterPacienteRequest request, CancellationToken cancellationToken)
@@ -42,6 +51,14 @@ public class RegisterPacienteRequestHandler: IRequestHandler<RegisterPacienteReq
             termoUsoAceito: true
         );
         await _pacienteRepository.AddAsync(newPaciente);
+
+        var code = await _accountManagerService.GetEmailConfirmationTokenAsync(request.Email);
+
+        if (!string.IsNullOrWhiteSpace(code))
+        {
+            var @event = new EmailConfirmationCreatedEvent(usuario: newUser, code);
+            _eventBus.Publish(@event, _configuration.GetSection("RabbitMQ:EmailConfirmationQueueName").Value);
+        }
 
         var response = new AuthenticatedUserResponse(usuario: newUser);
         return await Task.FromResult(response);

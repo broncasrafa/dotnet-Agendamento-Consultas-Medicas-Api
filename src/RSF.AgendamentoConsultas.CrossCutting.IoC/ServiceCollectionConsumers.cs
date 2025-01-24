@@ -19,6 +19,7 @@ public static class ServiceCollectionConsumers
         services.AddHostedService<AgendamentoExpiredByEspecialistaSubscriber>();
         services.AddHostedService<ForgotPasswordSubscriber>();
         services.AddHostedService<ResetPasswordSubscriber>();
+        services.AddHostedService<EmailConfirmationSubscriber>();
         
         return services;
     }
