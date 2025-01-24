@@ -1,7 +1,7 @@
-﻿using System.Linq.Expressions;
+﻿using System.Text;
+using System.Linq.Expressions;
 using System.Security.Claims;
-using System.Text;
-
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.EntityFrameworkCore;
@@ -12,6 +12,7 @@ using RSF.AgendamentoConsultas.Core.Domain.Models;
 using RSF.AgendamentoConsultas.CrossCutting.Shareable.Enums;
 using RSF.AgendamentoConsultas.CrossCutting.Shareable.Exceptions;
 using RSF.AgendamentoConsultas.CrossCutting.Shareable.Helpers;
+using RSF.AgendamentoConsultas.Infra.Identity.Exceptions;
 
 namespace RSF.AgendamentoConsultas.Infra.Identity.AccountManager;
 
@@ -20,6 +21,7 @@ public class AccountManagerService : IAccountManagerService
     private readonly ILogger<AccountManagerService> _logger;
     private readonly IJwtTokenService _jwtTokenService;
     private readonly UserManager<ApplicationUser> _userManager;
+    
 
     public AccountManagerService(
         ILogger<AccountManagerService> logger,
@@ -31,7 +33,10 @@ public class AccountManagerService : IAccountManagerService
         _userManager = userManager;
     }
 
-    
+
+    public async Task<ApplicationUser> GetUserAsync(ClaimsPrincipal authenticatedUser)
+        => await _userManager.GetUserAsync(authenticatedUser);
+
     public async Task<ApplicationUser> CheckIfAlreadyExistsByFilterAsync(Expression<Func<ApplicationUser, bool>> filter)
         => await _userManager.Users.SingleOrDefaultAsync(filter);
 
@@ -47,6 +52,29 @@ public class AccountManagerService : IAccountManagerService
     public async Task<bool> ResetPasswordAsync(ApplicationUser user, string resetCode, string newPassword)
     {
         var result = await _userManager.ResetPasswordAsync(user, resetCode, newPassword);
+        return result.Succeeded;
+    }
+
+    public async Task<bool> ChangePasswordAsync(ApplicationUser user, string currentPassword, string newPassword)
+    {
+        _logger.LogInformation("Usuário {UserId} iniciou a alteração de senha.", user.Id);
+
+        var result = await _userManager.ChangePasswordAsync(user, currentPassword, newPassword);
+
+        if (result.Succeeded)
+        {
+            _logger.LogInformation("Usuário {UserId} alterou a senha com sucesso.", user.Id);
+
+            // invalida os tokens ativos, forçando o logout em dispositivos conectados.
+            await _userManager.UpdateSecurityStampAsync(user);
+        }
+        else
+        {
+            var errors = string.Join(", ", result.Errors.Select(e => e.Description));
+            _logger.LogWarning("Usuário {UserId} falhou ao alterar a senha. Erros: {Errors}", user.Id, errors);
+            ChangePasswordErrosException.ThrowIfErrors($"Falha ao alterar a senha do usuário '{user.Id}': {errors})");
+        }
+
         return result.Succeeded;
     }
 

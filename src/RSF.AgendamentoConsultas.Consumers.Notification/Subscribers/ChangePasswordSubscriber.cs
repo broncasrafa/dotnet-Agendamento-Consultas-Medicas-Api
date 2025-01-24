@@ -11,13 +11,13 @@ using RSF.AgendamentoConsultas.Infra.Notifications.Templates;
 
 namespace RSF.AgendamentoConsultas.Consumers.Notification.Subscribers;
 
-public class ResetPasswordSubscriber : IHostedService
+public class ChangePasswordSubscriber : IHostedService
 {
-    private readonly ILogger<ResetPasswordSubscriber> _logger;
+    private readonly ILogger<ChangePasswordSubscriber> _logger;
     private readonly IOptions<RabbitMQSettings> _options;
     private readonly IServiceProvider _serviceProvider;
 
-    public ResetPasswordSubscriber(ILogger<ResetPasswordSubscriber> logger, IOptions<RabbitMQSettings> options, IServiceProvider serviceProvider)
+    public ChangePasswordSubscriber(ILogger<ChangePasswordSubscriber> logger, IOptions<RabbitMQSettings> options, IServiceProvider serviceProvider)
     {
         _logger = logger;
         _options = options;
@@ -30,7 +30,7 @@ public class ResetPasswordSubscriber : IHostedService
         using var scope = _serviceProvider.CreateScope();
         var _eventBus = scope.ServiceProvider.GetRequiredService<IEventBus>();
 
-        var queueName = _options.Value.ResetedPasswordQueueName;
+        var queueName = _options.Value.ChangePasswordQueueName;
 
         _eventBus.Subscribe(queueName, async (message) =>
         {
@@ -38,9 +38,9 @@ public class ResetPasswordSubscriber : IHostedService
 
             using var scope = _serviceProvider.CreateScope();
             
-            var mailSender = scope.ServiceProvider.GetRequiredService<ResetPasswordEmail>();
+            var mailSender = scope.ServiceProvider.GetRequiredService<ChangePasswordEmail>();
 
-            var @event = JsonSerializer.Deserialize<ResetPasswordCreatedEvent>(message);
+            var @event = JsonSerializer.Deserialize<ChangePasswordCreatedEvent>(message);
 
             await mailSender.SendEmailAsync(to: new MailTo(@event.Usuario.Nome, @event.Usuario.Email), @event.Usuario.Nome);
 

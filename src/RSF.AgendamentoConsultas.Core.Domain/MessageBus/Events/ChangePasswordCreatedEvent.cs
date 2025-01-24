@@ -2,11 +2,11 @@
 
 namespace RSF.AgendamentoConsultas.Core.Domain.MessageBus.Events;
 
-public class ResetPasswordCreatedEvent : Event
+public class ChangePasswordCreatedEvent : Event
 {
     public UsuarioAutenticadoModel Usuario { get; private set; }
 
-    public ResetPasswordCreatedEvent(UsuarioAutenticadoModel usuario)
+    public ChangePasswordCreatedEvent(UsuarioAutenticadoModel usuario)
     {
         Usuario = usuario;
     }

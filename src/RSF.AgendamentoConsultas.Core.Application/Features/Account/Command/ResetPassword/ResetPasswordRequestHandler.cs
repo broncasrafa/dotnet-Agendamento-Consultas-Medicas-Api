@@ -31,8 +31,8 @@ public class ResetPasswordRequestHandler : IRequestHandler<ResetPasswordRequest,
 
         if (result)
         {
-            var @event = new ResetPasswordCreatedEvent(usuario: UsuarioAutenticadoModel.MapFromEntity(user));
-            _eventBus.Publish(@event, _configuration.GetSection("RabbitMQ:ResetedPasswordQueueName").Value);
+            var @event = new ChangePasswordCreatedEvent(usuario: UsuarioAutenticadoModel.MapFromEntity(user));
+            _eventBus.Publish(@event, _configuration.GetSection("RabbitMQ:ChangePasswordQueueName").Value);
         }
 
         return await Task.FromResult(result);

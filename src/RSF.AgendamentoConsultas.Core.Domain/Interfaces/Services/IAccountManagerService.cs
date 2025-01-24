@@ -1,4 +1,6 @@
 ﻿using System.Linq.Expressions;
+using System.Security.Claims;
+
 using RSF.AgendamentoConsultas.Core.Domain.Entities;
 using RSF.AgendamentoConsultas.Core.Domain.Models;
 using RSF.AgendamentoConsultas.CrossCutting.Shareable.Enums;
@@ -14,7 +16,9 @@ public interface IAccountManagerService
     Task<ApplicationUser> CheckIfAlreadyExistsByFilterAsync(Expression<Func<ApplicationUser, bool>> filter);
     Task<string> ForgotPasswordAsync(ApplicationUser user);
     Task<bool> ResetPasswordAsync(ApplicationUser user, string resetCode, string newPassword);
+    Task<bool> ChangePasswordAsync(ApplicationUser user, string currentPassword, string newPassword);
     Task<bool> ConfirmEmailAsync(string userId, string code);
     Task<string> ResendEmailConfirmationTokenAsync(string email);
     Task<string> GetEmailConfirmationTokenAsync(string email);
+    Task<ApplicationUser> GetUserAsync(ClaimsPrincipal authenticatedUser);
 }

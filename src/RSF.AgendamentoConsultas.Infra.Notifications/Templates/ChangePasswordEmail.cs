@@ -3,7 +3,7 @@ using Amazon.S3;
 
 namespace RSF.AgendamentoConsultas.Infra.Notifications.Templates;
 
-public class ResetPasswordEmail(IMailSender mailSender, IAmazonS3 s3Client) : MailTemplateBase(mailSender, s3Client)
+public class ChangePasswordEmail(IMailSender mailSender, IAmazonS3 s3Client) : MailTemplateBase(mailSender, s3Client)
 {
     public async Task SendEmailAsync(MailTo to, string nomeUsuario)
     {

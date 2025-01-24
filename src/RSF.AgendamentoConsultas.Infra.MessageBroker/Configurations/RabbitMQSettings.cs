@@ -18,6 +18,6 @@ public class RabbitMQSettings
     public string AgendamentoExpiradoPacienteQueueName { get; set; }    
     public string AgendamentoExpiradoEspecialistaQueueName { get; set; }    
     public string ForgotPasswordQueueName { get; set; }    
-    public string ResetedPasswordQueueName { get; set; }    
+    public string ChangePasswordQueueName { get; set; }    
     public string EmailConfirmationQueueName { get; set; }    
 }

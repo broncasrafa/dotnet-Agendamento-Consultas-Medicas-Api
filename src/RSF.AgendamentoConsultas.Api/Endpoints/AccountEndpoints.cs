@@ -11,6 +11,7 @@ using RSF.AgendamentoConsultas.Core.Application.Features.Account.Command.ForgotP
 using RSF.AgendamentoConsultas.Core.Application.Features.Account.Command.ResetPassword;
 using RSF.AgendamentoConsultas.Core.Application.Features.Account.Command.ConfirmEmail;
 using RSF.AgendamentoConsultas.Core.Application.Features.Account.Command.ConfirmEmailResend;
+using RSF.AgendamentoConsultas.Core.Application.Features.Account.Command.ChangePassword;
 using MediatR;
 
 namespace RSF.AgendamentoConsultas.Api.Endpoints;
@@ -115,6 +116,18 @@ internal static class AccountEndpoints
             .WithDescription("Reenviar o código de confirmação de e-mail")
             .WithSummary("Reenviar o código de confirmação de e-mail")
             .AllowAnonymous()
+            .WithOpenApi();
+
+        routes.MapPost("/change-password", static async (IMediator mediator, [FromBody] ChangePasswordRequest request, CancellationToken cancellationToken)
+            => await mediator.SendCommand(request, cancellationToken: cancellationToken))
+            .WithName("ChangePassword")
+            .Accepts<ChangePasswordRequest>("application/json")
+            .Produces<ApiResponse<bool>>(StatusCodes.Status200OK)
+            .Produces<ProblemDetails>(StatusCodes.Status404NotFound)
+            .Produces<ProblemDetails>(StatusCodes.Status400BadRequest)
+            .WithDescription("Realizar a alteração de senha do usuário logado")
+            .WithSummary("Realizar a alteração de senha do usuário logado")
+            .RequireAuthorization()
             .WithOpenApi();
         #endregion
 
