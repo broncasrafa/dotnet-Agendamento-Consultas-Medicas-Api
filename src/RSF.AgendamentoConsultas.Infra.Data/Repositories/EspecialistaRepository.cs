@@ -49,8 +49,6 @@ public class EspecialistaRepository : BaseRepository<Especialista>, IEspecialist
                 .Include(c => c.Tags).ThenInclude(t => t.Tag)
                 .Include(c => c.LocaisAtendimento)
                 .Include(c => c.Avaliacoes).ThenInclude(p => p.Paciente)
-                //.Include(c => c.Perguntas).ThenInclude(p => p.Paciente)
-                //.Include(c => c.Perguntas).ThenInclude(r => r.Respostas)
                 .FirstOrDefaultAsync(c => c.EspecialistaId == id);
 
     public async ValueTask<Especialista> GetByEmailAsync(string email)

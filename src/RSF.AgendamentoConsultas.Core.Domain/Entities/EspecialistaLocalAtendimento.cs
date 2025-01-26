@@ -1,5 +1,5 @@
-﻿
-using RSF.AgendamentoConsultas.Core.Domain.Validation;
+﻿using RSF.AgendamentoConsultas.Core.Domain.Validation;
+using RSF.AgendamentoConsultas.CrossCutting.Shareable.Helpers;
 
 namespace RSF.AgendamentoConsultas.Core.Domain.Entities;
 
@@ -27,8 +27,9 @@ public class EspecialistaLocalAtendimento
     {        
     }
 
-    public EspecialistaLocalAtendimento(string nome, string logradouro, string complemento, string bairro, string cep, string cidade, string estado, decimal? preco, string precoDescricao, string tipoAtendimento, string telefone, string whatsapp)
+    public EspecialistaLocalAtendimento(int especialistaId, string nome, string logradouro, string complemento, string bairro, string cep, string cidade, string estado, decimal? preco, string tipoAtendimento, string telefone, string whatsapp)
     {
+        EspecialistaId = especialistaId;
         Nome = nome;
         Logradouro = logradouro;
         Complemento = complemento;
@@ -37,7 +38,7 @@ public class EspecialistaLocalAtendimento
         Cidade = cidade;
         Estado = estado;
         Preco = preco;
-        PrecoDescricao = precoDescricao;
+        PrecoDescricao = Utilitarios.ConverterMoedaParaExtenso(Preco);
         TipoAtendimento = tipoAtendimento;
         Telefone = telefone;
         Whatsapp = whatsapp;
@@ -45,7 +46,7 @@ public class EspecialistaLocalAtendimento
         Validate();
     }
 
-    public void Update(string nome, string logradouro, string complemento, string bairro, string cep, string cidade, string estado, decimal? preco, string precoDescricao, string tipoAtendimento, string telefone, string whatsapp)
+    public void Update(string nome, string logradouro, string complemento, string bairro, string cep, string cidade, string estado, decimal? preco, string tipoAtendimento, string telefone, string whatsapp)
     {
         Nome = nome;
         Logradouro = logradouro;
@@ -55,7 +56,7 @@ public class EspecialistaLocalAtendimento
         Cidade = cidade;
         Estado = estado;
         Preco = preco;
-        PrecoDescricao = precoDescricao;
+        PrecoDescricao = Utilitarios.ConverterMoedaParaExtenso(Preco);
         TipoAtendimento = tipoAtendimento;
         Telefone = telefone;
         Whatsapp = whatsapp;
@@ -70,5 +71,6 @@ public class EspecialistaLocalAtendimento
         DomainValidation.PossibleValidPhoneNumber(Whatsapp, nameof(Whatsapp), isRequired: false);
         DomainValidation.PriceGreaterThanZero(Preco, nameof(Preco));
         DomainValidation.PossibleValidNumber(Cep?.Replace(".","").Replace("-",""), nameof(Cep));
+        DomainValidation.PossibleValidUF(Estado, nameof(Estado));
     }
 }

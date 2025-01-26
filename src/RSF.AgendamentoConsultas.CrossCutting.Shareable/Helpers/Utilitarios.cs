@@ -84,4 +84,16 @@ public static class Utilitarios
 
         throw new ArgumentException($"O tipo de acesso '{tipoAcesso}' não é válido.");
     }
+
+
+    /// <summary>
+    /// Converte o valor monetario do decimal para uma string formatada em moeda por extenso
+    /// </summary>
+    /// <param name="valor">valor monetario</param>
+    public static string ConverterMoedaParaExtenso(decimal? valor)
+    {
+        if (valor is null) return default;
+        
+        return valor.Value.ToString("C", new System.Globalization.CultureInfo("pt-BR"));
+    }
 }

@@ -15,9 +15,22 @@ public static class ValorMonetarioValidator
 
     private static int DecimalPlaces(decimal value)
     {
-        // Calcula corretamente as casas decimais
-        value = Math.Abs(value);
-        var decimalPart = value - Math.Floor(value);
-        return decimalPart == 0 ? 0 : decimalPart.ToString("0.00").Split('.')[1].Length;
+        // Calcula corretamente as casas decimais sem arredondamento
+        var decimalPart = value - Math.Truncate(value); // Obtém a parte decimal exata
+        var decimalString = decimalPart.ToString("G29").TrimEnd('0'); // Remove trailing zeros
+        return decimalString.Contains('.') ? decimalString.Split('.')[1].Length : 0;
     }
 }
+/*
+Casos de Teste:
+-------------------------------------------------------------
+Input  | Resultado    | Motivo
+-------------------------------------------------------------
+null	✅ Válido	    Campo opcional.
+0	    ❌ Inválido    Deve ser maior que zero.
+50	    ✅ Válido	    Valor válido.
+50.99	✅ Válido	    Valor válido com duas casas.
+50.999	❌ Inválido    Mais de duas casas decimais.
+-5	    ❌ Inválido    Valor negativo.
+------------------------------------------------------------
+*/

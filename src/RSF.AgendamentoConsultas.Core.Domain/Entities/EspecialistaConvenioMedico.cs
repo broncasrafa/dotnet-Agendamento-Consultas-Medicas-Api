@@ -20,7 +20,19 @@ public class EspecialistaConvenioMedico
         EspecialistaId = especialistaId;
         ConvenioMedicoId = convenioMedicoId;
 
-        DomainValidation.IdentifierGreaterThanZero(especialistaId, nameof(EspecialistaId));
-        DomainValidation.IdentifierGreaterThanZero(convenioMedicoId, nameof(ConvenioMedicoId));
+        Validate();
+    }
+
+    public void Update(int convenioMedicoId)
+    {
+        ConvenioMedicoId = convenioMedicoId;
+        
+        Validate();
+    }
+
+    private void Validate()
+    {
+        DomainValidation.IdentifierGreaterThanZero(EspecialistaId, nameof(EspecialistaId));
+        DomainValidation.IdentifierGreaterThanZero(ConvenioMedicoId, nameof(ConvenioMedicoId));
     }
 }

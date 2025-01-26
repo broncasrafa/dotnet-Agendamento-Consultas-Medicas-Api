@@ -13,11 +13,11 @@ public class AgendamentoConsultaConfiguration : IEntityTypeConfiguration<Agendam
         builder.HasKey(c => c.AgendamentoConsultaId);
 
         builder.Property(c => c.AgendamentoConsultaId).HasColumnName("Id");
-        builder.Property(c => c.EspecialistaId).IsRequired();
-        builder.Property(c => c.EspecialidadeId).IsRequired();
-        builder.Property(c => c.LocalAtendimentoId).IsRequired();
+        builder.Property(c => c.EspecialistaId).IsRequired(false);
+        builder.Property(c => c.EspecialidadeId).IsRequired(false);
+        builder.Property(c => c.LocalAtendimentoId).IsRequired(false);
         builder.Property(c => c.AgendamentoDependente).IsRequired().HasColumnType("bit").HasDefaultValueSql("((0))");
-        builder.Property(c => c.PacienteId).IsRequired();
+        builder.Property(c => c.PacienteId).IsRequired(false);
         builder.Property(c => c.PlanoMedicoId).IsRequired(false);
         builder.Property(c => c.DependenteId).IsRequired(false);
         builder.Property(c => c.DependentePlanoMedicoId).IsRequired(false);
@@ -43,17 +43,38 @@ public class AgendamentoConsultaConfiguration : IEntityTypeConfiguration<Agendam
         builder.HasOne(a => a.Especialista)
             .WithMany(cs => cs.ConsultasAtendidas) // Relacionamento com Especialista
             .HasForeignKey(a => a.EspecialistaId)
-            .OnDelete(DeleteBehavior.Restrict);  // Não permitir exclusão em cascata
+            .OnDelete(DeleteBehavior.SetNull);
 
         builder.HasOne(a => a.Especialidade)
             .WithMany() // Relacionamento com Especialidade
             .HasForeignKey(a => a.EspecialidadeId)
-            .OnDelete(DeleteBehavior.Restrict);
+            .OnDelete(DeleteBehavior.SetNull);
 
         builder.HasOne(a => a.LocalAtendimento)
             .WithMany() // Relacionamento com EspecialistaLocalAtendimento
             .HasForeignKey(a => a.LocalAtendimentoId)
-            .OnDelete(DeleteBehavior.Restrict);
+            .OnDelete(DeleteBehavior.SetNull);
+        
+        builder.HasOne(a => a.Paciente)
+            .WithMany(p => p.AgendamentosRealizados)
+            .HasForeignKey(a => a.PacienteId)
+            .OnDelete(DeleteBehavior.SetNull); // Quando o paciente for excluído, os agendamentos serão mantidos com PacienteId nulo
+
+        builder.HasOne(a => a.PlanoMedico)
+            .WithMany() // Relacionamento com PacientePlanoMedico
+            .HasForeignKey(a => a.PlanoMedicoId)
+            .OnDelete(DeleteBehavior.SetNull);
+
+        builder.HasOne(a => a.Dependente)
+            .WithMany(p => p.AgendamentosRealizados)
+            .HasForeignKey(a => a.DependenteId)
+            .OnDelete(DeleteBehavior.SetNull); // Quando o dependente for excluído, os agendamentos serão mantidos com DependenteId nulo
+
+        builder.HasOne(a => a.PlanoMedicoDependente)
+            .WithMany() // Relacionamento com PacienteDependentePlanoMedico
+            .HasForeignKey(a => a.DependentePlanoMedicoId)
+            .OnDelete(DeleteBehavior.SetNull);
+
 
         builder.HasOne(a => a.StatusConsulta)
             .WithMany() // Relacionamento com TipoStatusConsulta
@@ -68,28 +89,6 @@ public class AgendamentoConsultaConfiguration : IEntityTypeConfiguration<Agendam
         builder.HasOne(a => a.TipoAgendamento)
             .WithMany() // Relacionamento com TipoAgendamento
             .HasForeignKey(a => a.TipoAgendamentoId)
-            .OnDelete(DeleteBehavior.Restrict);
-
-
-
-        builder.HasOne(a => a.Paciente)
-            .WithMany(p => p.AgendamentosRealizados)
-            .HasForeignKey(a => a.PacienteId)
-            .OnDelete(DeleteBehavior.SetNull); // Quando o paciente for excluído, os agendamentos serão mantidos com PacienteId nulo
-
-        builder.HasOne(a => a.PlanoMedico)
-            .WithMany() // Relacionamento com PacientePlanoMedico
-            .HasForeignKey(a => a.PlanoMedicoId)
-            .OnDelete(DeleteBehavior.Restrict);
-
-        builder.HasOne(a => a.Dependente)
-            .WithMany(p => p.AgendamentosRealizados)
-            .HasForeignKey(a => a.DependenteId)
-            .OnDelete(DeleteBehavior.SetNull); // Quando o dependente for excluído, os agendamentos serão mantidos com DependenteId nulo
-
-        builder.HasOne(a => a.PlanoMedicoDependente)
-            .WithMany() // Relacionamento com PacienteDependentePlanoMedico
-            .HasForeignKey(a => a.DependentePlanoMedicoId)
             .OnDelete(DeleteBehavior.Restrict);
     }
 }

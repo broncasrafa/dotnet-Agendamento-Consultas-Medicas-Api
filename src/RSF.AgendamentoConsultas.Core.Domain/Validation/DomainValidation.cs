@@ -173,4 +173,20 @@ public static class DomainValidation
         if (!value.Trim().Contains(' '))
             throw new EntityValidationException($"{fieldName} inválido.");
     }
+
+    public static void PossibleValidUF(string value, string fieldName)
+    {
+        if (value is not null)
+        {
+            if (value.Length != 2)
+                throw new EntityValidationException($"{fieldName} deve ter 2 caracteres.");
+
+            if (!Regex.IsMatch(value, @"^[A-Z]+$"))
+                throw new EntityValidationException($"{fieldName} deve conter apenas letras maiúsculas.");
+
+            var validUFs = new string[] { "AC", "AL", "AP", "AM", "BA", "CE", "DF", "ES", "GO", "MA", "MT", "MS", "MG", "PA", "PB", "PR", "PE", "PI", "RJ", "RN", "RS", "RO", "RR", "SC", "SP", "SE", "TO" };
+            if (!validUFs.Contains(value))
+                throw new EntityValidationException($"{fieldName} inválido. Valores válidos: '{string.Join(", ", validUFs)}'");
+        }
+    }
 }

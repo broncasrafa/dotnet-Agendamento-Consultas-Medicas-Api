@@ -22,8 +22,21 @@ public class EspecialistaEspecialidade
         EspecialidadeId = especialidadeId;
         TipoEspecialidade = tipoEspecialidade;
 
-        DomainValidation.IdentifierGreaterThanZero(especialistaId, nameof(EspecialistaId));
-        DomainValidation.IdentifierGreaterThanZero(especialidadeId, nameof(EspecialidadeId));
+        Validate();
+    }
+
+    public void Update(int especialidadeId, string tipoEspecialidade)
+    {
+        EspecialidadeId = especialidadeId;
+        TipoEspecialidade = tipoEspecialidade;
+
+        Validate();
+    }
+
+    private void Validate()
+    {
+        DomainValidation.IdentifierGreaterThanZero(EspecialistaId, nameof(EspecialistaId));
+        DomainValidation.IdentifierGreaterThanZero(EspecialidadeId, nameof(EspecialidadeId));
         DomainValidation.PossiblesValidTypes(TypeValids.VALID_ESPECIALIDADES, TipoEspecialidade, nameof(TipoEspecialidade));
     }
 }

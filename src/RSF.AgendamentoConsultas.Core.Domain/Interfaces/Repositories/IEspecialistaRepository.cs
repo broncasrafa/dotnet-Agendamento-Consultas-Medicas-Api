@@ -6,6 +6,7 @@ namespace RSF.AgendamentoConsultas.Core.Domain.Interfaces.Repositories;
 
 public interface IEspecialistaRepository : IBaseRepository<Especialista>
 {
+    new ValueTask<Especialista> GetByIdAsync(int id);
     ValueTask<Especialista> GetByEmailAsync(string email);
     ValueTask<Especialista> GetByUserIdAsync(string userId);
     ValueTask<Especialista> GetByIdWithEspecialidadesAsync(int id);
