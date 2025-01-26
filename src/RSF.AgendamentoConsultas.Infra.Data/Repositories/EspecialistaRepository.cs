@@ -104,4 +104,16 @@ public class EspecialistaRepository : BaseRepository<Especialista>, IEspecialist
                         .Include(ee => ee.Especialidade).ThenInclude(g => g.EspecialidadeGrupo)
                         .Select(c => c.Especialista)
                         .ToListAsync();
+
+    public async ValueTask<IReadOnlyList<Tags>> GetAllMarcacoesEspecialistaByIdAsync(int id)
+    {
+        return await _Context.Especialistas
+            .AsNoTracking()
+            .Where(e => e.EspecialistaId == id) // Filtra o especialista pelo Id
+            .SelectMany(e => e.Avaliacoes) // Achata a coleção de Avaliações
+                .Where(a => a.TagId.HasValue) // Garantir que o TagId não seja nulo
+                .Select(a => a.Marcacao) // Seleciona o objeto Tag associado à avaliação
+                .Distinct() // Garante que as Tags sejam distintas
+            .ToListAsync();
+    }
 }

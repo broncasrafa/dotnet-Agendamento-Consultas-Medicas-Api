@@ -1,8 +1,6 @@
-﻿using MediatR;
-
+﻿using RSF.AgendamentoConsultas.Core.Application.Features.Especialista.Responses;
+using MediatR;
 using OperationResult;
-
-using RSF.AgendamentoConsultas.Core.Application.Features.Especialista.Responses;
 
 namespace RSF.AgendamentoConsultas.Core.Application.Features.Especialista.Query.GetByIdWithTags;
 

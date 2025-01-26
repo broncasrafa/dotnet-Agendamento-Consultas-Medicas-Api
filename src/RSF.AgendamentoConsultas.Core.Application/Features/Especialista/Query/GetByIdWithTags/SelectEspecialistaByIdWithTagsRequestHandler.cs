@@ -1,8 +1,8 @@
 ﻿using RSF.AgendamentoConsultas.CrossCutting.Shareable.Exceptions;
-using MediatR;
-using OperationResult;
 using RSF.AgendamentoConsultas.Core.Application.Features.Especialista.Responses;
 using RSF.AgendamentoConsultas.Core.Domain.Interfaces.Repositories;
+using MediatR;
+using OperationResult;
 
 namespace RSF.AgendamentoConsultas.Core.Application.Features.Especialista.Query.GetByIdWithTags;
 
@@ -14,13 +14,13 @@ public class SelectEspecialistaByIdWithTagsRequestHandler : IRequestHandler<Sele
 
     public async Task<Result<EspecialistaResultList<EspecialistaTagsResponse>>> Handle(SelectEspecialistaByIdWithTagsRequest request, CancellationToken cancellationToken)
     {
-        var data = await _repository.GetByIdWithTagsAsync(request.Id);
+        var especialista = await _repository.GetByIdAsync(request.Id);
+        NotFoundException.ThrowIfNull(especialista, $"Especialista com o ID: '{request.Id}' não encontrado");
 
-        NotFoundException.ThrowIfNull(data, $"Especialista com o ID: '{request.Id}' não encontrado");
+        var marcacoes = await _repository.GetAllMarcacoesEspecialistaByIdAsync(request.Id);
 
-        var list = EspecialistaTagsResponse.MapFromEntity(data.Tags?.Select(c => c.Tag));
-
-        var response = new EspecialistaResultList<EspecialistaTagsResponse>(data.EspecialistaId, list);
+        var list = EspecialistaTagsResponse.MapFromEntity(marcacoes);
+        var response = new EspecialistaResultList<EspecialistaTagsResponse>(especialista.EspecialistaId, list);
 
         return Result.Success(response);
     }

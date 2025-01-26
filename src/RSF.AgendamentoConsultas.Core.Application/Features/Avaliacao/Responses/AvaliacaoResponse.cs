@@ -9,6 +9,7 @@ public class AvaliacaoResponse
     public int Id { get; private set; }
     public string Feedback { get; private set; }
     public int Score { get; private set; }
+    public string Marcacao { get; private set; }
     public DateTime CreatedAt { get; private set; }
 
     public EspecialistaResponse Especialista { get; set; }
@@ -23,6 +24,7 @@ public class AvaliacaoResponse
             Score = avaliacao.Score,
             CreatedAt = avaliacao.CreatedAt,
             Especialista = avaliacao.Especialista is null ? default! : new EspecialistaResponse { Id = avaliacao.Especialista.EspecialistaId, Nome = avaliacao.Especialista.Nome, },
-            Paciente = avaliacao.Paciente is null ? default! : new PacienteResponse { Id = avaliacao.Paciente.PacienteId, Nome = avaliacao.Paciente.Nome, }
+            Paciente = avaliacao.Paciente is null ? default! : new PacienteResponse { Id = avaliacao.Paciente.PacienteId, Nome = avaliacao.Paciente.Nome, },
+            Marcacao = avaliacao.Marcacao is null ? default! : avaliacao.Marcacao.Descricao
         };
 }

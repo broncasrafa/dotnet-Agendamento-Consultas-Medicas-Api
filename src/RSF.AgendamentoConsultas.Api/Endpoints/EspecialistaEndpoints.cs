@@ -34,7 +34,8 @@ internal static class EspecialistaEndpoints
         var routes = builder.MapGroup("api/especialistas").WithTags("Especialistas");
 
         #region [ GET ]
-        routes.MapGet("/", static async (IMediator mediator, [FromQuery] int page, [FromQuery] int items, CancellationToken cancellationToken) => await mediator.SendCommand(new SelectEspecialistaPagedRequest(items, page), cancellationToken: cancellationToken))
+        routes.MapGet("/", static async (IMediator mediator, [FromQuery] int page, [FromQuery] int items, CancellationToken cancellationToken) 
+            => await mediator.SendCommand(new SelectEspecialistaPagedRequest(items, page), cancellationToken: cancellationToken))
             .WithName("GetOneEspecialistaPaged")
             .Produces<PagedResult<EspecialistaResponse>>(StatusCodes.Status200OK)
             .Produces<ProblemDetails>(StatusCodes.Status404NotFound)
@@ -43,7 +44,8 @@ internal static class EspecialistaEndpoints
             .AllowAnonymous()
             .WithOpenApi();
 
-        routes.MapGet("/search", static async (IMediator mediator, [FromQuery] int page, [FromQuery] int items, [FromQuery] string name, CancellationToken cancellationToken) => await mediator.SendCommand(new SelectEspecialistaByNamePagedRequest(name, items, page), cancellationToken: cancellationToken))
+        routes.MapGet("/search", static async (IMediator mediator, [FromQuery] int page, [FromQuery] int items, [FromQuery] string name, CancellationToken cancellationToken) 
+            => await mediator.SendCommand(new SelectEspecialistaByNamePagedRequest(name, items, page), cancellationToken: cancellationToken))
             .WithName("GetOneEspecialistaByNamePaged")
             .Produces<PagedResult<EspecialistaResponse>>(StatusCodes.Status200OK)
             .Produces<ProblemDetails>(StatusCodes.Status404NotFound)
@@ -53,7 +55,8 @@ internal static class EspecialistaEndpoints
             .WithOpenApi();
 
 
-        routes.MapGet("/{id:int}", static async (IMediator mediator, [FromRoute] int id, CancellationToken cancellationToken) => await mediator.SendCommand(new SelectEspecialistaByIdRequest(id), cancellationToken: cancellationToken))
+        routes.MapGet("/{id:int}", static async (IMediator mediator, [FromRoute] int id, CancellationToken cancellationToken) 
+            => await mediator.SendCommand(new SelectEspecialistaByIdRequest(id), cancellationToken: cancellationToken))
             .WithName("GetOneEspecialistaById")
             .Produces<ApiResponse<EspecialistaResponse>>(StatusCodes.Status200OK)
             .Produces<ProblemDetails>(StatusCodes.Status404NotFound)
@@ -62,7 +65,8 @@ internal static class EspecialistaEndpoints
             .AllowAnonymous()
             .WithOpenApi();
 
-        routes.MapGet("/{id:int}/especialidades", static async (IMediator mediator, [FromRoute] int id, CancellationToken cancellationToken) => await mediator.SendCommand(new SelectEspecialistaByIdWithEspecialidadesRequest(id), cancellationToken: cancellationToken))
+        routes.MapGet("/{id:int}/especialidades", static async (IMediator mediator, [FromRoute] int id, CancellationToken cancellationToken) 
+            => await mediator.SendCommand(new SelectEspecialistaByIdWithEspecialidadesRequest(id), cancellationToken: cancellationToken))
             .WithName("GetOneEspecialistaByIdEspecialidades")
             .Produces<ApiResponse<EspecialistaResultList<EspecialistaEspecialidadeResponse>>>(StatusCodes.Status200OK)
             .Produces<ProblemDetails>(StatusCodes.Status404NotFound)
@@ -71,7 +75,8 @@ internal static class EspecialistaEndpoints
             .AllowAnonymous()
             .WithOpenApi();
 
-        routes.MapGet("/{id:int}/convenios-medicos", static async (IMediator mediator, [FromRoute] int id, CancellationToken cancellationToken) => await mediator.SendCommand(new SelectEspecialistaByIdWithConveniosMedicosRequest(id), cancellationToken: cancellationToken))
+        routes.MapGet("/{id:int}/convenios-medicos", static async (IMediator mediator, [FromRoute] int id, CancellationToken cancellationToken)
+            => await mediator.SendCommand(new SelectEspecialistaByIdWithConveniosMedicosRequest(id), cancellationToken: cancellationToken))
             .WithName("GetOneEspecialistaByIdConvenios")
             .Produces<ApiResponse<EspecialistaResultList<EspecialistaConvenioMedicoResponse>>>(StatusCodes.Status200OK)
             .Produces<ProblemDetails>(StatusCodes.Status404NotFound)
@@ -80,7 +85,8 @@ internal static class EspecialistaEndpoints
             .AllowAnonymous()
             .WithOpenApi();
 
-        routes.MapGet("/{id:int}/avaliacoes", static async (IMediator mediator, [FromRoute] int id, CancellationToken cancellationToken) => await mediator.SendCommand(new SelectEspecialistaByIdWithAvaliacoesRequest(id), cancellationToken: cancellationToken))
+        routes.MapGet("/{id:int}/avaliacoes", static async (IMediator mediator, [FromRoute] int id, CancellationToken cancellationToken) 
+            => await mediator.SendCommand(new SelectEspecialistaByIdWithAvaliacoesRequest(id), cancellationToken: cancellationToken))
             .WithName("GetOneEspecialistaByIdAvaliacoes")
             .Produces<ApiResponse<EspecialistaResultList<EspecialistaAvaliacaoResponse>>>(StatusCodes.Status200OK)
             .Produces<ProblemDetails>(StatusCodes.Status404NotFound)
@@ -89,7 +95,8 @@ internal static class EspecialistaEndpoints
             .AllowAnonymous()
             .WithOpenApi();
 
-        routes.MapGet("/{id:int}/locais-atendimento", static async (IMediator mediator, [FromRoute] int id, CancellationToken cancellationToken) => await mediator.SendCommand(new SelectEspecialistaByIdWithLocaisAtendimentoRequest(id), cancellationToken: cancellationToken))
+        routes.MapGet("/{id:int}/locais-atendimento", static async (IMediator mediator, [FromRoute] int id, CancellationToken cancellationToken) 
+            => await mediator.SendCommand(new SelectEspecialistaByIdWithLocaisAtendimentoRequest(id), cancellationToken: cancellationToken))
             .WithName("GetOneEspecialistaByIdLocaisAtendimento")
             .Produces<ApiResponse<EspecialistaResultList<EspecialistaLocalAtendimentoResponse>>>(StatusCodes.Status200OK)
             .Produces<ProblemDetails>(StatusCodes.Status404NotFound)
@@ -98,7 +105,8 @@ internal static class EspecialistaEndpoints
             .AllowAnonymous()
             .WithOpenApi();
 
-        routes.MapGet("/{id:int}/respostas", static async (IMediator mediator, [FromRoute] int id, CancellationToken cancellationToken) => await mediator.SendCommand(new SelectEspecialistaRespostasRequest(id), cancellationToken: cancellationToken))
+        routes.MapGet("/{id:int}/respostas", static async (IMediator mediator, [FromRoute] int id, CancellationToken cancellationToken) 
+            => await mediator.SendCommand(new SelectEspecialistaRespostasRequest(id), cancellationToken: cancellationToken))
             .WithName("GetOneEspecialistaByIdRespostas")
             .Produces<ApiResponse<EspecialistaResultList<EspecialistaPerguntaRespostaResponse>>>(StatusCodes.Status200OK)
             .Produces<ProblemDetails>(StatusCodes.Status404NotFound)
@@ -107,7 +115,8 @@ internal static class EspecialistaEndpoints
             .AllowAnonymous()
             .WithOpenApi();
 
-        routes.MapGet("/{id:int}/marcacoes", static async (IMediator mediator, [FromRoute] int id, CancellationToken cancellationToken) => await mediator.SendCommand(new SelectEspecialistaByIdWithTagsRequest(id), cancellationToken: cancellationToken))
+        routes.MapGet("/{id:int}/marcacoes", static async (IMediator mediator, [FromRoute] int id, CancellationToken cancellationToken) 
+            => await mediator.SendCommand(new SelectEspecialistaByIdWithTagsRequest(id), cancellationToken: cancellationToken))
             .WithName("GetOneEspecialistaByIdTags")
             .Produces<ApiResponse<EspecialistaResultList<EspecialistaTagsResponse>>>(StatusCodes.Status200OK)
             .Produces<ProblemDetails>(StatusCodes.Status404NotFound)

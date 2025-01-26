@@ -12,12 +12,12 @@ public class EspecialistaAvaliacaoConfiguration : IEntityTypeConfiguration<Espec
 
         builder.HasKey(a => a.Id);
 
+        builder.Property(a => a.EspecialistaId).IsRequired();
+        builder.Property(a => a.PacienteId).IsRequired();
+        builder.Property(a => a.TagId).IsRequired(false);
         builder.Property(a => a.Feedback).IsRequired().HasColumnType("varchar(max)");
         builder.Property(a => a.Score).IsRequired();
-        builder.Property(a => a.CreatedAt)
-            .IsRequired()
-            .HasColumnType("datetime")
-            .HasDefaultValueSql("(getdate())");
+        builder.Property(a => a.CreatedAt).IsRequired().HasColumnType("datetime").HasDefaultValueSql("(getdate())");
 
         builder.HasOne(a => a.Especialista)
             .WithMany(e => e.Avaliacoes)
@@ -26,5 +26,8 @@ public class EspecialistaAvaliacaoConfiguration : IEntityTypeConfiguration<Espec
         builder.HasOne(a => a.Paciente)
             .WithMany(e => e.AvaliacoesFeitas)
             .HasForeignKey(a => a.PacienteId);
+
+        builder.HasOne(a => a.Marcacao)
+            .WithOne();
     }
 }
