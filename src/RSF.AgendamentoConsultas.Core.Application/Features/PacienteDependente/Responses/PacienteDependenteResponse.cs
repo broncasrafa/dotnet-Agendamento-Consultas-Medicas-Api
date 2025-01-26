@@ -20,9 +20,9 @@ public record PacienteDependenteResponse(
             entity.Genero,
             entity.CPF,
             entity.DataNascimento,
-            entity.IsActive ?? false,
+            entity.Ativo ?? false,
             PacienteDependentePlanoMedicoResponse.MapFromEntity(entity.PlanosMedicos));
 
     public static IReadOnlyList<PacienteDependenteResponse>? MapFromEntity(IEnumerable<Domain.Entities.PacienteDependente> collection)
-        => collection is null || !collection.Any() ? default! : collection.Where(c => c.IsActive!.Value).Select(c => MapFromEntity(c)).ToList();
+        => collection is null || !collection.Any() ? default! : collection.Where(c => c.Ativo!.Value).Select(c => MapFromEntity(c)).ToList();
 }

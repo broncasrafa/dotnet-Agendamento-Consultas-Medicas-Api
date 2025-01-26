@@ -38,7 +38,7 @@ public class PacienteResponse
             DataNascimento = entity.DataNascimento,
             CreatedAt = entity.CreatedAt,
             UpdatedAt = entity.UpdatedAt,
-            Ativo = entity.IsActive,
+            Ativo = entity.Ativo,
             Dependentes = PacienteDependenteResponse.MapFromEntity(entity.Dependentes),
             PlanosMedicos = PacientePlanoMedicoResponse.MapFromEntity(entity.PlanosMedicos)
         };

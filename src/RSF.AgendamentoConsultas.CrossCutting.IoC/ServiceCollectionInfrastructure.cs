@@ -108,7 +108,9 @@ public static class ServiceCollectionInfrastructure
         services.AddScoped<IEspecialidadeRepository, EspecialidadeRepository>();
         services.AddScoped<IEspecialistaRepository, EspecialistaRepository>();
         services.AddScoped<IPacienteRepository, PacienteRepository>();
+        services.AddScoped<IPacientePlanoMedicoRepository, PacientePlanoMedicoRepository>();
         services.AddScoped<IPacienteDependenteRepository, PacienteDependenteRepository>();
+        services.AddScoped<IPacienteDependentePlanoMedicoRepository, PacienteDependentePlanoMedicoRepository>();
         services.AddScoped<IAgendamentoConsultaRepository, AgendamentoConsultaRepository>();
         services.AddScoped<IPerguntaRepository, PerguntaRepository>();
         services.AddScoped<IPerguntaRespostaRepository, PerguntaRespostaRepository>();
@@ -147,6 +149,7 @@ public static class ServiceCollectionInfrastructure
         services.AddTransient<ForgotPasswordEmail>();
         services.AddTransient<ChangePasswordEmail>();
         services.AddTransient<EmailConfirmationEmail>();
+        services.AddTransient<DesativarContaEmail>();
     }
 
 

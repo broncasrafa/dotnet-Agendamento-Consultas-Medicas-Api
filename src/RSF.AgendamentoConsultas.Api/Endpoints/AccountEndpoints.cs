@@ -13,6 +13,7 @@ using RSF.AgendamentoConsultas.Core.Application.Features.Account.Command.Confirm
 using RSF.AgendamentoConsultas.Core.Application.Features.Account.Command.ConfirmEmailResend;
 using RSF.AgendamentoConsultas.Core.Application.Features.Account.Command.ChangePassword;
 using RSF.AgendamentoConsultas.Core.Application.Features.Account.Command.UpdateAuthenticatedUserInfo;
+using RSF.AgendamentoConsultas.Core.Application.Features.Account.Command.DeleteAuthenticatedUserInfo;
 using RSF.AgendamentoConsultas.Core.Application.Features.Account.Query.GetAuthenticatedUserInfo;
 using MediatR;
 
@@ -157,6 +158,20 @@ internal static class AccountEndpoints
             .Produces<ProblemDetails>(StatusCodes.Status401Unauthorized)
             .WithDescription("Atualizar os dados do usuário logado na plataforma")
             .WithSummary("Atualizar os dados do usuário logado na plataforma")
+            .RequireAuthorization()
+            .WithOpenApi();
+        #endregion
+
+        #region [ DELETE ]
+        routes.MapDelete("/manage/info", static async (IMediator mediator, CancellationToken cancellationToken)
+            => await mediator.SendCommand(new DeleteAuthenticatedUserInfoRequest(), cancellationToken: cancellationToken))
+            .WithName("DeleteManageUserInfo")
+            .Produces<ApiResponse<bool>>(StatusCodes.Status200OK)
+            .Produces<ProblemDetails>(StatusCodes.Status400BadRequest)
+            .Produces<ProblemDetails>(StatusCodes.Status404NotFound)
+            .Produces<ProblemDetails>(StatusCodes.Status401Unauthorized)
+            .WithDescription("Deleta os dados do usuário logado na plataforma")
+            .WithSummary("Deleta os dados do usuário logado na plataforma")
             .RequireAuthorization()
             .WithOpenApi();
         #endregion

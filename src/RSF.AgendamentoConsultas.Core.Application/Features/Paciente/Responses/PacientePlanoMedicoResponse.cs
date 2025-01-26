@@ -15,8 +15,8 @@ public record PacientePlanoMedicoResponse
             entity.NomePlano,
             entity.NumCartao,
             entity.ConvenioMedico?.Nome,
-            entity.IsActive ?? false);
+            entity.Ativo ?? false);
 
     public static IReadOnlyList<PacientePlanoMedicoResponse>? MapFromEntity(IEnumerable<Domain.Entities.PacientePlanoMedico> collection)
-        => collection is null || !collection.Any() ? default! : collection.Where(c => c.IsActive!.Value).Select(c => MapFromEntity(c)).ToList();
+        => collection is null || !collection.Any() ? default! : collection.Where(c => c.Ativo!.Value).Select(c => MapFromEntity(c)).ToList();
 }

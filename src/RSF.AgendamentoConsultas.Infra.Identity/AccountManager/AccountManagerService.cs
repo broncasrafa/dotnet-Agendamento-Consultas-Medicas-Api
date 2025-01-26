@@ -1,7 +1,6 @@
 ﻿using System.Text;
 using System.Linq.Expressions;
 using System.Security.Claims;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.EntityFrameworkCore;
@@ -166,6 +165,29 @@ public class AccountManagerService : IAccountManagerService
         }
 
         _logger.LogInformation("Usuário {UserId} atualizado com sucesso.", user.Id);
+        return true;
+    }
+
+    public async Task<bool> DeactivateUserAccountAsync(ApplicationUser user)
+    {
+        user.IsActive = false;
+        user.UpdatedAt = DateTime.Now;
+
+        var updateResult = await _userManager.UpdateAsync(user);
+
+        if (!updateResult.Succeeded)
+        {
+            var errors = string.Join("; ", updateResult.Errors.Select(e => e.Description));
+            _logger.LogWarning("Erro ao desativar os dados do usuário {UserId}: {Errors}", user.Id, errors);
+
+            IdentityOperationErrorsException.ThrowIfErrors($"Falha ao desativar a conta do usuário '{user.Id}': {errors})");
+        }
+
+        _logger.LogInformation("Conta do usuário {UserId} desativada com sucesso.", user.Id);
+
+        // invalida os tokens ativos, forçando o logout em dispositivos conectados.
+        await _userManager.UpdateSecurityStampAsync(user);
+
         return true;
     }
 }

@@ -3,6 +3,7 @@ using RSF.AgendamentoConsultas.Infra.Data.Context;
 using RSF.AgendamentoConsultas.Infra.Data.Repositories.Common;
 using RSF.AgendamentoConsultas.Core.Domain.Entities;
 using RSF.AgendamentoConsultas.Core.Domain.Interfaces.Repositories;
+using RSF.AgendamentoConsultas.CrossCutting.Shareable.Enums;
 
 namespace RSF.AgendamentoConsultas.Infra.Data.Repositories;
 
@@ -25,6 +26,14 @@ public class PacienteRepository : BaseRepository<Paciente>, IPacienteRepository
                     .Include(c => c.Dependentes).ThenInclude(d => d.PlanosMedicos).ThenInclude(cm => cm.ConvenioMedico)
                     .Include(c => c.PlanosMedicos).ThenInclude(cm => cm.ConvenioMedico)
                     .FirstOrDefaultAsync(p => p.Email == email);
+    
+    public async ValueTask<Paciente> GetByUserIdAsync(string userId)
+        => await _Context.Pacientes
+                    .AsNoTracking()
+                    .Include(c => c.Dependentes).ThenInclude(d => d.PlanosMedicos).ThenInclude(cm => cm.ConvenioMedico)
+                    .Include(c => c.PlanosMedicos).ThenInclude(cm => cm.ConvenioMedico)
+                    .Include(a => a.AgendamentosRealizados.Where(st => st.StatusConsultaId == (int)ETipoStatusConsulta.Solicitado || st.StatusConsultaId == (int)ETipoStatusConsulta.Confirmado))
+                    .FirstOrDefaultAsync(p => p.UserId == userId);
 
 
     public async ValueTask<IReadOnlyList<PacientePlanoMedico>> GetPlanosMedicosPacienteByIdAsync(int pacienteId)

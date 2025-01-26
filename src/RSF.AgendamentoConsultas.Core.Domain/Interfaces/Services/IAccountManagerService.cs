@@ -22,4 +22,5 @@ public interface IAccountManagerService
     Task<string> GetEmailConfirmationTokenAsync(string email);
     Task<ApplicationUser> GetUserAsync(ClaimsPrincipal authenticatedUser);
     Task<bool> UpdateUserAsync(ApplicationUser user);
+    Task<bool> DeactivateUserAccountAsync(ApplicationUser user);
 }

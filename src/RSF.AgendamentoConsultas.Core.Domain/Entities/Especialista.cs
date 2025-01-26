@@ -36,7 +36,9 @@ public class Especialista
     public ICollection<EspecialistaTags> Tags { get; set; }
     public ICollection<EspecialistaAvaliacao> Avaliacoes { get; set; }
     public ICollection<PerguntaResposta> Respostas { get; set; }
-    
+
+    public ICollection<AgendamentoConsulta> ConsultasAtendidas { get; set; }
+
 
     protected Especialista()
     {        

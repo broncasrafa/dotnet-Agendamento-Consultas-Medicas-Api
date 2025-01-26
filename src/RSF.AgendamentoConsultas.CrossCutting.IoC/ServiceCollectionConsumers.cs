@@ -20,6 +20,7 @@ public static class ServiceCollectionConsumers
         services.AddHostedService<ForgotPasswordSubscriber>();
         services.AddHostedService<ChangePasswordSubscriber>();
         services.AddHostedService<EmailConfirmationSubscriber>();
+        services.AddHostedService<DesativarContaSubscriber>();
         
         return services;
     }

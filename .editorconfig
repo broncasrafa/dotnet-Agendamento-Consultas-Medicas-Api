@@ -192,6 +192,9 @@ dotnet_diagnostic.CA1851.severity = none
 # CA1854: Preferir o método IDictionary.TryGetValue(TKey, out TValue)
 dotnet_diagnostic.CA1854.severity = suggestion
 
+# CA1860: evite usar o método de extensão 'Enumerable.Any()'
+dotnet_diagnostic.CA1860.severity = suggestion
+
 # CA1869: armazenar em cache e reutilizar instâncias de "JsonSerializerOptions"
 dotnet_diagnostic.CA1869.severity = suggestion
 

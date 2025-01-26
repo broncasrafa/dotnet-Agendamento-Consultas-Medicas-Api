@@ -4,6 +4,7 @@ using RSF.AgendamentoConsultas.Infra.Data.Repositories.Common;
 using RSF.AgendamentoConsultas.Core.Domain.Entities;
 using RSF.AgendamentoConsultas.CrossCutting.Shareable.Results;
 using RSF.AgendamentoConsultas.Core.Domain.Interfaces.Repositories;
+using RSF.AgendamentoConsultas.CrossCutting.Shareable.Enums;
 
 namespace RSF.AgendamentoConsultas.Infra.Data.Repositories;
 
@@ -60,6 +61,11 @@ public class EspecialistaRepository : BaseRepository<Especialista>, IEspecialist
                 .Include(c => c.LocaisAtendimento)
                 .Include(c => c.Avaliacoes).ThenInclude(p => p.Paciente)
                 .FirstOrDefaultAsync(c => c.Email == email);
+    
+    public async ValueTask<Especialista> GetByUserIdAsync(string userId)
+        => await _Context.Especialistas.AsNoTracking()
+        .Include(a => a.ConsultasAtendidas.Where(st => st.StatusConsultaId == (int)ETipoStatusConsulta.Solicitado || st.StatusConsultaId == (int)ETipoStatusConsulta.Confirmado))
+        .FirstOrDefaultAsync(c => c.UserId == userId);
 
     public async ValueTask<Especialista> GetByIdWithEspecialidadesAsync(int id)
         => await _Context.Especialistas.AsNoTracking()

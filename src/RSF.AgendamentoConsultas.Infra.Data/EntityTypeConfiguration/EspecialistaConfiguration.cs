@@ -65,6 +65,11 @@ public class EspecialistaConfiguration : IEntityTypeConfiguration<Especialista>
         builder.HasMany(e => e.Respostas)
                .WithOne(ep => ep.Especialista)
                .HasForeignKey(ep => ep.EspecialistaId)
-               .OnDelete(DeleteBehavior.Restrict); 
+               .OnDelete(DeleteBehavior.Restrict);
+        
+        builder.HasMany(cs => cs.ConsultasAtendidas)
+            .WithOne(e=>e.Especialista)
+            .HasForeignKey(e => e.EspecialistaId)
+            .OnDelete(DeleteBehavior.Restrict);
     }
 }

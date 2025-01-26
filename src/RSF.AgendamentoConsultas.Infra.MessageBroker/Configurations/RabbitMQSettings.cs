@@ -20,4 +20,5 @@ public class RabbitMQSettings
     public string ForgotPasswordQueueName { get; set; }    
     public string ChangePasswordQueueName { get; set; }    
     public string EmailConfirmationQueueName { get; set; }    
+    public string DeactivateAccountQueueName { get; set; }    
 }

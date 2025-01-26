@@ -21,7 +21,7 @@ public class Paciente
     public DateTime CreatedAt { get; set; }
     public DateTime? UpdatedAt { get; set; }
 
-    public bool? IsActive { get; private set; }
+    public bool? Ativo { get; set; }
 
     public ICollection<PacienteDependente> Dependentes { get; set; }
     public ICollection<PacientePlanoMedico> PlanosMedicos { get; set; }
@@ -47,7 +47,7 @@ public class Paciente
         EmailVerificado = emailVerificado ?? false;
         TermoUsoAceito = termoUsoAceito ?? false;
         CreatedAt = DateTime.Now;
-        IsActive = true;
+        Ativo = true;
 
         Validate();
     }
@@ -70,7 +70,7 @@ public class Paciente
         Validate(validatePassword: false);
     }
     
-    public void ChangeStatus(bool status) => IsActive = status;
+    public void ChangeStatus(bool status) => Ativo = status;
 
     void Validate(bool validatePassword = true)
     {

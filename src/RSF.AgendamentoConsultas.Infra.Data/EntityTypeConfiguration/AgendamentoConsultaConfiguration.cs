@@ -41,7 +41,7 @@ public class AgendamentoConsultaConfiguration : IEntityTypeConfiguration<Agendam
 
         // Relacionamentos
         builder.HasOne(a => a.Especialista)
-            .WithMany() // Relacionamento com Especialista
+            .WithMany(cs => cs.ConsultasAtendidas) // Relacionamento com Especialista
             .HasForeignKey(a => a.EspecialistaId)
             .OnDelete(DeleteBehavior.Restrict);  // Não permitir exclusão em cascata
 
