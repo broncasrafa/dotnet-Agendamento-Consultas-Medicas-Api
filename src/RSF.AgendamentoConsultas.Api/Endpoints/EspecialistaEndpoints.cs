@@ -143,10 +143,7 @@ internal static class EspecialistaEndpoints
            .Produces<ProblemDetails>(StatusCodes.Status401Unauthorized)
            .WithDescription("Adicionar o convênio médico atendido pelo Especialista pelo ID especificado do Especialista")
            .WithSummary("Adicionar o convênio médico atendido pelo Especialista pelo ID especificado do Especialista")
-           .RequireAuthorization(policy => {
-               policy.RequireRole(ETipoPerfilAcesso.Administrador.ToString());
-               policy.RequireRole(ETipoPerfilAcesso.Profissional.ToString());
-            })
+           .RequireAuthorization("AdminOrEspecialista")
            .WithOpenApi();
 
         routes.MapPost("/{id:int}/especialidades", static async (IMediator mediator, [FromBody] AddEspecialidadeRequest request, [FromRoute] int id, CancellationToken cancellationToken)
@@ -165,10 +162,7 @@ internal static class EspecialistaEndpoints
            .Produces<ProblemDetails>(StatusCodes.Status401Unauthorized)
            .WithDescription("Adicionar a especialidade atendida pelo Especialista pelo ID especificado do Especialista")
            .WithSummary("Adicionar a especialidade atendida pelo Especialista pelo ID especificado do Especialista")
-           .RequireAuthorization(policy => {
-               policy.RequireRole(ETipoPerfilAcesso.Administrador.ToString());
-               policy.RequireRole(ETipoPerfilAcesso.Profissional.ToString());
-           })
+           .RequireAuthorization("AdminOrEspecialista")
            .WithOpenApi();
 
         routes.MapPost("/{id:int}/locais-atendimento", static async (IMediator mediator, [FromBody] AddLocalAtendimentoRequest request, [FromRoute] int id, CancellationToken cancellationToken)
@@ -187,10 +181,7 @@ internal static class EspecialistaEndpoints
            .Produces<ProblemDetails>(StatusCodes.Status401Unauthorized)
            .WithDescription("Adicionar o local de atendimento do Especialista pelo ID especificado do Especialista")
            .WithSummary("Adicionar o local de atendimento do Especialista pelo ID especificado do Especialista")
-           .RequireAuthorization(policy => {
-               policy.RequireRole(ETipoPerfilAcesso.Administrador.ToString());
-               policy.RequireRole(ETipoPerfilAcesso.Profissional.ToString());
-           })
+           .RequireAuthorization("AdminOrEspecialista")
            .WithOpenApi();
         #endregion
 
@@ -211,10 +202,7 @@ internal static class EspecialistaEndpoints
            .Produces<ProblemDetails>(StatusCodes.Status401Unauthorized)
            .WithDescription("Atualizar o convênio médico atendido pelo Especialista pelo ID especificado do Especialista")
            .WithSummary("Atualizar o convênio médico atendido pelo Especialista pelo ID especificado do Especialista")
-           .RequireAuthorization(policy => {
-               policy.RequireRole(ETipoPerfilAcesso.Administrador.ToString());
-               policy.RequireRole(ETipoPerfilAcesso.Profissional.ToString());
-           })
+           .RequireAuthorization("AdminOrEspecialista")
            .WithOpenApi();
 
         routes.MapPut("/{id:int}/especialidades", static async (IMediator mediator, [FromBody] UpdateEspecialidadeRequest request, [FromRoute] int id, CancellationToken cancellationToken)
@@ -233,10 +221,7 @@ internal static class EspecialistaEndpoints
            .Produces<ProblemDetails>(StatusCodes.Status401Unauthorized)
            .WithDescription("Atualizar a especialidade atendida pelo Especialista pelo ID especificado do Especialista")
            .WithSummary("Atualizar a especialidade atendida pelo Especialista pelo ID especificado do Especialista")
-           .RequireAuthorization(policy => {
-               policy.RequireRole(ETipoPerfilAcesso.Administrador.ToString());
-               policy.RequireRole(ETipoPerfilAcesso.Profissional.ToString());
-           })
+           .RequireAuthorization("AdminOrEspecialista")
            .WithOpenApi();
 
         routes.MapPut("/{id:int}/locais-atendimento", static async (IMediator mediator, [FromBody] UpdateLocalAtendimentoRequest request, [FromRoute] int id, CancellationToken cancellationToken)
@@ -255,10 +240,7 @@ internal static class EspecialistaEndpoints
            .Produces<ProblemDetails>(StatusCodes.Status401Unauthorized)
            .WithDescription("Atualizar o local de atendimento do Especialista pelo ID especificado do Especialista")
            .WithSummary("Atualizar o local de atendimento do Especialista pelo ID especificado do Especialista")
-           .RequireAuthorization(policy => {
-               policy.RequireRole(ETipoPerfilAcesso.Administrador.ToString());
-               policy.RequireRole(ETipoPerfilAcesso.Profissional.ToString());
-           })
+           .RequireAuthorization("AdminOrEspecialista")
            .WithOpenApi();
         #endregion
 
@@ -279,10 +261,7 @@ internal static class EspecialistaEndpoints
            .Produces<ProblemDetails>(StatusCodes.Status401Unauthorized)
            .WithDescription("Deletar o convênio médico atendido pelo Especialista pelo ID especificado do Especialista")
            .WithSummary("Deletar o convênio médico atendido pelo Especialista pelo ID especificado do Especialista")
-           .RequireAuthorization(policy => {
-               policy.RequireRole(ETipoPerfilAcesso.Administrador.ToString());
-               policy.RequireRole(ETipoPerfilAcesso.Profissional.ToString());
-           })
+           .RequireAuthorization("AdminOrEspecialista")
            .WithOpenApi();
 
         routes.MapDelete("/{id:int}/especialidades", static async (IMediator mediator, [FromBody] DeleteEspecialidadeRequest request, [FromRoute] int id, CancellationToken cancellationToken)
@@ -301,10 +280,7 @@ internal static class EspecialistaEndpoints
            .Produces<ProblemDetails>(StatusCodes.Status401Unauthorized)
            .WithDescription("Deletar a especialidade atendida pelo Especialista pelo ID especificado do Especialista")
            .WithSummary("Deletar a especialidade atendida pelo Especialista pelo ID especificado do Especialista")
-           .RequireAuthorization(policy => {
-               policy.RequireRole(ETipoPerfilAcesso.Administrador.ToString());
-               policy.RequireRole(ETipoPerfilAcesso.Profissional.ToString());
-           })
+           .RequireAuthorization("AdminOrEspecialista")
            .WithOpenApi();
 
         routes.MapDelete("/{id:int}/locais-atendimento", static async (IMediator mediator, [FromBody] DeleteLocalAtendimentoRequest request, [FromRoute] int id, CancellationToken cancellationToken)
@@ -323,10 +299,7 @@ internal static class EspecialistaEndpoints
            .Produces<ProblemDetails>(StatusCodes.Status401Unauthorized)
            .WithDescription("Deletar o local de atendimento do Especialista pelo ID especificado do Especialista")
            .WithSummary("Deletar o local de atendimento do Especialista pelo ID especificado do Especialista")
-           .RequireAuthorization(policy => {
-               policy.RequireRole(ETipoPerfilAcesso.Administrador.ToString());
-               policy.RequireRole(ETipoPerfilAcesso.Profissional.ToString());
-           })
+           .RequireAuthorization("AdminOrEspecialista")
            .WithOpenApi();
         #endregion
 

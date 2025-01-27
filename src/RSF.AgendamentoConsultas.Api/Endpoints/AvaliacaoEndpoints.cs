@@ -4,7 +4,6 @@ using RSF.AgendamentoConsultas.Api.Models;
 using RSF.AgendamentoConsultas.Core.Application.Features.Avaliacao.Query.GetAvaliacaoById;
 using RSF.AgendamentoConsultas.Core.Application.Features.Avaliacao.Responses;
 using RSF.AgendamentoConsultas.Core.Application.Features.Avaliacao.Command.CreateAvaliacao;
-using RSF.AgendamentoConsultas.CrossCutting.Shareable.Enums;
 using MediatR;
 
 namespace RSF.AgendamentoConsultas.Api.Endpoints;
@@ -24,20 +23,17 @@ internal static class AvaliacaoEndpoints
             .Produces<ProblemDetails>(StatusCodes.Status404NotFound)
             .WithDescription("Adicionar uma avaliação sobre o Especialista")
             .WithSummary("Adicionar uma avaliação sobre o Especialista")
-            .RequireAuthorization(policy => {
-                policy.RequireRole(ETipoPerfilAcesso.Administrador.ToString());
-                policy.RequireRole(ETipoPerfilAcesso.Paciente.ToString());
-            })
+            .RequireAuthorization("AdminOrPaciente")
             .WithOpenApi();
 
         routes.MapGet("/{id:int}", static async (IMediator mediator, [FromRoute] int id, CancellationToken cancellationToken) 
             => await mediator.SendCommand(new SelectAvaliacaoByIdRequest(id), cancellationToken: cancellationToken))
             .WithName("GetAvaliacaoById")
-            .AllowAnonymous()
             .Produces<ApiResponse<AvaliacaoResponse>>(StatusCodes.Status200OK)
             .Produces<ProblemDetails>(StatusCodes.Status404NotFound)
             .WithDescription("Obter os dados da Avaliação sobre o Especialista pelo ID especificado")
             .WithSummary("Obter os dados da Avaliação sobre o Especialista pelo ID especificado")
+            .AllowAnonymous()
             .WithOpenApi();
 
         return routes;

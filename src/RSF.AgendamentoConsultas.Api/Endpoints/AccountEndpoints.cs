@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using RSF.AgendamentoConsultas.Api.Models;
 using RSF.AgendamentoConsultas.Api.Extensions;
-using RSF.AgendamentoConsultas.CrossCutting.Shareable.Enums;
 using RSF.AgendamentoConsultas.Core.Application.Features.Account.Responses;
 using RSF.AgendamentoConsultas.Core.Application.Features.Account.Command.Login;
 using RSF.AgendamentoConsultas.Core.Application.Features.Account.Command.Register;
@@ -47,7 +46,7 @@ internal static class AccountEndpoints
             .Produces<ProblemDetails>(StatusCodes.Status401Unauthorized)
             .WithDescription("Realizar o registro de Administradores e Consultores na plataforma")
             .WithSummary("Realizar o registro de Administradores e Consultores na plataforma")
-            .RequireAuthorization(policy => policy.RequireRole(ETipoPerfilAcesso.Administrador.ToString()))
+            .RequireAuthorization("OnlyAdmin")
             .WithOpenApi();
 
         routes.MapPost("/register/pacientes", static async (IMediator mediator, [FromBody] RegisterPacienteRequest request, CancellationToken cancellationToken)

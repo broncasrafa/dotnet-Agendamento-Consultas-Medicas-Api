@@ -10,6 +10,7 @@ using RSF.AgendamentoConsultas.CrossCutting.Shareable;
 using FluentValidation;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using RSF.AgendamentoConsultas.CrossCutting.Shareable.Enums;
 
 namespace RSF.AgendamentoConsultas.Api.Extensions;
 
@@ -35,11 +36,7 @@ internal static class ConfigureServicesExtension
 
         services.AddHttpContextAccessor();
 
-        services.AddAuthorizationBuilder()
-            .SetFallbackPolicy(new AuthorizationPolicyBuilder()
-                .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme)
-                .RequireAuthenticatedUser()
-                .Build());
+        services.AddAuthorizationAndPolices();
 
         services.AddValidatorsFromAssemblyContaining<ShareableEntryPoint>();
 
@@ -134,6 +131,50 @@ internal static class ConfigureServicesExtension
         {
             options.AddPolicy("AllowAllPolicy", policy => policy.AllowAnyHeader().AllowAnyOrigin().AllowAnyMethod());
         });
+    }
+
+    private static void AddAuthorizationAndPolices(this IServiceCollection services)
+    {
+        services.AddAuthorizationBuilder()
+            .SetFallbackPolicy(new AuthorizationPolicyBuilder()
+                .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme)
+                .RequireAuthenticatedUser()
+                .Build())
+            .AddPolicy("AdminOrEspecialista", policy =>
+                policy.RequireAssertion(context =>
+                    context.User.IsInRole(ETipoPerfilAcesso.Administrador.ToString()) ||
+                    context.User.IsInRole(ETipoPerfilAcesso.Profissional.ToString())
+                ))
+            .AddPolicy("AdminOrPaciente", policy =>
+                policy.RequireAssertion(context =>
+                    context.User.IsInRole(ETipoPerfilAcesso.Administrador.ToString()) ||
+                    context.User.IsInRole(ETipoPerfilAcesso.Paciente.ToString())
+                ))
+            .AddPolicy("AdminOrConsultor", policy =>
+                policy.RequireAssertion(context =>
+                    context.User.IsInRole(ETipoPerfilAcesso.Administrador.ToString()) ||
+                    context.User.IsInRole(ETipoPerfilAcesso.Consultor.ToString())
+                ))
+            .AddPolicy("AdminOrPacienteOrEspecialista", policy =>
+                policy.RequireAssertion(context =>
+                    context.User.IsInRole(ETipoPerfilAcesso.Administrador.ToString()) ||
+                    context.User.IsInRole(ETipoPerfilAcesso.Paciente.ToString()) ||
+                    context.User.IsInRole(ETipoPerfilAcesso.Profissional.ToString())
+                ))
+            .AddPolicy("PacienteOrEspecialista", policy =>
+                policy.RequireAssertion(context =>
+                    context.User.IsInRole(ETipoPerfilAcesso.Paciente.ToString()) ||
+                    context.User.IsInRole(ETipoPerfilAcesso.Profissional.ToString())
+                ))
+            .AddPolicy("OnlyEspecialistas", policy =>
+                policy.RequireRole(ETipoPerfilAcesso.Profissional.ToString()))
+            .AddPolicy("OnlyPacientes", policy =>
+                policy.RequireRole(ETipoPerfilAcesso.Paciente.ToString()))
+            .AddPolicy("OnlyAdmin", policy =>
+                policy.RequireRole(ETipoPerfilAcesso.Administrador.ToString()))
+
+
+            ;
     }
 }
 

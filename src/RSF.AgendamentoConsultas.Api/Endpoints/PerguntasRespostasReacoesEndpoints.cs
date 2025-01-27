@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using RSF.AgendamentoConsultas.Api.Extensions;
 using RSF.AgendamentoConsultas.Api.Models;
-using RSF.AgendamentoConsultas.CrossCutting.Shareable.Enums;
 using RSF.AgendamentoConsultas.Core.Application.Features.PerguntasRespostasReacoes.Command.CreateReacao;
 using RSF.AgendamentoConsultas.Core.Application.Features.PerguntasRespostasReacoes.Command.UpdateReacao;
 using MediatR;
@@ -24,10 +23,7 @@ internal static class PerguntasRespostasReacoesEndpoints
             .Produces<ProblemDetails>(StatusCodes.Status404NotFound)
             .WithDescription("Adicionar uma Reação de like ou dislike a Resposta")
             .WithSummary("Adicionar uma Reação de like ou dislike a Resposta")
-            .RequireAuthorization(policy => {
-                policy.RequireRole(ETipoPerfilAcesso.Administrador.ToString());
-                policy.RequireRole(ETipoPerfilAcesso.Paciente.ToString());
-            })
+            .RequireAuthorization("AdminOrPaciente")
             .WithOpenApi();
         #endregion
 
@@ -41,10 +37,7 @@ internal static class PerguntasRespostasReacoesEndpoints
             .Produces<ProblemDetails>(StatusCodes.Status404NotFound)
             .WithDescription("Atualiza os dados de uma Reação a Resposta, de like ou dislike ou retirar a reação")
             .WithSummary("Atualiza os dados de uma Reação a Resposta, de like ou dislike ou retirar a reação")
-            .RequireAuthorization(policy => {
-                policy.RequireRole(ETipoPerfilAcesso.Administrador.ToString());
-                policy.RequireRole(ETipoPerfilAcesso.Paciente.ToString());
-            })
+            .RequireAuthorization("AdminOrPaciente")
             .WithOpenApi();
         #endregion
 

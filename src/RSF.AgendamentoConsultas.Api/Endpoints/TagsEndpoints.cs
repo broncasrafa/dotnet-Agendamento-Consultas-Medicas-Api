@@ -5,7 +5,6 @@ using RSF.AgendamentoConsultas.Core.Application.Features.Tags.GetAll;
 using RSF.AgendamentoConsultas.Core.Application.Features.Tags.GetById;
 using RSF.AgendamentoConsultas.Core.Application.Features.Tags.Responses;
 using MediatR;
-using RSF.AgendamentoConsultas.CrossCutting.Shareable.Enums;
 
 namespace RSF.AgendamentoConsultas.Api.Endpoints;
 
@@ -21,10 +20,7 @@ internal static class TagsEndpoints
             .Produces<ProblemDetails>(StatusCodes.Status404NotFound)
             .WithDescription("Obter a lista de Tags")
             .WithSummary("Obter a lista de Tags")
-            .RequireAuthorization(policy => {
-                policy.RequireRole(ETipoPerfilAcesso.Administrador.ToString());
-                policy.RequireRole(ETipoPerfilAcesso.Paciente.ToString());
-            })
+            .RequireAuthorization("AdminOrPaciente")
             .WithOpenApi();
 
         routes.MapGet("/{id:int}", static async (IMediator mediator, [FromRoute] int id, CancellationToken cancellationToken) => await mediator.SendCommand(new SelectTagsByIdRequest(id), cancellationToken: cancellationToken))
@@ -33,10 +29,7 @@ internal static class TagsEndpoints
             .Produces<ProblemDetails>(StatusCodes.Status404NotFound)
             .WithDescription("Obter a Tag pelo ID especificado")
             .WithSummary("Obter a Tag pelo ID especificado")
-            .RequireAuthorization(policy => {
-                policy.RequireRole(ETipoPerfilAcesso.Administrador.ToString());
-                policy.RequireRole(ETipoPerfilAcesso.Paciente.ToString());
-            })
+            .RequireAuthorization("AdminOrPaciente")
             .WithOpenApi();
 
         return routes;

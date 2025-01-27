@@ -28,10 +28,7 @@ internal static class PacienteEndpoints
     {
         var routes = builder.MapGroup("api/pacientes")
                             .WithTags("Pacientes")
-                            .RequireAuthorization(policy => {
-                                policy.RequireRole(ETipoPerfilAcesso.Administrador.ToString());
-                                policy.RequireRole(ETipoPerfilAcesso.Paciente.ToString());
-                            });
+                            .RequireAuthorization("AdminOrPaciente");
 
         #region [ GET ]
 

@@ -4,4 +4,4 @@ using OperationResult;
 
 namespace RSF.AgendamentoConsultas.Core.Application.Features.Account.Command.Login;
 
-public record LoginRequest(string Email, string Password, string TipoAcesso) : IRequest<Result<AuthenticatedUserResponse>>;
+public record LoginRequest(string Email, string Password) : IRequest<Result<AuthenticatedUserResponse>>;

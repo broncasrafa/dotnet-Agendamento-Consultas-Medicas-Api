@@ -8,7 +8,6 @@ using RSF.AgendamentoConsultas.Core.Application.Features.Pergunta.Query.GetPergu
 using RSF.AgendamentoConsultas.Core.Application.Features.Pergunta.Query.GetPerguntaByIdAndIdEspecialidade;
 using RSF.AgendamentoConsultas.Core.Application.Features.Pergunta.Query.GetPerguntaByIdRespostas;
 using MediatR;
-using RSF.AgendamentoConsultas.CrossCutting.Shareable.Enums;
 
 namespace RSF.AgendamentoConsultas.Api.Endpoints;
 
@@ -28,10 +27,7 @@ internal static class PerguntasEndpoints
             .Produces<ProblemDetails>(StatusCodes.Status404NotFound)
             .WithDescription("Adicionar uma pergunta para uma Especialidade")
             .WithSummary("Adicionar uma pergunta para uma Especialidade")
-            .RequireAuthorization(policy => {
-                policy.RequireRole(ETipoPerfilAcesso.Administrador.ToString());
-                policy.RequireRole(ETipoPerfilAcesso.Paciente.ToString());
-            })
+            .RequireAuthorization("AdminOrPaciente")
             .WithOpenApi();
         #endregion
 
@@ -65,10 +61,7 @@ internal static class PerguntasEndpoints
             .Produces<ProblemDetails>(StatusCodes.Status404NotFound)
             .WithDescription("Obter os dados da Pergunta pelo ID especificado da Pergunta e da Especialidade")
             .WithSummary("Obter os dados da Pergunta pelo ID especificado da Pergunta e da Especialidade")
-            .RequireAuthorization(policy => {
-                policy.RequireRole(ETipoPerfilAcesso.Administrador.ToString());
-                policy.RequireRole(ETipoPerfilAcesso.Profissional.ToString());
-            })
+            .RequireAuthorization("AdminOrEspecialista")
             .WithOpenApi();
         #endregion
 

@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using RSF.AgendamentoConsultas.Api.Extensions;
 using RSF.AgendamentoConsultas.Api.Models;
-using RSF.AgendamentoConsultas.CrossCutting.Shareable.Enums;
 using RSF.AgendamentoConsultas.Core.Application.Features.TipoStatusConsulta.GetAll;
 using RSF.AgendamentoConsultas.Core.Application.Features.TipoStatusConsulta.GetById;
 using RSF.AgendamentoConsultas.Core.Application.Features.TipoStatusConsulta.Responses;
@@ -15,9 +14,7 @@ internal static class TipoStatusConsultaEndpoints
     {
         var routes = builder.MapGroup("api/tipos/status-consulta")
                             .WithTags("Tipos de Status da Consulta")
-                            .RequireAuthorization(policy => {
-                                policy.RequireRole(ETipoPerfilAcesso.Administrador.ToString());
-                            });
+                            .RequireAuthorization("OnlyAdmin");
 
         routes.MapGet("/", static async (IMediator mediator, CancellationToken cancellationToken) => await mediator.SendCommand(new SelectTipoStatusConsultaRequest(), cancellationToken: cancellationToken))
             .WithName("GetAllTipoStatusConsulta")

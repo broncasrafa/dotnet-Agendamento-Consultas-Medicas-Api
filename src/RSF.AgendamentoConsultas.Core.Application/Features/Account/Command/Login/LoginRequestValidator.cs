@@ -15,9 +15,9 @@ public class LoginRequestValidator : AbstractValidator<LoginRequest>
         RuleFor(c => c.Password).Cascade(CascadeMode.Stop)
             .NotEmpty().WithMessage("Senha é obrigatório, não deve ser nulo ou vazia");
 
-        RuleFor(x => x.TipoAcesso)
-            .NotEmpty().WithMessage("O Tipo de Acesso é obrigatório, não deve ser nulo ou vazio")
-            .Must(tipoAcesso => ValidTiposAcesso.Contains(tipoAcesso?.ToUpperInvariant()))
-            .WithMessage("O Tipo de Acesso deve ser 'Paciente', 'Profissional', 'Administrador' ou 'Consultor'.");
+        //RuleFor(x => x.TipoAcesso)
+        //    .NotEmpty().WithMessage("O Tipo de Acesso é obrigatório, não deve ser nulo ou vazio")
+        //    .Must(tipoAcesso => ValidTiposAcesso.Contains(tipoAcesso?.ToUpperInvariant()))
+        //    .WithMessage("O Tipo de Acesso deve ser 'Paciente', 'Profissional', 'Administrador' ou 'Consultor'.");
     }
 }
