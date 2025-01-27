@@ -1,4 +1,4 @@
-﻿using RSF.AgendamentoConsultas.CrossCutting.Shareable.Validations.Validators;
+﻿using RSF.AgendamentoConsultas.Core.Application.Validators;
 using FluentValidation;
 
 namespace RSF.AgendamentoConsultas.Core.Application.Features.PacienteDependente.Command.CreateDependente;

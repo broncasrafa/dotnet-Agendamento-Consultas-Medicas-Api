@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace RSF.AgendamentoConsultas.CrossCutting.Shareable.Validations.Validators;
+namespace RSF.AgendamentoConsultas.Core.Application.Validators;
 
 public static class NomeCompletoValidator
 {
