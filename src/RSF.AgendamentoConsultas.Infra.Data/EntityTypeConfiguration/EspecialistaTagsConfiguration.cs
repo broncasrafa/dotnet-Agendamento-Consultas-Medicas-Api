@@ -16,9 +16,9 @@ public class EspecialistaTagsConfiguration : IEntityTypeConfiguration<Especialis
         builder.Property(c => c.EspecialistaId).IsRequired();
         builder.Property(c => c.TagsId).IsRequired();
 
-        builder.HasOne(e => e.Especialista)
-            .WithMany(t => t.Tags)
-            .HasForeignKey(e => e.EspecialistaId);
+        //builder.HasOne(e => e.Especialista)
+        //    .WithMany(t => t.Tags)
+        //    .HasForeignKey(e => e.EspecialistaId);
 
         builder.HasOne(et => et.Tag)
             .WithMany()

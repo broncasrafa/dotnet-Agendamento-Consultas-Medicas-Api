@@ -52,10 +52,10 @@ public class EspecialistaConfiguration : IEntityTypeConfiguration<Especialista>
                .HasForeignKey(l => l.EspecialistaId)
                .OnDelete(DeleteBehavior.Restrict);
 
-        builder.HasMany(e => e.Tags)
-               .WithOne(et => et.Especialista)
-               .HasForeignKey(et => et.EspecialistaId)
-               .OnDelete(DeleteBehavior.Restrict);
+        //builder.HasMany(e => e.Tags)
+        //       .WithOne(et => et.Especialista)
+        //       .HasForeignKey(et => et.EspecialistaId)
+        //       .OnDelete(DeleteBehavior.Restrict);
 
         builder.HasMany(e => e.Avaliacoes)
                .WithOne(ea => ea.Especialista)

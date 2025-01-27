@@ -13,7 +13,7 @@ public interface IEspecialistaRepository : IBaseRepository<Especialista>
     ValueTask<Especialista> GetByIdWithConveniosMedicosAsync(int id);
     ValueTask<Especialista> GetByIdWithAvaliacoesAsync(int id);
     ValueTask<Especialista> GetByIdWithLocaisAtendimentoAsync(int id);
-    ValueTask<Especialista> GetByIdWithTagsAsync(int id);
+    //ValueTask<Especialista> GetByIdWithTagsAsync(int id);
     ValueTask<Especialista> GetByIdWithRespostasAsync(int id);
     ValueTask<PagedResult<Especialista>> GetAllPagedAsync(int pageNumber = 1, int pageSize = 10);
     ValueTask<PagedResult<Especialista>> GetAllByNamePagedAsync(string name, int pageNumber = 1, int pageSize = 10);

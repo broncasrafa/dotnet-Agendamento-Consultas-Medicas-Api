@@ -46,7 +46,7 @@ public class EspecialistaRepository : BaseRepository<Especialista>, IEspecialist
         => await _Context.Especialistas.AsNoTracking()
                 .Include(c => c.Especialidades).ThenInclude(e => e.Especialidade).ThenInclude(g => g.EspecialidadeGrupo)
                 .Include(c => c.ConveniosMedicosAtendidos).ThenInclude(x => x.ConvenioMedico)
-                .Include(c => c.Tags).ThenInclude(t => t.Tag)
+                //.Include(c => c.Tags).ThenInclude(t => t.Tag)
                 .Include(c => c.LocaisAtendimento)
                 .Include(c => c.Avaliacoes).ThenInclude(p => p.Paciente)
                 .FirstOrDefaultAsync(c => c.EspecialistaId == id);
@@ -55,7 +55,7 @@ public class EspecialistaRepository : BaseRepository<Especialista>, IEspecialist
         => await _Context.Especialistas.AsNoTracking()
                 .Include(c => c.Especialidades).ThenInclude(e => e.Especialidade).ThenInclude(g => g.EspecialidadeGrupo)
                 .Include(c => c.ConveniosMedicosAtendidos).ThenInclude(x => x.ConvenioMedico)
-                .Include(c => c.Tags).ThenInclude(t => t.Tag)
+                //.Include(c => c.Tags).ThenInclude(t => t.Tag)
                 .Include(c => c.LocaisAtendimento)
                 .Include(c => c.Avaliacoes).ThenInclude(p => p.Paciente)
                 .FirstOrDefaultAsync(c => c.Email == email);
@@ -85,10 +85,10 @@ public class EspecialistaRepository : BaseRepository<Especialista>, IEspecialist
                 .Include(c => c.LocaisAtendimento)
                 .FirstOrDefaultAsync(c => c.EspecialistaId == id);
 
-    public async ValueTask<Especialista> GetByIdWithTagsAsync(int id)
-        => await _Context.Especialistas.AsNoTracking()
-                .Include(c => c.Tags).ThenInclude(t => t.Tag)
-                .FirstOrDefaultAsync(c => c.EspecialistaId == id);
+    //public async ValueTask<Especialista> GetByIdWithTagsAsync(int id)
+    //    => await _Context.Especialistas.AsNoTracking()
+    //            .Include(c => c.Tags).ThenInclude(t => t.Tag)
+    //            .FirstOrDefaultAsync(c => c.EspecialistaId == id);
 
     public async ValueTask<Especialista> GetByIdWithRespostasAsync(int id)
         => await _Context.Especialistas.AsNoTracking()

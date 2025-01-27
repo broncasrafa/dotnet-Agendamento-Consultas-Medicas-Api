@@ -7,11 +7,11 @@ namespace RSF.AgendamentoConsultas.Core.Domain.Entities;
 public class AgendamentoConsulta
 {    
     public int AgendamentoConsultaId { get; set; }
-    public int EspecialistaId { get; set; }
-    public int EspecialidadeId { get; set; }
-    public int LocalAtendimentoId { get; set; }
+    public int? EspecialistaId { get; set; }
+    public int? EspecialidadeId { get; set; }
+    public int? LocalAtendimentoId { get; set; }
     public bool? AgendamentoDependente { get; private set; }
-    public int PacienteId { get; set; }
+    public int? PacienteId { get; set; }
     public int? PlanoMedicoId { get; set; }
     public int? DependenteId { get; set; }
     public int? DependentePlanoMedicoId { get; set; }

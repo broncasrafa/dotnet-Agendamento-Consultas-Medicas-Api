@@ -58,7 +58,7 @@ public class EspecialistaResponse
             Tratamento = entity.Tratamento,
             Especialidades = EspecialistaEspecialidadeResponse.MapFromEntity(entity.Especialidades?.Select(c => c.Especialidade)),
             ConveniosMedicosAtendidos = EspecialistaConvenioMedicoResponse.MapFromEntity(entity.ConveniosMedicosAtendidos?.Select(c => c.ConvenioMedico)),
-            Marcacoes = EspecialistaTagsResponse.MapFromEntity(entity.Tags?.Select(c => c.Tag)),
+            //Marcacoes = EspecialistaTagsResponse.MapFromEntity(entity.Tags?.Select(c => c.Tag)),
             LocaisAtendimento = EspecialistaLocalAtendimentoResponse.MapFromEntity(entity.LocaisAtendimento),
             Avaliacoes = EspecialistaAvaliacaoResponse.MapFromEntity(entity.Avaliacoes),
             PerguntasRespostas = default! //EspecialistaPerguntaResponse.MapFromEntity(entity.Perguntas)

@@ -141,6 +141,9 @@ dotnet_diagnostic.CA1056.severity = none
 # CA1062: Validar argumentos de métodos públicos
 dotnet_diagnostic.CA1062.severity = none
 
+# CA1303: Não passar literais como parâmetros localizados
+dotnet_diagnostic.CA1303.severity = none
+
 # CA1304: Especificar CultureInfo
 dotnet_diagnostic.CA1304.severity = suggestion
 

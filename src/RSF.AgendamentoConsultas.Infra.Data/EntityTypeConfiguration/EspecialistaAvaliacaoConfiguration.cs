@@ -28,6 +28,7 @@ public class EspecialistaAvaliacaoConfiguration : IEntityTypeConfiguration<Espec
             .HasForeignKey(a => a.PacienteId);
 
         builder.HasOne(a => a.Marcacao)
-            .WithOne();
+            .WithOne()
+            .HasForeignKey<EspecialistaAvaliacao>(a => a.TagId);
     }
 }
