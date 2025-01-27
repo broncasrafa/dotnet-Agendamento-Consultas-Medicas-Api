@@ -20,6 +20,8 @@ internal static class TipoStatusConsultaEndpoints
             .WithName("GetAllTipoStatusConsulta")
             .Produces<ApiListResponse<IReadOnlyList<TipoStatusConsultaResponse>>>(StatusCodes.Status200OK)
             .Produces<ProblemDetails>(StatusCodes.Status404NotFound)
+            .Produces<ProblemDetails>(StatusCodes.Status401Unauthorized)
+            .Produces<ProblemDetails>(StatusCodes.Status403Forbidden)
             .WithDescription("Obter a lista de Tipos de Consulta")
             .WithSummary("Obter a lista de Tipos de Consulta")
             .WithOpenApi();
@@ -28,6 +30,8 @@ internal static class TipoStatusConsultaEndpoints
             .WithName("GetOneTipoStatusConsultaById")
             .Produces<ApiResponse<TipoStatusConsultaResponse>>(StatusCodes.Status200OK)
             .Produces<ProblemDetails>(StatusCodes.Status404NotFound)
+            .Produces<ProblemDetails>(StatusCodes.Status401Unauthorized)
+            .Produces<ProblemDetails>(StatusCodes.Status403Forbidden)
             .WithDescription("Obter o Tipo de Consulta pelo ID especificado")
             .WithSummary("Obter o Tipo de Consulta pelo ID especificado")
             .WithOpenApi();

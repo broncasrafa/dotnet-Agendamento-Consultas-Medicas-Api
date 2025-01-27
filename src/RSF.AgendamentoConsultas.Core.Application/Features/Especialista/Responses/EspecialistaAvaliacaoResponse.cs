@@ -7,6 +7,7 @@ public record EspecialistaAvaliacaoResponse(
     string Paciente,
     string Feedback,
     int Score,
+    string Marcacao,
     DateTime CreatedAt)
 {
     public static EspecialistaAvaliacaoResponse MapFromEntity(EspecialistaAvaliacao avaliacao)
@@ -17,6 +18,7 @@ public record EspecialistaAvaliacaoResponse(
                 avaliacao.Paciente.Nome,
                 avaliacao.Feedback,
                 avaliacao.Score,
+                avaliacao.Marcacao.Descricao,
                 avaliacao.CreatedAt);
 
     public static IReadOnlyList<EspecialistaAvaliacaoResponse>? MapFromEntity(IEnumerable<EspecialistaAvaliacao> collection)

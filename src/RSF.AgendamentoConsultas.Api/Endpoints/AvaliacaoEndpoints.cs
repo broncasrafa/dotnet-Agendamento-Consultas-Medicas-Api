@@ -21,6 +21,8 @@ internal static class AvaliacaoEndpoints
             .Produces<ApiResponse<bool>>(StatusCodes.Status200OK)
             .Produces<ProblemDetails>(StatusCodes.Status400BadRequest)
             .Produces<ProblemDetails>(StatusCodes.Status404NotFound)
+            .Produces<ProblemDetails>(StatusCodes.Status401Unauthorized)
+            .Produces<ProblemDetails>(StatusCodes.Status403Forbidden)
             .WithDescription("Adicionar uma avaliação sobre o Especialista")
             .WithSummary("Adicionar uma avaliação sobre o Especialista")
             .RequireAuthorization("AdminOrPaciente")

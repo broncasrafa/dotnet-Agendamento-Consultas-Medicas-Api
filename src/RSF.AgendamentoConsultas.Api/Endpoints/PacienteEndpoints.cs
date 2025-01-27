@@ -36,6 +36,8 @@ internal static class PacienteEndpoints
             .WithName("GetOnePacienteById")
             .Produces<ApiResponse<PacienteResponse>>(StatusCodes.Status200OK)
             .Produces<ProblemDetails>(StatusCodes.Status404NotFound)
+            .Produces<ProblemDetails>(StatusCodes.Status401Unauthorized)
+            .Produces<ProblemDetails>(StatusCodes.Status403Forbidden)
             .WithDescription("Obter os dados do Paciente pelo ID especificado")
             .WithSummary("Obter os dados do Paciente pelo ID especificado")
             .WithOpenApi();
@@ -44,6 +46,8 @@ internal static class PacienteEndpoints
             .WithName("GetDependentesForOnePacienteById")
             .Produces<ApiResponse<PacienteResultList<PacienteDependenteResponse>>>(StatusCodes.Status200OK)
             .Produces<ProblemDetails>(StatusCodes.Status404NotFound)
+            .Produces<ProblemDetails>(StatusCodes.Status401Unauthorized)
+            .Produces<ProblemDetails>(StatusCodes.Status403Forbidden)
             .WithDescription("Obter a lista de Dependentes do Paciente pelo ID especificado")
             .WithSummary("Obter a lista de Dependentes do Paciente pelo ID especificado")
             .WithOpenApi();
@@ -52,6 +56,8 @@ internal static class PacienteEndpoints
             .WithName("GetPlanosMedicosForOnePacienteById")
             .Produces<ApiResponse<PacienteResultList<PacientePlanoMedicoResponse>>>(StatusCodes.Status200OK)
             .Produces<ProblemDetails>(StatusCodes.Status404NotFound)
+            .Produces<ProblemDetails>(StatusCodes.Status401Unauthorized)
+            .Produces<ProblemDetails>(StatusCodes.Status403Forbidden)
             .WithDescription("Obter a lista dos Planos Medicos do Paciente pelo ID especificado")
             .WithSummary("Obter a lista dos Planos Medicos do Paciente pelo ID especificado")
             .WithOpenApi();
@@ -60,6 +66,8 @@ internal static class PacienteEndpoints
             .WithName("GetAgendamentosForOnePacienteById")
             .Produces<ApiResponse<PacienteResultList<AgendamentoResponse>>>(StatusCodes.Status200OK)
             .Produces<ProblemDetails>(StatusCodes.Status404NotFound)
+            .Produces<ProblemDetails>(StatusCodes.Status401Unauthorized)
+            .Produces<ProblemDetails>(StatusCodes.Status403Forbidden)
             .WithDescription("Obter a lista dos Agendamentos realizados do Paciente pelo ID especificado")
             .WithSummary("Obter a lista dos Agendamentos realizados do Paciente pelo ID especificado")
             .WithOpenApi();
@@ -68,6 +76,8 @@ internal static class PacienteEndpoints
             .WithName("GetAvaliacoesForOnePacienteById")
             .Produces<ApiResponse<PacienteResultList<PacienteAvaliacaoResponse>>>(StatusCodes.Status200OK)
             .Produces<ProblemDetails>(StatusCodes.Status404NotFound)
+            .Produces<ProblemDetails>(StatusCodes.Status401Unauthorized)
+            .Produces<ProblemDetails>(StatusCodes.Status403Forbidden)
             .WithDescription("Obter a lista dos Avaliações feitas pelo Paciente pelo ID especificado")
             .WithSummary("Obter a lista dos Avaliações feitas pelo Paciente pelo ID especificado")
             .WithOpenApi();
@@ -88,6 +98,8 @@ internal static class PacienteEndpoints
             .Produces<ApiResponse<PacientePlanoMedicoResponse>>(StatusCodes.Status200OK)
             .Produces<ProblemDetails>(StatusCodes.Status400BadRequest)
             .Produces<ProblemDetails>(StatusCodes.Status404NotFound)
+            .Produces<ProblemDetails>(StatusCodes.Status401Unauthorized)
+            .Produces<ProblemDetails>(StatusCodes.Status403Forbidden)
             .WithDescription("Adicionar um Plano Medico para o Paciente pelo ID especificado do Paciente")
             .WithSummary("Adicionar um Plano Medico para o Paciente pelo ID especificado do Paciente")
             .WithOpenApi();
@@ -108,6 +120,8 @@ internal static class PacienteEndpoints
             .Produces<ApiResponse<bool>>(StatusCodes.Status200OK)
             .Produces<ProblemDetails>(StatusCodes.Status400BadRequest)
             .Produces<ProblemDetails>(StatusCodes.Status404NotFound)
+            .Produces<ProblemDetails>(StatusCodes.Status401Unauthorized)
+            .Produces<ProblemDetails>(StatusCodes.Status403Forbidden)
             .WithDescription("Atualizar os dados de um Paciente pelo ID especificado")
             .WithSummary("Atualizar os dados de um Paciente pelo ID especificado")
             .WithOpenApi();
@@ -125,6 +139,8 @@ internal static class PacienteEndpoints
             .Produces<ApiResponse<bool>>(StatusCodes.Status200OK)
             .Produces<ProblemDetails>(StatusCodes.Status400BadRequest)
             .Produces<ProblemDetails>(StatusCodes.Status404NotFound)
+            .Produces<ProblemDetails>(StatusCodes.Status401Unauthorized)
+            .Produces<ProblemDetails>(StatusCodes.Status403Forbidden)
             .WithDescription("Atualizar os dados do Plano Medico do Paciente pelo ID especificado")
             .WithSummary("Atualizar os dados do Plano Medico do Paciente pelo ID especificado")
             .WithOpenApi();
@@ -144,6 +160,8 @@ internal static class PacienteEndpoints
             .Produces<ApiResponse<bool>>(StatusCodes.Status200OK)
             .Produces<ProblemDetails>(StatusCodes.Status400BadRequest)
             .Produces<ProblemDetails>(StatusCodes.Status404NotFound)
+            .Produces<ProblemDetails>(StatusCodes.Status401Unauthorized)
+            .Produces<ProblemDetails>(StatusCodes.Status403Forbidden)
             .WithDescription("Deleta os dados de um Paciente pelo ID especificado")
             .WithSummary("Deleta os dados de um Paciente pelo ID especificado")
             .WithOpenApi();
@@ -161,6 +179,8 @@ internal static class PacienteEndpoints
             .Produces<ApiResponse<bool>>(StatusCodes.Status200OK)
             .Produces<ProblemDetails>(StatusCodes.Status400BadRequest)
             .Produces<ProblemDetails>(StatusCodes.Status404NotFound)
+            .Produces<ProblemDetails>(StatusCodes.Status401Unauthorized)
+            .Produces<ProblemDetails>(StatusCodes.Status403Forbidden)
             .WithDescription("Deleta os dados do Plano Medico do Paciente pelo ID especificado")
             .WithSummary("Deleta os dados do Plano Medico do Paciente pelo ID especificado")
             .WithOpenApi();
@@ -178,6 +198,8 @@ internal static class PacienteEndpoints
             .Produces<ApiResponse<bool>>(StatusCodes.Status200OK)
             .Produces<ProblemDetails>(StatusCodes.Status400BadRequest)
             .Produces<ProblemDetails>(StatusCodes.Status404NotFound)
+            .Produces<ProblemDetails>(StatusCodes.Status401Unauthorized)
+            .Produces<ProblemDetails>(StatusCodes.Status403Forbidden)
             .WithDescription("Cancela um agendamento do Paciente pelo ID especificado")
             .WithSummary("Cancela um agendamento Paciente pelo ID especificado")
             .WithOpenApi();
