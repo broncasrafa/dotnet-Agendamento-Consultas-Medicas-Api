@@ -3,7 +3,6 @@ using RSF.AgendamentoConsultas.Api.Extensions;
 using RSF.AgendamentoConsultas.Api.Models;
 using RSF.AgendamentoConsultas.CrossCutting.Shareable.Results;
 using RSF.AgendamentoConsultas.CrossCutting.Shareable.Exceptions;
-using RSF.AgendamentoConsultas.CrossCutting.Shareable.Enums;
 using RSF.AgendamentoConsultas.Core.Application.Features.Especialista.Responses;
 using RSF.AgendamentoConsultas.Core.Application.Features.Especialista.Query.GetById;
 using RSF.AgendamentoConsultas.Core.Application.Features.Especialista.Query.GetEspecialistaRespostas;
@@ -23,6 +22,7 @@ using RSF.AgendamentoConsultas.Core.Application.Features.Especialista.Command.De
 using RSF.AgendamentoConsultas.Core.Application.Features.Especialista.Command.UpdateConvenioMedico;
 using RSF.AgendamentoConsultas.Core.Application.Features.Especialista.Command.UpdateEspecialidade;
 using RSF.AgendamentoConsultas.Core.Application.Features.Especialista.Command.UpdateLocalAtendimento;
+using RSF.AgendamentoConsultas.Core.Application.Features.Especialista.Command.UpdateEspecialista;
 using MediatR;
 
 namespace RSF.AgendamentoConsultas.Api.Endpoints;
@@ -189,6 +189,26 @@ internal static class EspecialistaEndpoints
         #endregion
 
         #region [ PUT ]
+        routes.MapPut("/{id:int}", static async (IMediator mediator, [FromBody] UpdateEspecialistaRequest request, [FromRoute] int id, CancellationToken cancellationToken)
+            =>
+            {
+                if (id != request.EspecialistaId)
+                    throw new InputRequestDataInvalidException("Id", "Os IDs do especialista não conferem");
+
+                return await mediator.SendCommand(request, cancellationToken: cancellationToken);
+            })
+           .WithName("UpdateEspecialista")
+           .Accepts<UpdateEspecialistaRequest>("application/json")
+           .Produces<ApiResponse<bool>>(StatusCodes.Status200OK)
+           .Produces<ProblemDetails>(StatusCodes.Status400BadRequest)
+           .Produces<ProblemDetails>(StatusCodes.Status404NotFound)
+           .Produces<ProblemDetails>(StatusCodes.Status401Unauthorized)
+           .Produces<ProblemDetails>(StatusCodes.Status403Forbidden)
+           .WithDescription("Atualizar os dados do Especialista pelo ID especificado do Especialista")
+           .WithSummary("Atualizar os dados do Especialista pelo ID especificado do Especialista")
+           .RequireAuthorization("AdminOrEspecialista")
+           .WithOpenApi();
+
         routes.MapPut("/{id:int}/convenios-medicos", static async (IMediator mediator, [FromBody] UpdateConvenioMedicoRequest request, [FromRoute] int id, CancellationToken cancellationToken)
             =>
             {

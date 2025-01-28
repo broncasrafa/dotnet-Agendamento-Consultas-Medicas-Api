@@ -11,6 +11,7 @@ using FluentValidation;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using RSF.AgendamentoConsultas.CrossCutting.Shareable.Enums;
+using RSF.AgendamentoConsultas.Api.Configurations.Swagger;
 
 namespace RSF.AgendamentoConsultas.Api.Extensions;
 
@@ -65,6 +66,8 @@ internal static class ConfigureServicesExtension
                     Url = new Uri("https://github.com/broncasrafa")
                 }
             });
+
+            options.DocumentFilter<OrderEndpointsByHTTPVerb>();
 
             options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
             {

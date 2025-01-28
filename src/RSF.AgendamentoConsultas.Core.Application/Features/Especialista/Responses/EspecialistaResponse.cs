@@ -16,7 +16,7 @@ public class EspecialistaResponse
     public bool? TelemedicinaAtivo { get; set; }
     public string TelemedicinaPreco { get; set; }
     public decimal? TelemedicinaPrecoNumber { get; set; }
-    public decimal? Avaliacao { get; set; }
+    public double? Avaliacao { get; private set; }
     public string ExperienciaProfissional { get; set; }
     public string FormacaoAcademica { get; set; }
     public string Genero { get; set; }
@@ -42,7 +42,7 @@ public class EspecialistaResponse
             Tipo = entity.Tipo,
             Nome = entity.Nome,
             Licenca = entity.Licenca,
-            Foto = entity.Foto!.Contains("https://boaconsulta") ? entity.Foto : default!,
+            Foto = entity.Foto ?? default!,
             AgendaOnline = entity.AgendaOnline,
             PerfilVerificado = entity.PerfilVerificado,
             PermitirPergunta = entity.PermitirPergunta,
@@ -50,7 +50,7 @@ public class EspecialistaResponse
             TelemedicinaAtivo = entity.TelemedicinaAtivo,
             TelemedicinaPreco = entity.TelemedicinaPreco,
             TelemedicinaPrecoNumber = entity.TelemedicinaPrecoNumber,
-            Avaliacao = entity.Avaliacao,
+            Avaliacao = entity.Avaliacoes is null || !entity.Avaliacoes.Any() ? null : entity.Avaliacoes.Average(c => c.Score),
             ExperienciaProfissional = entity.ExperienciaProfissional,
             FormacaoAcademica = entity.FormacaoAcademica,
             Genero = entity.Genero,
@@ -59,7 +59,7 @@ public class EspecialistaResponse
             ConveniosMedicosAtendidos = EspecialistaConvenioMedicoResponse.MapFromEntity(entity.ConveniosMedicosAtendidos?.Select(c => c.ConvenioMedico)),
             LocaisAtendimento = EspecialistaLocalAtendimentoResponse.MapFromEntity(entity.LocaisAtendimento),
             Avaliacoes = EspecialistaAvaliacaoResponse.MapFromEntity(entity.Avaliacoes),
-            PerguntasRespostas = default! //EspecialistaPerguntaResponse.MapFromEntity(entity.Perguntas)
+            PerguntasRespostas = null
         };
     }
 

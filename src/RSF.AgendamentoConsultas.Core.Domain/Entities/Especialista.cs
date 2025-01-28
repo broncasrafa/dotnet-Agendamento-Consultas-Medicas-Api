@@ -15,28 +15,24 @@ public class Especialista
     public string Licenca { get; set; }    
     public string Email { get; set; }
     public string Foto { get; set; }
-    public string SharedUrl { get; set; }
     public bool? Ativo { get; set; }
     public bool? AgendaOnline { get; set; }
     public bool? PerfilVerificado { get; set; }
     public bool? PermitirPergunta { get; set; }
     public bool? TelemedicinaOnline { get; set; }
     public bool? TelemedicinaAtivo { get; set; }
-    public string TelemedicinaPreco { get; set; }
+    public string TelemedicinaPreco { get; private set; }
     public decimal? TelemedicinaPrecoNumber { get; set; }
-    public decimal? Avaliacao { get; set; }
     public string ExperienciaProfissional { get; set; }
     public string FormacaoAcademica { get; set; }
     public string Genero { get; set; }
-    public string Tratamento { get; set; }
+    public string Tratamento { get; private set; }
 
     public ICollection<EspecialistaEspecialidade> Especialidades { get; set; }
     public ICollection<EspecialistaConvenioMedico> ConveniosMedicosAtendidos { get; set; }
     public ICollection<EspecialistaLocalAtendimento> LocaisAtendimento { get; set; }
-    //public ICollection<EspecialistaTags> Tags { get; set; }
     public ICollection<EspecialistaAvaliacao> Avaliacoes { get; set; }
     public ICollection<PerguntaResposta> Respostas { get; set; }
-
     public ICollection<AgendamentoConsulta> ConsultasAtendidas { get; set; }
 
 
@@ -48,17 +44,12 @@ public class Especialista
         string? tipo = null,
         string? foto = null, 
         string? sharedUrl = null, 
-        bool? agendaOnline = null, 
-        bool? perfilVerificado = null, 
-        bool? permitirPergunta = null, 
+        bool? agendaOnline = null,
         bool? telemedicinaOnline = null, 
-        bool? telemedicinaAtivo = null, 
-        string? telemedicinaPreco = null, 
+        bool? telemedicinaAtivo = null,
         decimal? telemedicinaPrecoNumber = null,
-        decimal? avaliacao = null, 
         string? experienciaProfissional = null, 
-        string? formacaoAcademica = null,        
-        string? tratamento = null)
+        string? formacaoAcademica = null)
     {
         UserId = userId;
         Tipo = tipo;
@@ -69,46 +60,46 @@ public class Especialista
         Licenca = licenca;
         Email = email;
         Foto = foto;
-        SharedUrl = sharedUrl;
         Ativo = true;
         AgendaOnline = agendaOnline;
-        PerfilVerificado = perfilVerificado;
-        PermitirPergunta = permitirPergunta;
+        PerfilVerificado = true;
+        PermitirPergunta = true;
         TelemedicinaOnline = telemedicinaOnline;
         TelemedicinaAtivo = telemedicinaAtivo;
-        TelemedicinaPreco = telemedicinaPreco;
         TelemedicinaPrecoNumber = telemedicinaPrecoNumber;
-        Avaliacao = avaliacao;
+        TelemedicinaPreco = Utilitarios.ConverterMoedaParaExtenso(telemedicinaPrecoNumber);
         ExperienciaProfissional = experienciaProfissional;
         FormacaoAcademica = formacaoAcademica;
-        Genero = genero;
-        Tratamento = tratamento;
+        Genero = (genero is null || genero == "Não informado") ? "Não informado" : genero;
+        Tratamento = (genero == "Não informado") ? "Não informado" : (Genero == "Masculino" ? "Dr." : "Dra.");
 
         Validate();
     }
 
-    public void Update(string tipo, string nome, string licenca, string email, string foto, string sharedUrl, bool? agendaOnline, bool? perfilVerificado, bool? permitirPergunta, bool? telemedicinaOnline, bool? telemedicinaAtivo, string telemedicinaPreco, decimal? telemedicinaPrecoNumber, decimal? avaliacao, string experienciaProfissional, string formacaoAcademica, string genero, string tratamento)
+    public void Update(
+        string nome, 
+        string? tipo = null,
+        string? foto = null,
+        bool? agendaOnline = null,
+        bool? telemedicinaOnline = null,
+        bool? telemedicinaAtivo = null,
+        decimal? telemedicinaPrecoNumber = null,
+        string? experienciaProfissional = null,
+        string? formacaoAcademica = null)
     {
         Tipo = tipo;
         Code = Utilitarios.GenerateSlugifyString(nome);
         EspecCodeId = $"{Code}-{CodeId}";
         Nome = nome;
-        Licenca = licenca;
-        Email = email;
         Foto = foto;
-        SharedUrl = sharedUrl;
         AgendaOnline = agendaOnline;
-        PerfilVerificado = perfilVerificado;
-        PermitirPergunta = permitirPergunta;
         TelemedicinaOnline = telemedicinaOnline;
         TelemedicinaAtivo = telemedicinaAtivo;
-        TelemedicinaPreco = telemedicinaPreco;
         TelemedicinaPrecoNumber = telemedicinaPrecoNumber;
-        Avaliacao = avaliacao;
+        TelemedicinaPreco = Utilitarios.ConverterMoedaParaExtenso(telemedicinaPrecoNumber);
         ExperienciaProfissional = experienciaProfissional;
         FormacaoAcademica = formacaoAcademica;
-        Genero = genero;
-        Tratamento = tratamento;
+        Tratamento = (Genero is null || Genero == "Não informado") ? "Não informado" : (Genero == "Masculino" ? "Dr." : "Dra.");
 
         Validate();
     }

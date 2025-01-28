@@ -22,8 +22,7 @@ public class EspecialistaConfiguration : IEntityTypeConfiguration<Especialista>
         builder.Property(c => c.Licenca).HasMaxLength(455);
         builder.Property(c => c.Email).HasMaxLength(455);
         builder.Property(c => c.Foto).HasColumnType("varchar(max)");
-        builder.Property(c => c.SharedUrl).HasMaxLength(455);
-        builder.Property(c => c.Ativo).HasColumnType("bit");
+        builder.Property(c => c.Ativo).HasColumnType("bit").HasDefaultValueSql("((1))");
         builder.Property(c => c.AgendaOnline).HasColumnType("bit");
         builder.Property(c => c.PerfilVerificado).HasColumnType("bit");
         builder.Property(c => c.PermitirPergunta).HasColumnType("bit");
@@ -31,7 +30,6 @@ public class EspecialistaConfiguration : IEntityTypeConfiguration<Especialista>
         builder.Property(c => c.TelemedicinaAtivo).HasColumnType("bit");
         builder.Property(c => c.TelemedicinaPreco).HasMaxLength(455);
         builder.Property(c => c.TelemedicinaPrecoNumber).HasColumnType("decimal(18,2)");
-        builder.Property(c => c.Avaliacao).HasColumnType("decimal(2,1)");
         builder.Property(c => c.ExperienciaProfissional).HasColumnType("varchar(max)");
         builder.Property(c => c.FormacaoAcademica).HasColumnType("varchar(max)");
         builder.Property(c => c.Genero).HasMaxLength(455);
