@@ -15,8 +15,6 @@ public sealed class RabbitMQConnection : IDisposable
     {
         _logger = logger;
 
-        _logger.LogInformation($"[{DateTime.Now}] Creating RabbitMQ Connection");
-
         if (string.IsNullOrWhiteSpace(options.Value.Host))
             throw new InvalidOperationException("A configuração 'Host' do RabbitMQ não foi fornecida corretamente.");
 
@@ -30,6 +28,8 @@ public sealed class RabbitMQConnection : IDisposable
         };
 
         _connection = factory.CreateConnection(options.Value.ClientProviderName);
+
+        _logger.LogInformation("RabbitMQ connection established.");
     }
 
     public IModel CreateChannel()

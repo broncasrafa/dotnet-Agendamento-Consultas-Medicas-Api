@@ -1,6 +1,6 @@
 ﻿using RSF.AgendamentoConsultas.Api.Endpoints;
 using RSF.AgendamentoConsultas.CrossCutting.IoC;
-
+using Serilog;
 using Swashbuckle.AspNetCore.SwaggerUI;
 
 namespace RSF.AgendamentoConsultas.Api.Extensions;
@@ -9,17 +9,19 @@ internal static class AppConfigureExtension
 {
     public static async Task Configure(this WebApplication app)
     {
+        await app.Services.SeedIdentityDatabaseAsync();
+
         app.ConfigureSwaggerUI();
         app.UseHttpsRedirection();
         app.UseAuthentication();
         app.UseAuthorization();
         app.UseHealthChecks("/health");
+        app.MapHealthChecks("/health");
         app.UseStaticFiles();
         app.UseExceptionHandler();
         app.UseCors("AllowAllPolicy");
         app.MapEndpoints();
-
-        await app.Services.SeedIdentityDatabaseAsync();
+        app.UseSerilogRequestLogging();
     }
 
     public static IApplicationBuilder MapEndpoints(this WebApplication app)

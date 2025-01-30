@@ -1,5 +1,4 @@
 ﻿using System.Text.Json;
-using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.DependencyInjection;
@@ -7,66 +6,50 @@ using RSF.AgendamentoConsultas.Core.Domain.Notifications;
 using RSF.AgendamentoConsultas.Core.Domain.MessageBus.Events;
 using RSF.AgendamentoConsultas.Infra.MessageBroker.Configurations;
 using RSF.AgendamentoConsultas.Infra.Notifications.Templates;
-using RSF.AgendamentoConsultas.Core.Domain.MessageBus.Bus;
 using RSF.AgendamentoConsultas.Core.Domain.Interfaces.Repositories;
 
 namespace RSF.AgendamentoConsultas.Consumers.Notification.Subscribers;
 
-public sealed class PerguntaCreatedSubscriber : IHostedService
+public sealed class PerguntaCreatedSubscriber : RabbitMQConsumerBase
 {
     private readonly ILogger<PerguntaCreatedSubscriber> _logger;
-    private readonly IOptions<RabbitMQSettings> _options;
     private readonly IServiceProvider _serviceProvider;
+    private readonly string _queueName;
 
-    public PerguntaCreatedSubscriber(
-        ILogger<PerguntaCreatedSubscriber> logger, 
-        IOptions<RabbitMQSettings> options,
-        IServiceProvider serviceProvider)
+    public PerguntaCreatedSubscriber(ILogger<PerguntaCreatedSubscriber> logger, IOptions<RabbitMQSettings> options, IServiceProvider serviceProvider)
+        : base(logger, options, options.Value.PerguntasQueueName)
     {
         _logger = logger;
-        _options = options;
+        _queueName = options.Value.PerguntasQueueName;
         _serviceProvider = serviceProvider;
     }
 
-    public Task StartAsync(CancellationToken cancellationToken)
+    protected override async Task ProcessMessageAsync(string message, CancellationToken cancellationToken)
     {
+        _logger.LogInformation("Consuming message from queue '{QueueName}'", _queueName);
+
         using var scope = _serviceProvider.CreateScope();
-        var _eventBus = scope.ServiceProvider.GetRequiredService<IEventBus>();
 
-        _eventBus.Subscribe(_options.Value.PerguntasQueueName, async (message) =>
+        var especialistaRepository = scope.ServiceProvider.GetRequiredService<IEspecialistaRepository>();
+        var mailSender = scope.ServiceProvider.GetRequiredService<PerguntaCreatedEmail>();
+
+        var @event = JsonSerializer.Deserialize<PerguntaCreatedEvent>(message);
+
+        var especialistas = await especialistaRepository.GetAllByEspecialidadeIdAsync(@event.EspecialidadeId);
+
+        foreach (var esp in especialistas)
         {
-            _logger.LogInformation($"[{DateTime.Now}] Consuming message from queue '{_options.Value.PerguntasQueueName}'");
+            await mailSender.SendEmailAsync(
+                to: new MailTo(esp.Nome, esp.Email),
+                pacienteNome: @event.PacienteNome,
+                especialidadeNome: @event.EspecialidadeNome,
+                pergunta: @event.Pergunta,
+                perguntaId: @event.PerguntaId,
+                especialistaId: esp.EspecialistaId,
+                especialistaNome: esp.Nome);
+        }
 
-            using var scope = _serviceProvider.CreateScope();
-
-            var especialistaRepository = scope.ServiceProvider.GetRequiredService<IEspecialistaRepository>();
-            var mailSender = scope.ServiceProvider.GetRequiredService<PerguntaCreatedEmail>();
-
-            var @event = JsonSerializer.Deserialize<PerguntaCreatedEvent>(message);
-
-            var especialistas = await especialistaRepository.GetAllByEspecialidadeIdAsync(@event.EspecialidadeId);
-
-            foreach (var esp in especialistas)
-            {
-                await mailSender.SendEmailAsync(
-                    to: new MailTo(esp.Nome, esp.Email),
-                    pacienteNome: @event.PacienteNome,
-                    especialidadeNome: @event.EspecialidadeNome,
-                    pergunta: @event.Pergunta,
-                    perguntaId: @event.PerguntaId,
-                    especialistaId: esp.EspecialistaId,
-                    especialistaNome: esp.Nome);
-            }
-
-            await Task.CompletedTask;
-        });
-
-        return Task.CompletedTask;
-    }
-
-    public Task StopAsync(CancellationToken cancellationToken)
-    {
-        return Task.CompletedTask;
+        await Task.CompletedTask;
     }
 }
 

@@ -28,6 +28,7 @@ using RSF.AgendamentoConsultas.Infra.Identity.Configurations;
 using RSF.AgendamentoConsultas.Infra.Identity.JWT;
 using RSF.AgendamentoConsultas.Infra.Identity.AccountManager;
 using Amazon.S3;
+using RSF.AgendamentoConsultas.Consumers.Notification.Subscribers;
 
 namespace RSF.AgendamentoConsultas.CrossCutting.IoC;
 

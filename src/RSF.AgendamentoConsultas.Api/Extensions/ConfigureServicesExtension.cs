@@ -5,13 +5,13 @@ using Microsoft.AspNetCore.Http.Json;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using RSF.AgendamentoConsultas.Api.Middlewares;
+using RSF.AgendamentoConsultas.Api.Configurations.Swagger;
 using RSF.AgendamentoConsultas.CrossCutting.IoC;
 using RSF.AgendamentoConsultas.CrossCutting.Shareable;
+using RSF.AgendamentoConsultas.CrossCutting.Shareable.Enums;
 using FluentValidation;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
-using RSF.AgendamentoConsultas.CrossCutting.Shareable.Enums;
-using RSF.AgendamentoConsultas.Api.Configurations.Swagger;
 
 namespace RSF.AgendamentoConsultas.Api.Extensions;
 
@@ -42,13 +42,11 @@ internal static class ConfigureServicesExtension
         services.AddValidatorsFromAssemblyContaining<ShareableEntryPoint>();
 
         services.RegisterInfrastructureServices(configuration);
-        
+
         services.RegisterApplicationServices(configuration);
 
-        services.RegisterConsumersServices(configuration);
+        services.RegisterConsumersServices();
     }
-
-
 
     private static void AddSwaggerGen(this IServiceCollection services)
     {
@@ -179,6 +177,8 @@ internal static class ConfigureServicesExtension
 
             ;
     }
+
+    
 }
 
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi

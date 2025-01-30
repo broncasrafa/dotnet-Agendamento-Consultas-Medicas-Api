@@ -1,9 +1,7 @@
 ﻿using System.Text.Json;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using RSF.AgendamentoConsultas.Core.Domain.MessageBus.Bus;
 using RSF.AgendamentoConsultas.Core.Domain.MessageBus.Events;
 using RSF.AgendamentoConsultas.Core.Domain.Notifications;
 using RSF.AgendamentoConsultas.Infra.MessageBroker.Configurations;
@@ -11,51 +9,36 @@ using RSF.AgendamentoConsultas.Infra.Notifications.Templates;
 
 namespace RSF.AgendamentoConsultas.Consumers.Notification.Subscribers;
 
-public class ForgotPasswordSubscriber : IHostedService
+public class ForgotPasswordSubscriber : RabbitMQConsumerBase
 {
     private readonly ILogger<ForgotPasswordSubscriber> _logger;
-    private readonly IOptions<RabbitMQSettings> _options;
     private readonly IServiceProvider _serviceProvider;
+    private readonly string _queueName;
 
     public ForgotPasswordSubscriber(ILogger<ForgotPasswordSubscriber> logger, IOptions<RabbitMQSettings> options, IServiceProvider serviceProvider)
+        : base(logger, options, options.Value.ForgotPasswordQueueName)
     {
         _logger = logger;
-        _options = options;
+        _queueName = options.Value.ForgotPasswordQueueName;
         _serviceProvider = serviceProvider;
     }
 
-
-    public Task StartAsync(CancellationToken cancellationToken)
+    protected override async Task ProcessMessageAsync(string message, CancellationToken cancellationToken)
     {
+        _logger.LogInformation("Consuming message from queue '{QueueName}'", _queueName);
+
         using var scope = _serviceProvider.CreateScope();
-        var _eventBus = scope.ServiceProvider.GetRequiredService<IEventBus>();
 
-        var queueName = _options.Value.ForgotPasswordQueueName;
+        var mailSender = scope.ServiceProvider.GetRequiredService<ForgotPasswordEmail>();
 
-        _eventBus.Subscribe(queueName, async (message) =>
-        {
-            _logger.LogInformation($"[{DateTime.Now}] Consuming message from queue '{queueName}'");
+        var @event = JsonSerializer.Deserialize<ForgotPasswordCreatedEvent>(message);
 
-            using var scope = _serviceProvider.CreateScope();
-            
-            var mailSender = scope.ServiceProvider.GetRequiredService<ForgotPasswordEmail>();
+        await mailSender.SendEmailAsync(
+            to: new MailTo(@event.Usuario.Nome, @event.Usuario.Email),
+            @event.Usuario.Nome,
+            @event.Usuario.Email,
+            @event.ResetCode);
 
-            var @event = JsonSerializer.Deserialize<ForgotPasswordCreatedEvent>(message);
-
-            await mailSender.SendEmailAsync(
-                to: new MailTo(@event.Usuario.Nome, @event.Usuario.Email), 
-                @event.Usuario.Nome, 
-                @event.Usuario.Email, 
-                @event.ResetCode);
-
-            await Task.CompletedTask;
-        });
-
-        return Task.CompletedTask;
-    }
-
-    public Task StopAsync(CancellationToken cancellationToken)
-    {
-        return Task.CompletedTask;
+        await Task.CompletedTask;
     }
 }
