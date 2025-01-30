@@ -13,7 +13,7 @@ public class EspecialistaEspecialidade
     public Especialidade Especialidade { get; set; }
 
     protected EspecialistaEspecialidade()
-    {        
+    {
     }
 
     public EspecialistaEspecialidade(int especialistaId, int especialidadeId, string tipoEspecialidade)
@@ -23,6 +23,15 @@ public class EspecialistaEspecialidade
         TipoEspecialidade = tipoEspecialidade;
 
         Validate();
+    }
+
+    public EspecialistaEspecialidade(int especialidadeId, string tipoEspecialidade)
+    {
+        EspecialidadeId = especialidadeId;
+        TipoEspecialidade = tipoEspecialidade;
+
+        DomainValidation.IdentifierGreaterThanZero(EspecialidadeId, nameof(EspecialidadeId));
+        DomainValidation.PossiblesValidTypes(TypeValids.VALID_ESPECIALIDADES, TipoEspecialidade, nameof(TipoEspecialidade));
     }
 
     public void Update(int especialidadeId, string tipoEspecialidade)

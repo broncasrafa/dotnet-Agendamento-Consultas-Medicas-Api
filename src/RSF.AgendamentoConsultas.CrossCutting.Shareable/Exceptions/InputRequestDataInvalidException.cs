@@ -20,4 +20,10 @@ public class InputRequestDataInvalidException : BaseException
         };
         Errors = errors.Select<KeyValuePair<string, IEnumerable<string>>, string>((KeyValuePair<string, IEnumerable<string>> c) => $"{c.Key}: {string.Join(", ", c.Value)}");
     }
+
+    public static void ThrowIfResourceIdInvalid(bool? isInvalid, string exceptionMessage)
+    {
+        if (isInvalid.HasValue && isInvalid.Value)
+            throw new InputRequestDataInvalidException("Id", exceptionMessage);
+    }
 }

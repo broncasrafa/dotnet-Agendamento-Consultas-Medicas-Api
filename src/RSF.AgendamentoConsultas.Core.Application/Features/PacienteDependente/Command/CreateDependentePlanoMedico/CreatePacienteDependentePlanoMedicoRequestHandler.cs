@@ -1,10 +1,13 @@
-﻿using RSF.AgendamentoConsultas.CrossCutting.Shareable.Exceptions;
-using RSF.AgendamentoConsultas.Core.Domain.Entities;
-using MediatR;
-using OperationResult;
+﻿using Microsoft.AspNetCore.Http;
 using RSF.AgendamentoConsultas.Core.Application.Features.PacienteDependente.Responses;
 using RSF.AgendamentoConsultas.Core.Domain.Interfaces.Repositories.Common;
 using RSF.AgendamentoConsultas.Core.Domain.Interfaces.Repositories;
+using RSF.AgendamentoConsultas.Core.Domain.Entities;
+using RSF.AgendamentoConsultas.CrossCutting.Shareable.Enums;
+using RSF.AgendamentoConsultas.CrossCutting.Shareable.Extensions;
+using RSF.AgendamentoConsultas.CrossCutting.Shareable.Exceptions;
+using MediatR;
+using OperationResult;
 
 namespace RSF.AgendamentoConsultas.Core.Application.Features.PacienteDependente.Command.CreateDependentePlanoMedico;
 
@@ -13,19 +16,24 @@ public class CreatePacienteDependentePlanoMedicoRequestHandler : IRequestHandler
     private readonly IPacienteRepository _pacienteRepository;
     private readonly IConvenioMedicoRepository _convenioMedicoRepository;
     private readonly IBaseRepository<PacienteDependentePlanoMedico> _dependentePlanoMedicoRepository;
+    private readonly IHttpContextAccessor _httpContext;
 
     public CreatePacienteDependentePlanoMedicoRequestHandler(
         IPacienteRepository pacienteRepository,
         IBaseRepository<PacienteDependentePlanoMedico> dependentePlanoMedicoRepository,
-        IConvenioMedicoRepository convenioMedicoRepository)
+        IConvenioMedicoRepository convenioMedicoRepository,
+        IHttpContextAccessor httpContext)
     {
         _convenioMedicoRepository = convenioMedicoRepository;
         _dependentePlanoMedicoRepository = dependentePlanoMedicoRepository;
         _pacienteRepository = pacienteRepository;
+        _httpContext = httpContext;
     }
 
     public async Task<Result<PacienteDependentePlanoMedicoResponse>> Handle(CreatePacienteDependentePlanoMedicoRequest request, CancellationToken cancellationToken)
     {
+        HttpContextExtensions.ValidatePermissions(_httpContext.HttpContext, request.PacientePrincipalId, ETipoPerfilAcesso.Paciente);
+
         var convenioMedico = await _convenioMedicoRepository.GetByIdAsync(request.ConvenioMedicoId);
         NotFoundException.ThrowIfNull(convenioMedico, $"Convênio Médico com o ID: '{request.ConvenioMedicoId}' não encontrado");
 

@@ -5,8 +5,13 @@ namespace RSF.AgendamentoConsultas.Core.Application.Features.Account.Command.Reg
 
 public class RegisterEspecialistaRequestValidator : AbstractValidator<RegisterEspecialistaRequest>
 {
+    private string[] VALID_CATEGORIAS = ["BASIC", "PREMIUM"];
+
     public RegisterEspecialistaRequestValidator()
     {
+        RuleFor(c => c.EspecialidadeId)
+                .GreaterThan(0).WithMessage("O ID do Especialidade deve ser maior que 0");
+
         RuleFor(c => c.NomeCompleto).Cascade(CascadeMode.Stop)
             .NomeCompletoValidators("usuário");
 
@@ -19,6 +24,11 @@ public class RegisterEspecialistaRequestValidator : AbstractValidator<RegisterEs
 
         RuleFor(c => c.Genero).Cascade(CascadeMode.Stop)
             .GeneroValidators();
+
+        RuleFor(c => c.TipoCategoria).Cascade(CascadeMode.Stop)
+            .NotEmpty().WithMessage("O Tipo de categoria é obrigatório, não deve ser nulo ou vazio")
+            .Must(tipoCategoria => VALID_CATEGORIAS.Contains(tipoCategoria?.ToUpperInvariant()))
+            .WithMessage("O Tipo de categoria deve ser 'Basic' ou 'Premium'.");
 
         RuleFor(c => c.Licenca)
             .NotEmpty().WithMessage("A Licença é obrigatória, não deve ser nulo ou vazia")

@@ -22,7 +22,7 @@ public class JwtTokenService : IJwtTokenService
         _options = options;
     }
 
-    public string GenerateTokenJwt(ApplicationUser user, IList<Claim> roleClaims, IList<Claim> userClaims)
+    public string GenerateTokenJwt(ApplicationUser user, int id, IList<Claim> roleClaims, IList<Claim> userClaims)
     {
         _logger.LogInformation($"Generating JWT token for user: '{user.UserName}'");
 
@@ -32,6 +32,7 @@ public class JwtTokenService : IJwtTokenService
             new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
             new(JwtRegisteredClaimNames.Email, user.Email),
             new("uid", user.Id),
+            new("id", id.ToString()),
         };
         // Adiciona claims do usuário e roles
         claims.AddRange(userClaims);

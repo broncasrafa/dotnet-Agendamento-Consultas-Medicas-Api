@@ -16,7 +16,6 @@ using RSF.AgendamentoConsultas.Core.Application.Features.Paciente.Command.Update
 using RSF.AgendamentoConsultas.Core.Application.Features.Paciente.Command.DeletePaciente;
 using RSF.AgendamentoConsultas.Core.Application.Features.Paciente.Command.DeletePacientePlanoMedico;
 using RSF.AgendamentoConsultas.Core.Application.Features.Paciente.Command.DeletePacienteAgendamento;
-using RSF.AgendamentoConsultas.CrossCutting.Shareable.Enums;
 using MediatR;
 using FluentValidation;
 

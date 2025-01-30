@@ -11,4 +11,10 @@ public class UnauthorizedRequestException(string message, HttpStatusCode statusC
         if (user is null)
             throw new UnauthorizedRequestException(exceptionMessage);
     }
+
+    public static void ThrowIfNotAuthenticated(bool isAuthenticated, string exceptionMessage)
+    {
+        if (!isAuthenticated)
+            throw new UnauthorizedRequestException(exceptionMessage);
+    }
 }

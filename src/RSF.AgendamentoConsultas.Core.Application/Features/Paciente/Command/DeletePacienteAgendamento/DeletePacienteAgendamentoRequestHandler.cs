@@ -1,7 +1,10 @@
-﻿using RSF.AgendamentoConsultas.CrossCutting.Shareable.Exceptions;
+﻿using Microsoft.AspNetCore.Http;
+using RSF.AgendamentoConsultas.CrossCutting.Shareable.Exceptions;
+using RSF.AgendamentoConsultas.CrossCutting.Shareable.Enums;
+using RSF.AgendamentoConsultas.CrossCutting.Shareable.Extensions;
+using RSF.AgendamentoConsultas.Core.Domain.Interfaces.Repositories;
 using MediatR;
 using OperationResult;
-using RSF.AgendamentoConsultas.Core.Domain.Interfaces.Repositories;
 
 namespace RSF.AgendamentoConsultas.Core.Application.Features.Paciente.Command.DeletePacienteAgendamento;
 
@@ -9,15 +12,22 @@ public class DeletePacienteAgendamentoRequestHandler : IRequestHandler<DeletePac
 {
     private readonly IPacienteRepository _pacienteRepository;
     private readonly IAgendamentoConsultaRepository _agendamentoConsultaRepository;
+    private readonly IHttpContextAccessor _httpContext;
 
-    public DeletePacienteAgendamentoRequestHandler(IPacienteRepository pacienteRepository, IAgendamentoConsultaRepository agendamentoConsultaRepository)
+    public DeletePacienteAgendamentoRequestHandler(
+        IPacienteRepository pacienteRepository, 
+        IAgendamentoConsultaRepository agendamentoConsultaRepository, 
+        IHttpContextAccessor httpContext)
     {
         _pacienteRepository = pacienteRepository;
         _agendamentoConsultaRepository = agendamentoConsultaRepository;
+        _httpContext = httpContext;
     }
 
     public async Task<Result<bool>> Handle(DeletePacienteAgendamentoRequest request, CancellationToken cancellationToken)
     {
+        HttpContextExtensions.ValidatePermissions(_httpContext.HttpContext, request.PacienteId, ETipoPerfilAcesso.Paciente);
+
         var paciente = await _pacienteRepository.GetByIdAsync(request.PacienteId);
         NotFoundException.ThrowIfNull(paciente, $"Paciente com o ID: '{request.PacienteId}' não foi encontrado");
 
@@ -27,9 +37,6 @@ public class DeletePacienteAgendamentoRequestHandler : IRequestHandler<DeletePac
         agendamentoPaciente.Cancelar(request.NotaCancelamento);
 
         var rowsAffected = await _agendamentoConsultaRepository.UpdateAsync(agendamentoPaciente);
-
-
-        // disparar uma mensagem para o paciente e para o especialista informando que a consulta foi cancelada
 
         return await Task.FromResult(rowsAffected > 0);
     }

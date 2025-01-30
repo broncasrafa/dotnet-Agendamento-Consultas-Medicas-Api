@@ -1,7 +1,10 @@
-﻿using RSF.AgendamentoConsultas.CrossCutting.Shareable.Exceptions;
+﻿using Microsoft.AspNetCore.Http;
+using RSF.AgendamentoConsultas.Core.Domain.Interfaces.Repositories;
+using RSF.AgendamentoConsultas.CrossCutting.Shareable.Exceptions;
+using RSF.AgendamentoConsultas.CrossCutting.Shareable.Extensions;
+using RSF.AgendamentoConsultas.CrossCutting.Shareable.Enums;
 using MediatR;
 using OperationResult;
-using RSF.AgendamentoConsultas.Core.Domain.Interfaces.Repositories;
 
 namespace RSF.AgendamentoConsultas.Core.Application.Features.PacienteDependente.Command.DeleteDependente;
 
@@ -9,15 +12,22 @@ public class DeletePacienteDependenteRequestHandler : IRequestHandler<DeletePaci
 {
     private readonly IPacienteDependenteRepository _dependenteRepository;
     private readonly IPacienteRepository _pacienteRepository;
+    private readonly IHttpContextAccessor _httpContext;
 
-    public DeletePacienteDependenteRequestHandler(IPacienteDependenteRepository dependenteRepository, IPacienteRepository pacienteRepository)
+    public DeletePacienteDependenteRequestHandler(
+        IPacienteDependenteRepository dependenteRepository, 
+        IPacienteRepository pacienteRepository, 
+        IHttpContextAccessor httpContext)
     {
         _dependenteRepository = dependenteRepository;
         _pacienteRepository = pacienteRepository;
+        _httpContext = httpContext;
     }
 
     public async Task<Result<bool>> Handle(DeletePacienteDependenteRequest request, CancellationToken cancellationToken)
     {
+        HttpContextExtensions.ValidatePermissions(_httpContext.HttpContext, request.PacientePrincipalId, ETipoPerfilAcesso.Paciente);
+
         var pacientePrincipal = await _pacienteRepository.GetByFilterAsync(c => c.PacienteId == request.PacientePrincipalId, c => c.Dependentes);
         NotFoundException.ThrowIfNull(pacientePrincipal, $"Paciente principal com o ID: '{request.PacientePrincipalId}' não foi encontrado");
 

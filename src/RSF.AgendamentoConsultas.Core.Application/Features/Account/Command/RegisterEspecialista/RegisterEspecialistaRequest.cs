@@ -8,6 +8,8 @@ public record RegisterEspecialistaRequest(
     string NomeCompleto,
     string Username,
     string Email,
+    string TipoCategoria,
+    int EspecialidadeId,
     string Genero,
     string Licenca,
     string Telefone,

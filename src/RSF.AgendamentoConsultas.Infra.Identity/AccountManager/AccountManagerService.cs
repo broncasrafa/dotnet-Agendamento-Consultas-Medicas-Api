@@ -12,6 +12,7 @@ using RSF.AgendamentoConsultas.CrossCutting.Shareable.Enums;
 using RSF.AgendamentoConsultas.CrossCutting.Shareable.Exceptions;
 using RSF.AgendamentoConsultas.CrossCutting.Shareable.Helpers;
 using RSF.AgendamentoConsultas.Infra.Identity.Exceptions;
+using RSF.AgendamentoConsultas.Core.Domain.Interfaces.Repositories;
 
 namespace RSF.AgendamentoConsultas.Infra.Identity.AccountManager;
 
@@ -20,19 +21,24 @@ public class AccountManagerService : IAccountManagerService
     private readonly ILogger<AccountManagerService> _logger;
     private readonly IJwtTokenService _jwtTokenService;
     private readonly UserManager<ApplicationUser> _userManager;
-    
+    private readonly IEspecialistaRepository _especialistaRepository;
+    private readonly IPacienteRepository _pacienteRepository;
 
     public AccountManagerService(
         ILogger<AccountManagerService> logger,
         IJwtTokenService jwtTokenService,
-        UserManager<ApplicationUser> userManager)
+        UserManager<ApplicationUser> userManager,
+        IEspecialistaRepository especialistaRepository,
+        IPacienteRepository pacienteRepository)
     {
         _logger = logger;
         _jwtTokenService = jwtTokenService;
         _userManager = userManager;
+        _especialistaRepository = especialistaRepository;
+        _pacienteRepository = pacienteRepository;
     }
 
-    
+
     public async Task<ApplicationUser> GetUserAsync(ClaimsPrincipal authenticatedUser)
         => await _userManager.GetUserAsync(authenticatedUser);
 
@@ -84,11 +90,22 @@ public class AccountManagerService : IAccountManagerService
         var isValidCredentials = await _userManager.CheckPasswordAsync(user, password);
         InvalidCredentialsException.ThrowIfNotValid(isValidCredentials);
 
+        int id = 0;
+        var especialista = await _especialistaRepository.GetByUserIdAsync(user.Id);
+        if (especialista is not null)
+            id = especialista.EspecialistaId;
+        else
+        {
+            var paciente = await _pacienteRepository.GetByUserIdAsync(user.Id);
+            if (paciente is not null)
+                id = paciente.PacienteId;
+        }
+
         var roles = await _userManager.GetRolesAsync(user);
         var roleClaims = roles.Select(x => new Claim(ClaimTypes.Role, x)).ToList();
         var userClaims = await _userManager.GetClaimsAsync(user);
 
-        var token = _jwtTokenService.GenerateTokenJwt(user, roleClaims, userClaims);
+        var token = _jwtTokenService.GenerateTokenJwt(user, id, roleClaims, userClaims);
 
         var response = UsuarioAutenticadoModel.MapFromEntity(user, token);
 

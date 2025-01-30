@@ -6,10 +6,10 @@ using RSF.AgendamentoConsultas.Core.Application.Features.PacienteDependente.Resp
 using RSF.AgendamentoConsultas.Core.Application.Features.PacienteDependente.Query.GetDependenteById;
 using RSF.AgendamentoConsultas.Core.Application.Features.PacienteDependente.Query.GetDependenteByIdPlanosMedicos;
 using RSF.AgendamentoConsultas.Core.Application.Features.PacienteDependente.Command.CreateDependente;
-using RSF.AgendamentoConsultas.Core.Application.Features.PacienteDependente.Command.CreateDependentePlanoMedico;
 using RSF.AgendamentoConsultas.Core.Application.Features.PacienteDependente.Command.DeleteDependente;
-using RSF.AgendamentoConsultas.Core.Application.Features.PacienteDependente.Command.DeleteDependentePlanoMedico;
 using RSF.AgendamentoConsultas.Core.Application.Features.PacienteDependente.Command.UpdateDependente;
+using RSF.AgendamentoConsultas.Core.Application.Features.PacienteDependente.Command.CreateDependentePlanoMedico;
+using RSF.AgendamentoConsultas.Core.Application.Features.PacienteDependente.Command.DeleteDependentePlanoMedico;
 using RSF.AgendamentoConsultas.Core.Application.Features.PacienteDependente.Command.UpdateDependentePlanoMedico;
 using MediatR;
 using FluentValidation;

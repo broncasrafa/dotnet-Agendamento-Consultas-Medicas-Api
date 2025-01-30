@@ -1,9 +1,12 @@
-﻿using RSF.AgendamentoConsultas.Core.Domain.Entities;
-using RSF.AgendamentoConsultas.CrossCutting.Shareable.Exceptions;
-using MediatR;
-using OperationResult;
+﻿using Microsoft.AspNetCore.Http;
+using RSF.AgendamentoConsultas.Core.Domain.Entities;
 using RSF.AgendamentoConsultas.Core.Domain.Interfaces.Repositories.Common;
 using RSF.AgendamentoConsultas.Core.Domain.Interfaces.Repositories;
+using RSF.AgendamentoConsultas.CrossCutting.Shareable.Exceptions;
+using RSF.AgendamentoConsultas.CrossCutting.Shareable.Enums;
+using RSF.AgendamentoConsultas.CrossCutting.Shareable.Extensions;
+using MediatR;
+using OperationResult;
 
 namespace RSF.AgendamentoConsultas.Core.Application.Features.PacienteDependente.Command.DeleteDependentePlanoMedico;
 
@@ -11,15 +14,22 @@ public class DeletePacienteDependentePlanoMedicoRequestHandler : IRequestHandler
 {
     private readonly IBaseRepository<PacienteDependentePlanoMedico> _dependentePlanoMedicoRepository;
     private readonly IPacienteRepository _pacienteRepository;
+    private readonly IHttpContextAccessor _httpContext;
 
-    public DeletePacienteDependentePlanoMedicoRequestHandler(IBaseRepository<PacienteDependentePlanoMedico> dependentePlanoMedicoRepository, IPacienteRepository pacienteRepository)
+    public DeletePacienteDependentePlanoMedicoRequestHandler(
+        IBaseRepository<PacienteDependentePlanoMedico> dependentePlanoMedicoRepository, 
+        IPacienteRepository pacienteRepository, 
+        IHttpContextAccessor httpContext)
     {
         _dependentePlanoMedicoRepository = dependentePlanoMedicoRepository;
         _pacienteRepository = pacienteRepository;
+        _httpContext = httpContext;
     }
 
     public async Task<Result<bool>> Handle(DeletePacienteDependentePlanoMedicoRequest request, CancellationToken cancellationToken)
     {
+        HttpContextExtensions.ValidatePermissions(_httpContext.HttpContext, request.PacientePrincipalId, ETipoPerfilAcesso.Paciente);
+
         var pacientePrincipal = await _pacienteRepository.GetByIdDetailsAsync(request.PacientePrincipalId);
         NotFoundException.ThrowIfNull(pacientePrincipal, $"Paciente principal com o ID: '{request.PacientePrincipalId}' não foi encontrado");
 

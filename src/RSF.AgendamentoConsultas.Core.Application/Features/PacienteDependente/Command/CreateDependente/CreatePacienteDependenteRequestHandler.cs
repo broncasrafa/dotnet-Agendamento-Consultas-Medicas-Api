@@ -1,21 +1,30 @@
-﻿using RSF.AgendamentoConsultas.CrossCutting.Shareable.Helpers;
+﻿using Microsoft.AspNetCore.Http;
+using RSF.AgendamentoConsultas.CrossCutting.Shareable.Helpers;
 using RSF.AgendamentoConsultas.CrossCutting.Shareable.Exceptions;
-using MediatR;
-using OperationResult;
+using RSF.AgendamentoConsultas.CrossCutting.Shareable.Enums;
+using RSF.AgendamentoConsultas.CrossCutting.Shareable.Extensions;
 using RSF.AgendamentoConsultas.Core.Application.Features.PacienteDependente.Responses;
 using RSF.AgendamentoConsultas.Core.Domain.Interfaces.Repositories;
+using MediatR;
+using OperationResult;
 
 namespace RSF.AgendamentoConsultas.Core.Application.Features.PacienteDependente.Command.CreateDependente;
 
 public class CreatePacienteDependenteRequestHandler : IRequestHandler<CreatePacienteDependenteRequest, Result<PacienteDependenteResponse>>
 {
     private readonly IPacienteDependenteRepository _repository;
+    private readonly IHttpContextAccessor _httpContext;
 
-    public CreatePacienteDependenteRequestHandler(IPacienteDependenteRepository repository) => _repository = repository;
-
+    public CreatePacienteDependenteRequestHandler(IPacienteDependenteRepository repository, IHttpContextAccessor httpContext)
+    {
+        _repository = repository;
+        _httpContext = httpContext;
+    }
 
     public async Task<Result<PacienteDependenteResponse>> Handle(CreatePacienteDependenteRequest request, CancellationToken cancellationToken)
     {
+        HttpContextExtensions.ValidatePermissions(_httpContext.HttpContext, request.PacientePrincipalId, ETipoPerfilAcesso.Paciente);
+
         NotFoundException.ThrowIfNull(request.PacientePrincipalId, $"Paciente Principal com o ID: '{request.PacientePrincipalId}' não foi encontrado");
 
         var dependente = await _repository.GetByFilterAsync(c => c.CPF == request.CPF && c.PacientePrincipalId == request.PacientePrincipalId);

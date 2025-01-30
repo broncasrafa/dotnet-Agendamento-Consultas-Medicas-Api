@@ -1,6 +1,9 @@
-﻿using RSF.AgendamentoConsultas.Core.Domain.Interfaces.Repositories;
+﻿using Microsoft.AspNetCore.Http;
+using RSF.AgendamentoConsultas.Core.Domain.Interfaces.Repositories;
 using RSF.AgendamentoConsultas.Core.Domain.Interfaces.Repositories.Common;
 using RSF.AgendamentoConsultas.CrossCutting.Shareable.Exceptions;
+using RSF.AgendamentoConsultas.CrossCutting.Shareable.Enums;
+using RSF.AgendamentoConsultas.CrossCutting.Shareable.Extensions;
 using MediatR;
 using OperationResult;
 
@@ -10,17 +13,22 @@ public class UpdateLocalAtendimentoRequestHandler : IRequestHandler<UpdateLocalA
 {
     private readonly IEspecialistaRepository _especialistaRepository;
     private readonly IBaseRepository<Domain.Entities.EspecialistaLocalAtendimento> _especialistaLocalAtendimentoRepository;
+    private readonly IHttpContextAccessor _httpContext;
 
     public UpdateLocalAtendimentoRequestHandler(
-        IEspecialistaRepository especialistaRepository, 
-        IBaseRepository<Domain.Entities.EspecialistaLocalAtendimento> especialistaLocalAtendimentoRepository)
+        IEspecialistaRepository especialistaRepository,
+        IBaseRepository<Domain.Entities.EspecialistaLocalAtendimento> especialistaLocalAtendimentoRepository,
+        IHttpContextAccessor httpContext)
     {
         _especialistaRepository = especialistaRepository;
         _especialistaLocalAtendimentoRepository = especialistaLocalAtendimentoRepository;
+        _httpContext = httpContext;
     }
 
     public async Task<Result<bool>> Handle(UpdateLocalAtendimentoRequest request, CancellationToken cancellationToken)
     {
+        HttpContextExtensions.ValidatePermissions(_httpContext.HttpContext, request.EspecialistaId, ETipoPerfilAcesso.Profissional);
+
         var especialista = await _especialistaRepository.GetByIdAsync(request.EspecialistaId);
         NotFoundException.ThrowIfNull(especialista, $"Especialista com o ID: '{request.EspecialistaId}' não encontrado");
 

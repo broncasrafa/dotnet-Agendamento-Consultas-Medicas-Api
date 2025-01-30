@@ -17,7 +17,7 @@ public class UpdateEspecialistaRequestValidator : AbstractValidator<UpdateEspeci
 
         RuleFor(c => c.Tipo).Cascade(CascadeMode.Stop)
             .NotEmpty().WithMessage("O Tipo de categoria é obrigatório, não deve ser nulo ou vazio")
-            .Must(tipoAcesso => VALID_CATEGORIAS.Contains(tipoAcesso?.ToUpperInvariant()))
+            .Must(tipoCategoria => VALID_CATEGORIAS.Contains(tipoCategoria?.ToUpperInvariant()))
             .WithMessage("O Tipo de categoria deve ser 'Basic' ou 'Premium'.");
 
         RuleFor(c => c.Foto)
