@@ -1,14 +1,15 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using System.Text;
-using Microsoft.IdentityModel.Tokens;
-using Microsoft.EntityFrameworkCore;
+﻿using System.Text;
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 using RSF.AgendamentoConsultas.Core.Domain.Notifications;
 using RSF.AgendamentoConsultas.Core.Domain.MessageBus.Bus;
 using RSF.AgendamentoConsultas.Core.Domain.Entities;
@@ -28,7 +29,6 @@ using RSF.AgendamentoConsultas.Infra.Identity.Configurations;
 using RSF.AgendamentoConsultas.Infra.Identity.JWT;
 using RSF.AgendamentoConsultas.Infra.Identity.AccountManager;
 using Amazon.S3;
-using RSF.AgendamentoConsultas.Consumers.Notification.Subscribers;
 
 namespace RSF.AgendamentoConsultas.CrossCutting.IoC;
 
@@ -72,12 +72,13 @@ public static class ServiceCollectionInfrastructure
     private static void AddDatabase(this IServiceCollection services, IConfiguration configuration)
         => services.AddDbContext<AppDbContext>(options =>
             {
-                options.UseLoggerFactory(LoggerFactory.Create(builder => builder.AddConsole()));
+                //options.UseLoggerFactory(LoggerFactory.Create(builder => builder.AddConsole()));
                 options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"),
                             b => b.MigrationsAssembly(typeof(AppDbContext).Assembly.FullName))
                                     .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking)
-                                    .EnableSensitiveDataLogging()
-                                    .EnableDetailedErrors();
+                                    .EnableSensitiveDataLogging(false)
+                                    .EnableDetailedErrors()
+                                    .ConfigureWarnings(warnings => warnings.Ignore(RelationalEventId.MultipleCollectionIncludeWarning));
             });
 
     private static void AddIdentity(this IServiceCollection services, IConfiguration configuration)

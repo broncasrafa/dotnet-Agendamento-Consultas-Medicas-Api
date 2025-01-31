@@ -1,44 +1,86 @@
-﻿using Serilog;
-using Serilog.Events;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Text;
+using System.Text.Json;
+
+using Serilog;
 
 namespace RSF.AgendamentoConsultas.Api.Middlewares;
 
-public static class SerilogRequestLogger
+[ExcludeFromCodeCoverage]
+public class SerilogRequestLogger(RequestDelegate next)
 {
-    /// <summary>
-    /// Adiciona as configurações de Serilog ao pipeline da aplicação.
-    /// </summary>
-    /// <param name="app">application builder app original do pipeline da aplicação</param>
-    public static IApplicationBuilder UseCustomRequestLogging(this IApplicationBuilder app)
+    private readonly RequestDelegate _next = next;
+
+    public async Task InvokeAsync(HttpContext httpContext)
     {
-        return app.UseSerilogRequestLogging(options =>
+        ArgumentNullException.ThrowIfNull(httpContext, nameof(httpContext));
+
+        //if (!Log.IsEnabled(Serilog.Events.LogEventLevel.Debug))
+        //{
+        //    await _next(httpContext);
+        //    return;
+        //}
+
+        string requestBody = "";
+        httpContext.Request.EnableBuffering();
+        Stream body = httpContext.Request.Body;
+        byte[] buffer = new byte[Convert.ToInt32(httpContext.Request.ContentLength)];
+#pragma warning disable CA1835 // Prefer the 'Memory'-based overloads for 'ReadAsync' and 'WriteAsync'
+#pragma warning disable CA2022 // A synchronous operation was disallowed. Call ReadAsync or set AllowSynchronousIO to true instead.
+        await httpContext.Request.Body.ReadAsync(buffer, 0, buffer.Length);
+#pragma warning restore CA1835 // Prefer the 'Memory'-based overloads for 'ReadAsync' and 'WriteAsync'
+#pragma warning restore CA2022 // A synchronous operation was disallowed. Call ReadAsync or set AllowSynchronousIO to true instead.
+        requestBody = Encoding.UTF8.GetString(buffer);
+        body.Seek(0, SeekOrigin.Begin);
+        httpContext.Request.Body = body;
+
+        Log.ForContext("RequestHeaders", httpContext.Request.Headers.ToDictionary(h => h.Key, h => h.Value.ToString()), destructureObjects: true);
+
+        if (!string.IsNullOrEmpty(requestBody))
         {
-            // health check exclusion inspiration: 
-            // https://andrewlock.net/using-serilog-aspnetcore-in-asp-net-core-3-excluding-health-check-endpoints-from-serilog-request-logging/
-            options.GetLevel = ExcludeHealthChecks!;
-            options.EnrichDiagnosticContext = (diagnosticContext, httpContext) =>
+            Log.ForContext("RequestBody", requestBody)
+                .Information("[{Timestamp:dd/MM/yyyy HH:mm:ss} {Level}] HTTP Request {RequestMethod} {RequestPath}", DateTime.Now, "INF", httpContext.Request.Method, httpContext.Request.Path);
+            Log.ForContext("RequestBody", requestBody)
+                .Information("[{Timestamp:dd/MM/yyyy HH:mm:ss} {Level}] HTTP Request Body: {RequestBody}", DateTime.Now, "INF", requestBody);
+        }
+
+        using var responseBodyMemoryStream = new MemoryStream();
+        var originalResponseBodyReference = httpContext.Response.Body;
+        httpContext.Response.Body = responseBodyMemoryStream;
+
+        var startTime = DateTime.Now;
+        await _next(httpContext);
+
+        httpContext.Response.Body.Seek(0, SeekOrigin.Begin);
+        var responseBody = await new StreamReader(httpContext.Response.Body).ReadToEndAsync();
+        httpContext.Response.Body.Seek(0, SeekOrigin.Begin);
+
+        var elapsedMilliseconds = (DateTime.Now - startTime).TotalMilliseconds;
+
+        if (!string.IsNullOrEmpty(responseBody))
+        {
+            string responseBodyJsonInline;
+
+            try
             {
-                diagnosticContext.Set("RequestHost", httpContext.Request.Host.Value);
-                diagnosticContext.Set("UserAgent", httpContext.Request.Headers["User-Agent"]);
-                // could add user information: var user = httpContext.User.Identity;                    
-            };
-        });
+                var parsedJson = JsonDocument.Parse(responseBody);
+                responseBodyJsonInline = JsonSerializer.Serialize(parsedJson.RootElement, new JsonSerializerOptions { WriteIndented = false });
+            }
+            catch
+            {
+                // Caso não seja um JSON válido, mantém o body como texto bruto
+                responseBodyJsonInline = responseBody;
+            }
 
+            Log.ForContext("ResponseBody", responseBodyJsonInline)
+                .Information("[{Timestamp:dd/MM/yyyy HH:mm:ss} {Level}] HTTP Response {RequestMethod} {RequestPath} responded {StatusCode} in {ElapsedMilliseconds} ms", DateTime.Now, "INF", httpContext.Request.Method, httpContext.Request.Path, httpContext.Response.StatusCode, elapsedMilliseconds);
+            Log.ForContext("ResponseBody", responseBodyJsonInline)
+                .Information("[{Timestamp:dd/MM/yyyy HH:mm:ss} {Level}] HTTP Response Body: {ResponseBody}", DateTime.Now, "INF", responseBodyJsonInline);
+        }
+
+
+        await responseBodyMemoryStream.CopyToAsync(originalResponseBodyReference);
     }
-
-    private static bool IsHealthCheckEndpoint(HttpContext ctx)
-    {
-        var userAgent = ctx.Request.Headers["User-Agent"].FirstOrDefault() ?? "";
-        return ctx.Request.Path.Value!.EndsWith("health", StringComparison.CurrentCultureIgnoreCase) ||
-               userAgent.Contains("HealthCheck", StringComparison.InvariantCultureIgnoreCase);
-    }
-
-    private static LogEventLevel ExcludeHealthChecks(HttpContext ctx, double _, Exception ex) =>
-            ex != null
-                ? LogEventLevel.Error
-                : ctx.Response.StatusCode > 499
-                    ? LogEventLevel.Error
-                    : IsHealthCheckEndpoint(ctx) // Not an error, check if it was a health check
-                        ? LogEventLevel.Verbose // Was a health check, use Verbose
-                        : LogEventLevel.Information;
 }
+
+//  HTTP POST /api/account/login responded 200 in 7264.1662 ms

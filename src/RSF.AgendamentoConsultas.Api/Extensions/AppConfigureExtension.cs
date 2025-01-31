@@ -1,4 +1,5 @@
 ﻿using RSF.AgendamentoConsultas.Api.Endpoints;
+using RSF.AgendamentoConsultas.Api.Middlewares;
 using RSF.AgendamentoConsultas.CrossCutting.IoC;
 using Serilog;
 using Swashbuckle.AspNetCore.SwaggerUI;
@@ -21,7 +22,14 @@ internal static class AppConfigureExtension
         app.UseExceptionHandler();
         app.UseCors("AllowAllPolicy");
         app.MapEndpoints();
-        app.UseSerilogRequestLogging();
+
+        app.Use(async (context, next) =>
+        {
+            context.Items["StartTime"] = DateTime.Now;
+            await next();
+        });
+        //app.UseSerilogRequestLogging();
+        app.UseMiddleware<SerilogRequestLogger>();
     }
 
     public static IApplicationBuilder MapEndpoints(this WebApplication app)
