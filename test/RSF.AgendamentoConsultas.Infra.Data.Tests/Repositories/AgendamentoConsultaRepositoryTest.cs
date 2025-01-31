@@ -16,6 +16,10 @@ public class AgendamentoConsultaRepositoryTest
     public AgendamentoConsultaRepositoryTest(AgendamentoConsultaRepositoryTestFixture fixture)
     {
         _context = BaseFixture.CreateDbContext();
+        // Garante a recriação do banco para cada teste
+        _context.Database.EnsureDeleted();
+        _context.Database.EnsureCreated();
+
         _repository = new AgendamentoConsultaRepository(_context);
         _fixture = fixture;
     }

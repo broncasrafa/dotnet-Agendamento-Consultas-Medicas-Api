@@ -1,7 +1,9 @@
-﻿using RSF.AgendamentoConsultas.CrossCutting.Shareable.Enums;
+﻿using System.Diagnostics.CodeAnalysis;
+using RSF.AgendamentoConsultas.CrossCutting.Shareable.Enums;
 
 namespace RSF.AgendamentoConsultas.Core.Domain.Validation;
 
+[ExcludeFromCodeCoverage]
 public static class TypeValids
 {
     public static readonly string[] VALID_GENEROS = ["Masculino", "Feminino", "Não informado"];
