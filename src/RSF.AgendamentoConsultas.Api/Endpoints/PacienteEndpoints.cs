@@ -26,7 +26,7 @@ internal static class PacienteEndpoints
     public static IEndpointRouteBuilder MapPacienteEndpoints(this IEndpointRouteBuilder builder)
     {
         var routes = builder.MapGroup("api/pacientes")
-                            .WithTags("Pacientes")
+                            .WithTags("Paciente")
                             .RequireAuthorization("AdminOrPaciente");
 
         #region [ GET ]

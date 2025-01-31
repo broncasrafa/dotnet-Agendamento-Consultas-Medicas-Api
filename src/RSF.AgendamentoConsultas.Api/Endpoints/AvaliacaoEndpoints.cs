@@ -12,7 +12,7 @@ internal static class AvaliacaoEndpoints
 {
     public static IEndpointRouteBuilder MapAvaliacaoEndpoints(this IEndpointRouteBuilder builder)
     {
-        var routes = builder.MapGroup("api/avaliacoes").WithTags("Avaliações");
+        var routes = builder.MapGroup("api/avaliacoes").WithTags("Avaliação");
 
         routes.MapPost("/", static async (IMediator mediator, [FromBody] CreateAvaliacaoRequest request, CancellationToken cancellationToken) 
             => await mediator.SendCommand(request, cancellationToken: cancellationToken))

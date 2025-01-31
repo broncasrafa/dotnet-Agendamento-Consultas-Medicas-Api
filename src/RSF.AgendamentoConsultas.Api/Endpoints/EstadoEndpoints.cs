@@ -13,7 +13,7 @@ internal static class EstadoEndpoints
 {
     public static IEndpointRouteBuilder MapEstadoEndpoints(this IEndpointRouteBuilder builder)
     {
-        var routes = builder.MapGroup("api/common/estados").WithTags("Commons").AllowAnonymous();
+        var routes = builder.MapGroup("api/common/estados").WithTags("Common").AllowAnonymous();
 
         routes.MapGet("/", static async (IMediator mediator, CancellationToken cancellationToken) => await mediator.SendCommand(new SelectEstadoRequest(), cancellationToken: cancellationToken))
             .WithName("GetAllEstados")

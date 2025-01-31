@@ -11,7 +11,7 @@ internal static class PerguntasRespostasReacoesEndpoints
 {
     public static IEndpointRouteBuilder MapPerguntasRespostasReacoesEndpoints(this IEndpointRouteBuilder builder)
     {
-        var routes = builder.MapGroup("api/respostas/reacoes").WithTags("Respostas Reações");
+        var routes = builder.MapGroup("api/respostas/reacoes").WithTags("Reação Resposta");
 
         #region [ POST ]
         routes.MapPost("/", static async (IMediator mediator, [FromBody] CreateReacaoRespostaRequest request, CancellationToken cancellationToken)

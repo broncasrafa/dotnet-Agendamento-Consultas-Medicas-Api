@@ -11,7 +11,7 @@ internal static class CidadeEndpoints
 {
     public static IEndpointRouteBuilder MapCidadeEndpoints(this IEndpointRouteBuilder builder)
     {
-        var routes = builder.MapGroup("api/common/cidades").WithTags("Commons").AllowAnonymous();
+        var routes = builder.MapGroup("api/common/cidades").WithTags("Common").AllowAnonymous();
 
         routes.MapGet("/{id:int}", static async (IMediator mediator, [FromRoute] int id, CancellationToken cancellationToken) => await mediator.SendCommand(new SelectCidadeByIdRequest(id), cancellationToken: cancellationToken))
             .WithName("GetOneCidade")

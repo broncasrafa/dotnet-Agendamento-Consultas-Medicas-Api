@@ -12,7 +12,7 @@ internal static class PerguntasRespostasEndpoints
 {
     public static IEndpointRouteBuilder MapPerguntasRespostasEndpoints(this IEndpointRouteBuilder builder)
     {
-        var routes = builder.MapGroup("api/respostas").WithTags("Respostas");
+        var routes = builder.MapGroup("api/respostas").WithTags("Resposta");
 
         #region [ POST ]        
         routes.MapPost("/", static async (IMediator mediator, [FromBody] CreateRespostaRequest request, CancellationToken cancellationToken)

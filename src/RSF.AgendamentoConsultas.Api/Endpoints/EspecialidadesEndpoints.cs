@@ -16,7 +16,7 @@ internal static class EspecialidadesEndpoints
 {
     public static IEndpointRouteBuilder MapEspecialidadesEndpoints(this IEndpointRouteBuilder builder)
     {
-        var routes = builder.MapGroup("api/especialidades").WithTags("Especialidades").AllowAnonymous();
+        var routes = builder.MapGroup("api/especialidades").WithTags("Especialidade").AllowAnonymous();
 
         routes.MapGet("/",
             static async (IMediator mediator, [FromQuery] string? name, CancellationToken cancellationToken) =>

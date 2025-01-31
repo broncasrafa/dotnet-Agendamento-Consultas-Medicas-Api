@@ -31,7 +31,7 @@ internal static class EspecialistaEndpoints
 {
     public static IEndpointRouteBuilder MapEspecialistaEndpoints(this IEndpointRouteBuilder builder)
     {
-        var routes = builder.MapGroup("api/especialistas").WithTags("Especialistas");
+        var routes = builder.MapGroup("api/especialistas").WithTags("Especialista");
 
         #region [ GET ]
         routes.MapGet("/", static async (IMediator mediator, [FromQuery] int page, [FromQuery] int items, CancellationToken cancellationToken) 
