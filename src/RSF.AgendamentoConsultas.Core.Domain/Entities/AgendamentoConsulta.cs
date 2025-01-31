@@ -1,6 +1,7 @@
 ﻿using RSF.AgendamentoConsultas.Core.Domain.Exceptions;
 using RSF.AgendamentoConsultas.Core.Domain.Validation;
 using RSF.AgendamentoConsultas.CrossCutting.Shareable.Enums;
+using RSF.AgendamentoConsultas.CrossCutting.Shareable.Helpers;
 
 namespace RSF.AgendamentoConsultas.Core.Domain.Entities;
 
@@ -10,7 +11,7 @@ public class AgendamentoConsulta
     public int? EspecialistaId { get; set; }
     public int? EspecialidadeId { get; set; }
     public int? LocalAtendimentoId { get; set; }
-    public bool? AgendamentoDependente { get; private set; }
+    public bool? AgendamentoDependente { get; set; }
     public int? PacienteId { get; set; }
     public int? PlanoMedicoId { get; set; }
     public int? DependenteId { get; set; }
@@ -46,7 +47,7 @@ public class AgendamentoConsulta
     public PacienteDependente? Dependente { get; set; }
     public PacienteDependentePlanoMedico? PlanoMedicoDependente { get; set; }
 
-    protected AgendamentoConsulta() { }
+    public AgendamentoConsulta() { }
 
     public AgendamentoConsulta(
         int especialistaId, 
@@ -74,7 +75,7 @@ public class AgendamentoConsulta
         HorarioConsulta = horarioConsulta;
         MotivoConsulta = motivoConsulta;
         ValorConsulta = (tipoAgendamentoId == (int)ETipoAgendamento.Convenio) ? null : valorConsulta;
-        TelefoneContato = telefoneContato;
+        TelefoneContato = telefoneContato.RemoverFormatacaoSomenteNumeros();
         PrimeiraVez = primeiraVez ?? false;
         PacienteId = pacienteId;
         DependenteId = dependenteId;
