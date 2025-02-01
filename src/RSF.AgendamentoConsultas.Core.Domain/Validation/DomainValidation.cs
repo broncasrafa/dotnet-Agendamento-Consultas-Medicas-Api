@@ -1,9 +1,6 @@
-﻿using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 using System.Text.RegularExpressions;
-using Newtonsoft.Json.Linq;
-
 using RSF.AgendamentoConsultas.Core.Domain.Exceptions;
 
 namespace RSF.AgendamentoConsultas.Core.Domain.Validation;

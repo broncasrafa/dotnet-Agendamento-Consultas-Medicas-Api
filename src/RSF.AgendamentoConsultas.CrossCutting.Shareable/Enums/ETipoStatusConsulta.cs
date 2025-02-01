@@ -6,6 +6,9 @@ public enum ETipoStatusConsulta
     /// Status default para novas consultas
     /// </summary>
     Solicitado = 1,
+    /// <summary>
+    /// Consulta confirmada e pronta para ser atendida
+    /// </summary>
     Confirmado = 2,
     /// <summary>
     /// Status de cancelamento por qualquer motivo exceto respostas de especialistas e respostas de pacientes
@@ -18,5 +21,9 @@ public enum ETipoStatusConsulta
     /// <summary>
     /// Consulta cancelada automaticamente, quando não recebemos a resposta do paciente em tempo hábil para confirmação ou remarcação de consulta.
     /// </summary>
-    ExpiradoPaciente = 5
+    ExpiradoPaciente = 5,
+    /// <summary>
+    /// Consulta atendida pelo especialista
+    /// </summary>
+    Atendido = 6
 }

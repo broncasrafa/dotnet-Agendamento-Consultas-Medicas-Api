@@ -28,7 +28,7 @@ public class PossibleValidNumberTest
         exception.Message.Should().Contain(expectedMessage);
     }
 
-    [Fact]
+    [Fact(DisplayName = "Deve validar números corretamente quando não requirido")]
     public void PossibleValidNumber_ShouldNotThrowException_WhenNumberIsNotRequired()
     {
         // Arrange

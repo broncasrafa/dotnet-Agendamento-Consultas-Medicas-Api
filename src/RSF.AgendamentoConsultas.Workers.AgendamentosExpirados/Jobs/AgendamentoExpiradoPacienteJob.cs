@@ -38,10 +38,12 @@ public class AgendamentoExpiradoPacienteJob : IHostedService
 
         if (agendamentosExpirados is not null && agendamentosExpirados.Any())
         {
+            string notaCancelamento = "Consulta cancelada automaticamente, pois não recebemos sua resposta para a confirmação em tempo hábil";
+
             agendamentosExpirados.ToList().ForEach(x =>
             {
                 x.StatusConsultaId = (int)ETipoStatusConsulta.ExpiradoPaciente;
-                x.NotaCancelamento = "Consulta cancelada automaticamente, pois não recebemos sua resposta para a confirmação em tempo hábil.";
+                x.NotaCancelamento = notaCancelamento;
                 x.UpdatedAt = DateTime.Now;
             });
 
@@ -58,7 +60,7 @@ public class AgendamentoExpiradoPacienteJob : IHostedService
                     x.DataConsulta.ToString("dd/MM/yyyy"),
                     x.HorarioConsulta,
                     x.LocalAtendimento.Nome,
-                    "Consulta cancelada automaticamente, pois não recebemos sua resposta para a confirmação em tempo hábil."
+                    notaCancelamento
                 );
 
                 eventBus.Publish(@event, _options.Value.AgendamentoExpiradoPacienteQueueName);

@@ -180,6 +180,9 @@ dotnet_diagnostic.CA1810.severity = none
 # CA1812: Evitar classes internas sem instâncias
 dotnet_diagnostic.CA1812.severity = none
 
+# CA1822: Marcar membros como estáticos
+dotnet_diagnostic.CA1822.severity = none
+
 # CA1823: Evitar campos particulares não utilizados
 dotnet_diagnostic.CA1823.severity = none
 

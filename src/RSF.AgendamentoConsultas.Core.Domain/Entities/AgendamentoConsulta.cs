@@ -63,7 +63,7 @@ public class AgendamentoConsulta
         bool? primeiraVez,
         int pacienteId, 
         int? dependenteId, 
-        int planoMedicoId
+        int? planoMedicoId
     )
     {
         EspecialistaId = especialistaId;
@@ -79,7 +79,7 @@ public class AgendamentoConsulta
         PrimeiraVez = primeiraVez ?? false;
         PacienteId = pacienteId;
         DependenteId = dependenteId;
-        PlanoMedicoId = (dependenteId is null) ? planoMedicoId : null;
+        PlanoMedicoId = (tipoAgendamentoId == (int)ETipoAgendamento.Convenio) ? planoMedicoId : null;
         DependentePlanoMedicoId = (dependenteId is not null) ? planoMedicoId : null;
         AgendamentoDependente = dependenteId is not null;
         StatusConsultaId = (int)ETipoStatusConsulta.Solicitado;
@@ -92,17 +92,20 @@ public class AgendamentoConsulta
 
     public void ConfirmarPaciente()
     {
-        if (StatusConsultaId != (int)ETipoStatusConsulta.Solicitado)
-            throw new EntityValidationException($"Status da Consulta inválido para confirmação");
+        if (ConfirmedByPacienteAt.HasValue)
+            throw new EntityValidationException($"Consulta já confirmada por você anteriormente");
 
-        if (DataConsulta <= DateTime.Now)
-            throw new EntityValidationException($"Data da Consulta inválido para confirmação");
+        if (StatusConsultaId != (int)ETipoStatusConsulta.Solicitado)
+            throw new EntityValidationException($"Status da Consulta inválido para confirmação");        
+
+        if (DataConsulta <= DateTime.Now && ConfirmedByPacienteAt is null)
+            throw new EntityValidationException($"Consulta cancelada automaticamente, pois não recebemos sua resposta para a confirmação em tempo hábil");
 
         if (!ConfirmedByEspecialistaAt.HasValue)
             throw new EntityValidationException($"Agendamento não confirmado pelo especialista");
 
-        if (ConfirmedByEspecialistaAt.Value.AddDays(1) > DateTime.Now)
-            throw new EntityValidationException($"Consulta cancelada automaticamente, pois não recebemos sua resposta para a confirmação em tempo hábil.");
+        //if (ConfirmedByEspecialistaAt.Value.AddDays(1) > DateTime.Now)
+        
 
         StatusConsultaId = (int)ETipoStatusConsulta.Confirmado;
         ConfirmedByPacienteAt = DateTime.Now;
@@ -110,6 +113,9 @@ public class AgendamentoConsulta
     }
     public void ConfirmarProfissional()
     {
+        if (ConfirmedByEspecialistaAt.HasValue)
+            throw new EntityValidationException($"Consulta já confirmada por você anteriormente");
+
         if (StatusConsultaId != (int)ETipoStatusConsulta.Solicitado)
             throw new EntityValidationException($"Status da Consulta inválido para confirmação");
 
@@ -123,8 +129,10 @@ public class AgendamentoConsulta
     {
         DomainValidation.NotNullOrEmpty(notaCancelamento, nameof(NotaCancelamento));
 
-        if (StatusConsultaId != (int)ETipoStatusConsulta.Solicitado &&
-            StatusConsultaId != (int)ETipoStatusConsulta.Confirmado)
+        if (StatusConsultaId == (int)ETipoStatusConsulta.Atendido ||
+            StatusConsultaId == (int)ETipoStatusConsulta.Cancelado ||
+            StatusConsultaId == (int)ETipoStatusConsulta.ExpiradoProfissional ||
+            StatusConsultaId == (int)ETipoStatusConsulta.ExpiradoPaciente)
             throw new EntityValidationException($"Status da Consulta inválido para cancelamento");
 
         if (DataConsulta <= DateTime.Now)
