@@ -29,17 +29,16 @@ public static class AppIdentityDbContextSeed
         var existingUser = await userManager.FindByEmailAsync("rsfrancisco.applications@gmail.com");
         if (existingUser == null)
         {
-            var defaultUserAdmin = new ApplicationUser
+            var defaultUserAdmin = new ApplicationUser(
+                nomeCompleto: "Rafael Francisco",
+                username: "rsfrancisco",
+                documento: "22566719845",
+                email: "rsfrancisco.applications@gmail.com",
+                genero: "Masculino",
+                telefone: "11960641048")
             {
-                NomeCompleto = "Rafael Francisco",
-                UserName = "rsfrancisco",
-                Documento = "22335037838",
-                Genero = "Masculino",
-                Email = "rsfrancisco.applications@gmail.com",
-                PhoneNumber = "11960641048",
                 EmailConfirmed = true,
-                PhoneNumberConfirmed = true,
-                IsActive = true
+                PhoneNumberConfirmed = true
             };
 
             // Crie o usuário administrador

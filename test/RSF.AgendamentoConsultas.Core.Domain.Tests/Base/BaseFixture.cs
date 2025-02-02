@@ -4,7 +4,7 @@ namespace RSF.AgendamentoConsultas.Core.Domain.Tests.Base;
 
 public class BaseFixture
 {
-    protected Faker Faker { get; set; }
+    public Faker Faker { get; }
 
     public BaseFixture() => Faker = new Faker("pt_BR");
 }

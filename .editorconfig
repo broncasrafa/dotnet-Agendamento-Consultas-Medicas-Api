@@ -201,6 +201,9 @@ dotnet_diagnostic.CA1854.severity = suggestion
 # CA1860: evite usar o método de extensão 'Enumerable.Any()'
 dotnet_diagnostic.CA1860.severity = suggestion
 
+# CA1861: Evitar matrizes constantes como argumentos
+dotnet_diagnostic.CA1861.severity = none
+
 # CA1869: armazenar em cache e reutilizar instâncias de "JsonSerializerOptions"
 dotnet_diagnostic.CA1869.severity = suggestion
 

@@ -1,6 +1,4 @@
-﻿using Microsoft.Extensions.DependencyModel;
-
-using RSF.AgendamentoConsultas.Core.Domain.Validation;
+﻿using RSF.AgendamentoConsultas.Core.Domain.Validation;
 
 namespace RSF.AgendamentoConsultas.Core.Domain.Entities;
 

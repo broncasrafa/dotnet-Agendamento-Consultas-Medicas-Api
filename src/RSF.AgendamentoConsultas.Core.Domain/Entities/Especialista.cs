@@ -43,7 +43,6 @@ public class Especialista
     public Especialista(string userId, string nome, string licenca, string email, string genero,
         string? tipo = null,
         string? foto = null, 
-        string? sharedUrl = null, 
         bool? agendaOnline = null,
         bool? telemedicinaOnline = null, 
         bool? telemedicinaAtivo = null,
@@ -59,7 +58,7 @@ public class Especialista
         Nome = nome;
         Licenca = licenca;
         Email = email;
-        Genero = (genero is null || genero == "Não informado") ? "Não informado" : genero;
+        Genero = (string.IsNullOrWhiteSpace(genero) || genero == "Não informado") ? "Não informado" : genero;
         Tratamento = (genero == "Não informado") ? "Não informado" : (Genero == "Masculino" ? "Dr." : "Dra.");
         Foto = SetFoto(foto);
         Ativo = true;

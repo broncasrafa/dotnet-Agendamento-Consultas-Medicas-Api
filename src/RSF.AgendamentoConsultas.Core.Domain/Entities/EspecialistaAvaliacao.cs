@@ -29,6 +29,7 @@ public class EspecialistaAvaliacao
         TagId = tagId;
         CreatedAt = DateTime.Now;
 
+        DomainValidation.NotNullOrEmpty(feedback, nameof(Feedback));
         DomainValidation.IdentifierGreaterThanZero(especialistaId, nameof(EspecialistaId));
         DomainValidation.IdentifierGreaterThanZero(pacienteId, nameof(PacienteId));
         DomainValidation.PossiblesValidTypes(TypeValids.VALID_SCORES, Score, nameof(Score));

@@ -2,6 +2,7 @@
 using System.Globalization;
 using System.Text.RegularExpressions;
 using RSF.AgendamentoConsultas.Core.Domain.Exceptions;
+using RSF.AgendamentoConsultas.CrossCutting.Shareable.Helpers;
 
 namespace RSF.AgendamentoConsultas.Core.Domain.Validation;
 
@@ -183,5 +184,32 @@ public static class DomainValidation
             if (!validUFs.Contains(value))
                 throw new EntityValidationException($"{fieldName} inválido. Valores válidos: '{string.Join(", ", validUFs)}'");
         }
+    }
+
+    public static void PossibleValidCep(string value)
+    {
+        if (!string.IsNullOrWhiteSpace(value) && !Regex.IsMatch(value, @"^\d+$"))
+            throw new EntityValidationException($"CEP deve conter apenas números.");
+
+        if (!(Convert.ToInt32(value.Length) == 8))
+            throw new EntityValidationException($"CEP deve conter exatamente 8 digitos.");
+    }
+
+    public static void PossibleValidCpf(string value)
+    {
+        if (string.IsNullOrWhiteSpace(value))
+            throw new EntityValidationException($"CPF não pode ser nulo ou vazio.");
+
+        // Remover caracteres não numéricos
+        value = value.Replace(".", "").Replace("-", "");
+
+        if (!Regex.IsMatch(value, @"^\d+$"))
+            throw new EntityValidationException($"CPF deve conter apenas números.");
+
+        if (!(Convert.ToInt32(value.Length) == 11))
+            throw new EntityValidationException($"CPF deve conter exatamente 11 digitos.");
+
+        if (!Utilitarios.IsCpfValid(value))
+            throw new EntityValidationException($"CPF inválido.");
     }
 }

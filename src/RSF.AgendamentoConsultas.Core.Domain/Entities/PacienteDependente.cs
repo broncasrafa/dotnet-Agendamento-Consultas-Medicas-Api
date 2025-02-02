@@ -31,9 +31,9 @@ public class PacienteDependente
     {
         PacientePrincipalId = pacientePrincipalId;
         Nome = nome;
-        CPF = cpf;
+        CPF = cpf.RemoverFormatacaoSomenteNumeros();
         Email = email;
-        Telefone = telefone;
+        Telefone = telefone.RemoverFormatacaoSomenteNumeros();
         Genero = genero;
         DataNascimento = dataNascimento;
         NomeSocial = nomeSocial;
@@ -45,7 +45,7 @@ public class PacienteDependente
         Validate();
     }
 
-    public void Update(string nome, string email, string telefone, string genero, string dataNascimento, string cpf, string nomeSocial = null, decimal? peso = null, decimal? altura = null)
+    public void Update(string nome, string cpf, string email, string telefone, string genero, string dataNascimento, string nomeSocial = null, decimal? peso = null, decimal? altura = null)
     {
         Nome = nome;
         Email = email;
@@ -75,14 +75,22 @@ public class PacienteDependente
     private void Validate()
     {
         DomainValidation.IdentifierGreaterThanZero(PacientePrincipalId, nameof(PacientePrincipalId));
+
         DomainValidation.NotNullOrEmpty(Nome, nameof(Nome));
+
         DomainValidation.NotNullOrEmpty(CPF, nameof(CPF));
+        DomainValidation.PossibleValidCpf(CPF);
+        
         DomainValidation.NotNullOrEmpty(Email, nameof(Email));
+        DomainValidation.PossibleValidEmailAddress(Email, nameof(Email));
+
         DomainValidation.NotNullOrEmpty(Telefone, nameof(Telefone));
+        DomainValidation.PossibleValidPhoneNumber(Telefone, nameof(Telefone));
+
         DomainValidation.NotNullOrEmpty(Genero, nameof(Genero));
+        DomainValidation.PossiblesValidTypes(TypeValids.VALID_GENEROS, value: Genero, nameof(Genero));
+
         DomainValidation.NotNullOrEmpty(DataNascimento, nameof(DataNascimento));
         DomainValidation.PossibleValidDate(DataNascimento, permitirSomenteDatasFuturas: false, nameof(DataNascimento));
-        DomainValidation.PossibleValidPhoneNumber(Telefone, nameof(Telefone));
-        DomainValidation.PossiblesValidTypes(TypeValids.VALID_GENEROS, value: Genero, nameof(Genero));
     }
 }

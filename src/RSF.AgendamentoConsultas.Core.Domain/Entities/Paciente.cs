@@ -1,4 +1,5 @@
 ﻿using RSF.AgendamentoConsultas.Core.Domain.Validation;
+using RSF.AgendamentoConsultas.CrossCutting.Shareable.Helpers;
 
 namespace RSF.AgendamentoConsultas.Core.Domain.Entities;
 
@@ -35,9 +36,9 @@ public class Paciente
     {
         UserId = userId;
         Nome = nome;
-        CPF = cpf;
+        CPF = cpf.RemoverFormatacaoSomenteNumeros();
         Email = email;
-        Telefone = telefone;
+        Telefone = telefone.RemoverFormatacaoSomenteNumeros();
         Genero = genero;
         DataNascimento = dataNascimento;
         NomeSocial = nomeSocial;
@@ -56,7 +57,7 @@ public class Paciente
     {
         Nome = nome;
         Email = email;
-        Telefone = telefone;
+        Telefone = telefone.RemoverFormatacaoSomenteNumeros();
         Genero = genero;
         DataNascimento = dataNascimento;
         NomeSocial = nomeSocial;
@@ -67,22 +68,30 @@ public class Paciente
         TermoUsoAceito = termoUsoAceito ?? false;
         UpdatedAt = DateTime.Now;
 
-        Validate(validatePassword: false);
+        Validate();
     }
     
     public void ChangeStatus(bool status) => Ativo = status;
 
-    void Validate(bool validatePassword = true)
+    void Validate()
     {
         DomainValidation.NotNullOrEmpty(UserId, nameof(UserId));
+
         DomainValidation.NotNullOrEmpty(Nome, nameof(Nome));
+
         DomainValidation.NotNullOrEmpty(CPF, nameof(CPF));
+        DomainValidation.PossibleValidCpf(CPF);
+
         DomainValidation.NotNullOrEmpty(Email, nameof(Email));
+        DomainValidation.PossibleValidEmailAddress(Email, nameof(Email));
+
         DomainValidation.NotNullOrEmpty(Telefone, nameof(Telefone));
+        DomainValidation.PossibleValidPhoneNumber(Telefone, nameof(Telefone));
+
         DomainValidation.NotNullOrEmpty(Genero, nameof(Genero));
+        DomainValidation.PossiblesValidTypes(TypeValids.VALID_GENEROS, value: Genero, nameof(Genero));
+
         DomainValidation.NotNullOrEmpty(DataNascimento, nameof(DataNascimento));
         DomainValidation.PossibleValidDate(DataNascimento, permitirSomenteDatasFuturas: false, nameof(DataNascimento));
-        DomainValidation.PossibleValidPhoneNumber(Telefone, nameof(Telefone));
-        DomainValidation.PossiblesValidTypes(TypeValids.VALID_GENEROS, value: Genero, nameof(Genero));
     }
 }

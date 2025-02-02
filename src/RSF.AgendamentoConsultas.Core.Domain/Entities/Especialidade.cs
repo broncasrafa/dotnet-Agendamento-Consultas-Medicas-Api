@@ -43,7 +43,6 @@ public class Especialidade
     private void Validate()
     {
         DomainValidation.NotNullOrEmpty(Nome, nameof(Nome));
-        //DomainValidation.NotNullOrEmpty(NomePlural, nameof(NomePlural));
         DomainValidation.IdentifierGreaterThanZero(EspecialidadeGrupoId, nameof(EspecialidadeGrupoId));
     }
 }

@@ -34,7 +34,7 @@ public class UpdatePacienteDependenteRequestHandler : IRequestHandler<UpdatePaci
         var dependente = pacientePrincipal.Dependentes.SingleOrDefault(c => c.DependenteId == request.DependenteId);
         NotFoundException.ThrowIfNull(dependente, $"Dependente com o ID: '{request.DependenteId}' não foi encontrado para o Paciente principal ID: '{request.PacientePrincipalId}'");
 
-        dependente!.Update(request.NomeCompleto, request.Email, request.Telefone, request.Genero, request.DataNascimento.ToString("yyyy-MM-dd"), request.CPF);
+        dependente!.Update(request.NomeCompleto, request.CPF, request.Email, request.Telefone, request.Genero, request.DataNascimento.ToString("yyyy-MM-dd"));
 
         var rowsAffected = await _dependenteRepository.UpdateAsync(dependente);
 

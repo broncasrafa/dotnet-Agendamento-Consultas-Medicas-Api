@@ -17,6 +17,10 @@ internal sealed class ValidateCpf
         if (value.Length != 11)
             return false;
 
+        // Verificar se todos os dígitos são iguais
+        if (value.All(c => c == value[0]))
+            return false;
+
         int[] multiplicador1 = new int[9] { 10, 9, 8, 7, 6, 5, 4, 3, 2 };
         int[] multiplicador2 = new int[10] { 11, 10, 9, 8, 7, 6, 5, 4, 3, 2 };
         string tempCpf;

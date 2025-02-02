@@ -70,7 +70,7 @@ public class EspecialistaLocalAtendimento
         DomainValidation.PossibleValidPhoneNumber(Telefone, nameof(Telefone), isRequired: false);
         DomainValidation.PossibleValidPhoneNumber(Whatsapp, nameof(Whatsapp), isRequired: false);
         DomainValidation.PriceGreaterThanZero(Preco, nameof(Preco));
-        DomainValidation.PossibleValidNumber(Cep?.Replace(".","").Replace("-",""), nameof(Cep));
+        DomainValidation.PossibleValidCep(Cep?.Replace(".","").Replace("-",""));
         DomainValidation.PossibleValidUF(Estado, nameof(Estado));
     }
 }

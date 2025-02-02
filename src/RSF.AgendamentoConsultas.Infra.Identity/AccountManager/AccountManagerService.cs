@@ -6,13 +6,13 @@ using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using RSF.AgendamentoConsultas.Core.Domain.Entities;
-using RSF.AgendamentoConsultas.Core.Domain.Interfaces.Services;
 using RSF.AgendamentoConsultas.Core.Domain.Models;
+using RSF.AgendamentoConsultas.Core.Domain.Interfaces.Services;
+using RSF.AgendamentoConsultas.Core.Domain.Interfaces.Repositories;
 using RSF.AgendamentoConsultas.CrossCutting.Shareable.Enums;
 using RSF.AgendamentoConsultas.CrossCutting.Shareable.Exceptions;
 using RSF.AgendamentoConsultas.CrossCutting.Shareable.Helpers;
 using RSF.AgendamentoConsultas.Infra.Identity.Exceptions;
-using RSF.AgendamentoConsultas.Core.Domain.Interfaces.Repositories;
 
 namespace RSF.AgendamentoConsultas.Infra.Identity.AccountManager;
 
@@ -117,16 +117,7 @@ public class AccountManagerService : IAccountManagerService
         var user = await _userManager.FindByEmailAsync(email);
         AlreadyExistsException.ThrowIfExists(user, "Usuário já cadastrado");
 
-        var newUser = new ApplicationUser
-        {
-            NomeCompleto = nomeCompleto,
-            UserName = username,
-            Documento = documento,
-            Email = email,
-            Genero = genero,
-            PhoneNumber = telefone.RemoverFormatacaoSomenteNumeros(),
-            IsActive = true
-        };
+        var newUser = new ApplicationUser(nomeCompleto, username, documento, email, genero, telefone.RemoverFormatacaoSomenteNumeros());
 
         var result = await _userManager.CreateAsync(newUser, password);
         if (result.Succeeded)
