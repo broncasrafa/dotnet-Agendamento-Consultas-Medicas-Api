@@ -13,6 +13,10 @@ public class ApplicationUser : IdentityUser
     public DateTime? CreatedAt { get; set; } = DateTime.Now;
     public DateTime? UpdatedAt { get; set; }
 
+    public ApplicationUser()
+    {        
+    }
+
     public ApplicationUser(string nomeCompleto, string username, string documento, string email, string genero, string telefone)
     {
         NomeCompleto = nomeCompleto;

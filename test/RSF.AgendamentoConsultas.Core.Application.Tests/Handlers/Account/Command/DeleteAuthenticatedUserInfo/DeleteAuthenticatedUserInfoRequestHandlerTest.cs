@@ -5,12 +5,12 @@ using RSF.AgendamentoConsultas.Core.Domain.Interfaces.Services;
 using RSF.AgendamentoConsultas.Core.Domain.MessageBus.Bus;
 using RSF.AgendamentoConsultas.Core.Domain.MessageBus.Events;
 using RSF.AgendamentoConsultas.Core.Domain.Interfaces.Repositories;
+using RSF.AgendamentoConsultas.Core.Domain.Entities;
 using RSF.AgendamentoConsultas.CrossCutting.Shareable.Exceptions;
 using RSF.AgendamentoConsultas.Core.Application.Tests.Base;
 using RSF.AgendamentoConsultas.Core.Application.Features.Account.Command.DeleteAuthenticatedUserInfo;
 using Moq;
 using FluentAssertions;
-using RSF.AgendamentoConsultas.Core.Domain.Entities;
 
 namespace RSF.AgendamentoConsultas.Core.Application.Tests.Handlers.Account.Command.DeleteAuthenticatedUserInfo;
 

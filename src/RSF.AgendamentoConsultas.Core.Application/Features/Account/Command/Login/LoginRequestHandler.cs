@@ -1,5 +1,6 @@
 ﻿using RSF.AgendamentoConsultas.Core.Domain.Interfaces.Services;
 using RSF.AgendamentoConsultas.Core.Application.Features.Account.Responses;
+using RSF.AgendamentoConsultas.CrossCutting.Shareable.Exceptions;
 using MediatR;
 using OperationResult;
 
@@ -17,6 +18,10 @@ public class LoginRequestHandler : IRequestHandler<LoginRequest, Result<Authenti
 
         var response = new AuthenticatedUserResponse(new Credentials(usuarioAutenticado.Token), usuario: usuarioAutenticado);
 
-        return await Task.FromResult(response);
+        //return await Task.FromResult(response);
+
+        return !string.IsNullOrWhiteSpace(response.Credentials.Token) 
+            ? Result.Success(response)
+            : Result.Error<AuthenticatedUserResponse>(new OperationErrorException("Falha ao realizar o login do usuário."));
     }
 }
