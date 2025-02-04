@@ -39,7 +39,7 @@ public class DeleteAuthenticatedUserInfoRequestHandler : IRequestHandler<DeleteA
     public async Task<Result<bool>> Handle(DeleteAuthenticatedUserInfoRequest request, CancellationToken cancellationToken)
     {
         var authenticatedUser = _httpContext.HttpContext.User;
-        UnauthorizedRequestException.ThrowIfNull(authenticatedUser, "Usuário não está autenticado na plataforma");
+        UnauthorizedRequestException.ThrowIfNotAuthenticated(authenticatedUser.Identity!.IsAuthenticated, "Usuário não está autenticado na plataforma");
 
         var user = await _accountManagerService.GetUserAsync(authenticatedUser);
         NotFoundException.ThrowIfNull(user, "Usuário não está autenticado na plataforma");

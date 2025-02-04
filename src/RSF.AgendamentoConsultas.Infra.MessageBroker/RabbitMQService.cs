@@ -41,32 +41,4 @@ public sealed class RabbitMQService : IEventBus
             _logger.LogError(ex, "Error while publishing message.");
         }
     }
-
-    //public void Subscribe(string queueName, Func<string, Task> onMessageReceived)
-    //{
-    //    _logger.LogInformation("Subscribed to queue {QueueName}", queueName);
-
-    //    _channel.QueueDeclare(queue: queueName, durable: true, exclusive: false, autoDelete: false, arguments: null);
-
-    //    var consumer = new EventingBasicConsumer(_channel);
-    //    consumer.Received += async (model, ea) =>
-    //    {
-    //        var body = ea.Body.ToArray();
-    //        var message = Encoding.UTF8.GetString(body);
-
-    //        _logger.LogInformation("Message received: {Message}", message);
-
-    //        try
-    //        {
-    //            await onMessageReceived(message);
-    //            _channel.BasicAck(ea.DeliveryTag, false);
-    //        }
-    //        catch (Exception ex)
-    //        {
-    //            _logger.LogError(ex, "Error while processing message from queue {QueueName}", queueName);
-    //        }
-    //    };
-
-    //    _channel.BasicConsume(queue: queueName, autoAck: false, consumer: consumer);
-    //}
 }

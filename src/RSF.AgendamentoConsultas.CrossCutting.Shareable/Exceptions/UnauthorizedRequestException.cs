@@ -12,9 +12,9 @@ public class UnauthorizedRequestException(string message, HttpStatusCode statusC
             throw new UnauthorizedRequestException(exceptionMessage);
     }
 
-    public static void ThrowIfNotAuthenticated(bool isAuthenticated, string exceptionMessage)
+    public static void ThrowIfNotAuthenticated(bool? isAuthenticated, string exceptionMessage)
     {
-        if (!isAuthenticated)
+        if (isAuthenticated is null || !isAuthenticated.Value)
             throw new UnauthorizedRequestException(exceptionMessage);
     }
 }

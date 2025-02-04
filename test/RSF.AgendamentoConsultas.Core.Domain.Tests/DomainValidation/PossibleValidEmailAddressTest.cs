@@ -13,6 +13,7 @@ public class PossibleValidEmailAddressTest
     [InlineData("usuario@exemplo.com")]
     [InlineData("email.valido+teste@dominio.net")]
     [InlineData("nome.sobrenome@empresa.org")]
+    [InlineData("teste@teste")]
     public void PossibleValidEmailAddress_ShouldNotThrowException_WhenEmailAddressIsValid(string value)
     {
         // Act & Assert
