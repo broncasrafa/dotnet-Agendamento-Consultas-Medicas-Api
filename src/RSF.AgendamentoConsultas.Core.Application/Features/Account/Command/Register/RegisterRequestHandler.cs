@@ -42,6 +42,9 @@ public class RegisterRequestHandler: IRequestHandler<RegisterRequest, Result<Aut
 
         var response = new AuthenticatedUserResponse(usuario: result);
 
-        return await Task.FromResult(response);
+        //return await Task.FromResult(response);
+        return response.Usuario is not null
+            ? Result.Success(response)
+            : Result.Error<AuthenticatedUserResponse>(new OperationErrorException("Falha ao realizar o registro do novo usuário."));
     }
 }

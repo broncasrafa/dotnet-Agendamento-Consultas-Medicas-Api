@@ -25,7 +25,7 @@ public class ChangePasswordRequestValidatorTest
     [InlineData("No@1", "SenhaAntiga@123", "Senha deve ter pelo menos 5 caracteres")]
     [InlineData("novasenha@123", "SenhaAntiga@123", "Senha deve ter pelo menos 1 letra maiuscula")]
     [InlineData("NOVASENHA@123", "SenhaAntiga@123", "Senha deve ter pelo menos 1 letra minuscula")]
-    [InlineData("NovaSenha@@teste", "SenhaAntiga@123", "Senha deve ter pelo menos 1 number")]
+    [InlineData("NovaSenha@@teste", "SenhaAntiga@123", "Senha deve ter pelo menos 1 número")]
     [InlineData("NovaSenha123", "SenhaAntiga@123", "Senha deve ter pelo menos 1 caracter especial")]
     public void Validate_ShouldHaveErrors_When_FieldsAreInvalids(string newPassword, string oldPassword, string expectedMessage)
     {
