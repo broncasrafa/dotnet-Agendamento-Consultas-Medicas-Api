@@ -46,27 +46,32 @@ public class RegisterEspecialistaRequestHandler: IRequestHandler<RegisterEspecia
 
         var newUser = await _accountManagerService.RegisterAsync(request.NomeCompleto, request.Licenca, request.Username, request.Email, request.Telefone, request.Genero, request.Password, ETipoPerfilAcesso.Profissional);
 
-        var newEspecialista = new Domain.Entities.Especialista(
+        if (newUser is not null)
+        {
+            var newEspecialista = new Domain.Entities.Especialista(
             userId: newUser.Id,
-            nome: request.NomeCompleto, 
-            licenca: request.Licenca, 
-            email: request.Email, 
+            nome: request.NomeCompleto,
+            licenca: request.Licenca,
+            email: request.Email,
             genero: request.Genero,
             tipo: request.TipoCategoria);
 
-        newEspecialista.AddNovaEspecialidade(especialidade, "Principal");
+            newEspecialista.AddNovaEspecialidade(especialidade, "Principal");
 
-        await _especialistaRepository.AddAsync(newEspecialista);
+            await _especialistaRepository.AddAsync(newEspecialista);
 
-        var code = await _accountManagerService.GetEmailConfirmationTokenAsync(request.Email);
+            var code = await _accountManagerService.GetEmailConfirmationTokenAsync(request.Email);
 
-        if (!string.IsNullOrWhiteSpace(code))
-        {
-            var @event = new EmailConfirmationCreatedEvent(usuario: newUser, code);
-            _eventBus.Publish(@event, _configuration.GetSection("RabbitMQ:EmailConfirmationQueueName").Value);
-        }
+            if (!string.IsNullOrWhiteSpace(code))
+            {
+                var @event = new EmailConfirmationCreatedEvent(usuario: newUser, code);
+                _eventBus.Publish(@event, _configuration.GetSection("RabbitMQ:EmailConfirmationQueueName").Value);
+            }
 
-        var response = new AuthenticatedUserResponse(usuario: newUser);
-        return await Task.FromResult(response);
+            var response = new AuthenticatedUserResponse(usuario: newUser);
+            return Result.Success(response);
+        }        
+
+        return Result.Error<AuthenticatedUserResponse>(new OperationErrorException("Falha ao realizar o registro do novo usuário."));
     }
 }

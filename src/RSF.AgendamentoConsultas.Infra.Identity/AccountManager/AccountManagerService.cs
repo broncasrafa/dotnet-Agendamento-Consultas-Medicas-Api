@@ -127,7 +127,9 @@ public class AccountManagerService : IAccountManagerService
             return UsuarioAutenticadoModel.MapFromEntity(newUser);
         }
 
-        throw new InvalidOperationException($"Erro ao criar usuário: {string.Join(", ", result.Errors.Select(x => x.Description))}");
+        _logger.LogError($"Erro ao criar usuário: {string.Join(", ", result.Errors.Select(x => x.Description))}");
+        
+        return default!;
     }
 
     public async Task<bool> ConfirmEmailAsync(string userId, string code)

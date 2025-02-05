@@ -11,7 +11,7 @@ using OperationResult;
 
 namespace RSF.AgendamentoConsultas.Core.Application.Features.Account.Command.RegisterPaciente;
 
-public class RegisterPacienteRequestHandler: IRequestHandler<RegisterPacienteRequest, Result<AuthenticatedUserResponse>>
+public class RegisterPacienteRequestHandler : IRequestHandler<RegisterPacienteRequest, Result<AuthenticatedUserResponse>>
 {
     private readonly IAccountManagerService _accountManagerService;
     private readonly IPacienteRepository _pacienteRepository;
@@ -40,7 +40,9 @@ public class RegisterPacienteRequestHandler: IRequestHandler<RegisterPacienteReq
 
         var newUser = await _accountManagerService.RegisterAsync(request.NomeCompleto, request.CPF, request.Username, request.Email, request.Telefone, request.Genero, request.Password, ETipoPerfilAcesso.Paciente);
 
-        var newPaciente = new Domain.Entities.Paciente(
+        if (newUser is not null)
+        {
+            var newPaciente = new Domain.Entities.Paciente(
             userId: newUser.Id,
             nome: request.NomeCompleto,
             cpf: request.CPF,
@@ -48,19 +50,22 @@ public class RegisterPacienteRequestHandler: IRequestHandler<RegisterPacienteReq
             telefone: request.Telefone,
             genero: request.Genero,
             dataNascimento: request.DataNascimento.ToString("yyyy-MM-dd"),
-            termoUsoAceito: true
-        );
-        await _pacienteRepository.AddAsync(newPaciente);
+            termoUsoAceito: true);
 
-        var code = await _accountManagerService.GetEmailConfirmationTokenAsync(request.Email);
+            await _pacienteRepository.AddAsync(newPaciente);
 
-        if (!string.IsNullOrWhiteSpace(code))
-        {
-            var @event = new EmailConfirmationCreatedEvent(usuario: newUser, code);
-            _eventBus.Publish(@event, _configuration.GetSection("RabbitMQ:EmailConfirmationQueueName").Value);
+            var code = await _accountManagerService.GetEmailConfirmationTokenAsync(request.Email);
+
+            if (!string.IsNullOrWhiteSpace(code))
+            {
+                var @event = new EmailConfirmationCreatedEvent(usuario: newUser, code);
+                _eventBus.Publish(@event, _configuration.GetSection("RabbitMQ:EmailConfirmationQueueName").Value);
+            }
+
+            var response = new AuthenticatedUserResponse(usuario: newUser);
+            return Result.Success(response);
         }
 
-        var response = new AuthenticatedUserResponse(usuario: newUser);
-        return await Task.FromResult(response);
+        return Result.Error<AuthenticatedUserResponse>(new OperationErrorException("Falha ao realizar o registro do novo usuário."));
     }
 }

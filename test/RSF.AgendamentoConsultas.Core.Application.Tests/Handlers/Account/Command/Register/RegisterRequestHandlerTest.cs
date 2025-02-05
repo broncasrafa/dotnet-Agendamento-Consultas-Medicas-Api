@@ -19,7 +19,6 @@ public class RegisterRequestHandlerTest : IClassFixture<BaseFixture>
 {
     private readonly Mock<IAccountManagerService> _accountManagerServiceMock;
     private readonly Mock<IEventBus> _eventBusMock;
-    //private readonly Mock<IConfiguration> _configurationMock;
     private readonly BaseFixture _fixture;
     private readonly RegisterRequestHandler _handler;
 

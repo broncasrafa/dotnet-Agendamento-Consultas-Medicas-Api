@@ -27,6 +27,18 @@ public class Especialidade
 
         Validate();
     }
+    public Especialidade(int especialidadeId, string nome, string nomePlural, int especialidadeGrupoId)
+    {
+        EspecialidadeId = especialidadeId;
+        Nome = nome;
+        NomePlural = nomePlural;
+        Term = Utilitarios.GenerateSlugifyString(nome);
+        Code = Utilitarios.GenerateSlugifyString(nome);
+        CodeOld = Utilitarios.GenerateSlugifyString(nome);
+        EspecialidadeGrupoId = especialidadeGrupoId;
+
+        Validate();
+    }
 
     public void Update(string nome, string nomePlural, int especialidadeGrupoId)
     {

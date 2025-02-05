@@ -13,5 +13,5 @@ public static class DateOfBirthValidator
     }
 
     private static bool BeAValidDate(DateTime date)
-        => date != default(DateTime);
+        => date != default(DateTime) && date.Year > 1900;
 }
