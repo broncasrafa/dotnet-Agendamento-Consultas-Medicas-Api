@@ -15,7 +15,7 @@ public class ResetPasswordRequestHandler : IRequestHandler<ResetPasswordRequest,
     private readonly IConfiguration _configuration;
     private readonly IAccountManagerService _accountManagerService;
 
-    public ResetPasswordRequestHandler(IEventBus eventBus, IConfiguration configuration, IAccountManagerService accountManagerService)
+    public ResetPasswordRequestHandler(IAccountManagerService accountManagerService, IEventBus eventBus, IConfiguration configuration)
     {
         _eventBus = eventBus;
         _configuration = configuration;
@@ -33,8 +33,10 @@ public class ResetPasswordRequestHandler : IRequestHandler<ResetPasswordRequest,
         {
             var @event = new ChangePasswordCreatedEvent(usuario: UsuarioAutenticadoModel.MapFromEntity(user));
             _eventBus.Publish(@event, _configuration.GetSection("RabbitMQ:ChangePasswordQueueName").Value);
+
+            return Result.Success(result);
         }
 
-        return await Task.FromResult(result);
+        return Result.Error<bool>(new OperationErrorException("Falha ao resetar a senha do usuário."));
     }
 }
