@@ -31,7 +31,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="Handlers\Account\Command\UpdateAuthenticatedUserInfo\" />
 	  <Folder Include="Handlers\Agendamento\Command\" />
 	  <Folder Include="Handlers\Agendamento\Query\" />
 	</ItemGroup>

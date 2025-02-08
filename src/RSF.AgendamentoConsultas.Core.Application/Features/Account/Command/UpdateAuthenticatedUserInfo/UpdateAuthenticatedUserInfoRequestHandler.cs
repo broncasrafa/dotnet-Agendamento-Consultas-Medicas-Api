@@ -40,7 +40,7 @@ public class UpdateAuthenticatedUserInfoRequestHandler : IRequestHandler<UpdateA
     public async Task<Result<bool>> Handle(UpdateAuthenticatedUserInfoRequest request, CancellationToken cancellationToken)
     {
         var authenticatedUser = _httpContext.HttpContext.User;
-        UnauthorizedRequestException.ThrowIfNull(authenticatedUser, "Usuário não está autenticado na plataforma");
+        UnauthorizedRequestException.ThrowIfNotAuthenticated(authenticatedUser.Identity!.IsAuthenticated, "Usuário não está autenticado na plataforma");
 
         var user = await _accountManagerService.GetUserAsync(authenticatedUser);
         NotFoundException.ThrowIfNull(user, "Usuário não está autenticado na plataforma");
@@ -106,10 +106,10 @@ public class UpdateAuthenticatedUserInfoRequestHandler : IRequestHandler<UpdateA
                 }
             }
             #endregion
+
+            return Result.Success(true);
         }
 
-        return response
-            ? Result.Success(true)
-            : Result.Error<bool>(new OperationErrorException("Falha ao atualizar os dados do usuário."));
+        return Result.Error<bool>(new OperationErrorException("Falha ao atualizar os dados do usuário."));
     }
 }
