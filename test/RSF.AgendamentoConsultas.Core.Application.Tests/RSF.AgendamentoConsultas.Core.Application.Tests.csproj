@@ -30,9 +30,4 @@
 		<Using Include="Xunit" />
 	</ItemGroup>
 
-	<ItemGroup>
-	  <Folder Include="Handlers\Agendamento\Command\" />
-	  <Folder Include="Handlers\Agendamento\Query\" />
-	</ItemGroup>
-
 </Project>

@@ -145,7 +145,7 @@ dotnet_diagnostic.CA1062.severity = none
 dotnet_diagnostic.CA1303.severity = none
 
 # CA1304: Especificar CultureInfo
-dotnet_diagnostic.CA1304.severity = suggestion
+dotnet_diagnostic.CA1304.severity = none
 
 # CA1305: Especificar IFormatProvider
 dotnet_diagnostic.CA1305.severity = none
@@ -160,7 +160,10 @@ dotnet_diagnostic.CA1309.severity = suggestion
 dotnet_diagnostic.CA1310.severity = none
 
 # CA1311: Especificar uma cultura ou usar uma versão invariável
-dotnet_diagnostic.CA1311.severity = suggestion
+dotnet_diagnostic.CA1311.severity = none
+
+# CA1508: Evitar código condicional morto
+dotnet_diagnostic.CA1508.severity = none
 
 # CA1515: Considere tornar os tipos públicos internos
 dotnet_diagnostic.CA1515.severity = suggestion

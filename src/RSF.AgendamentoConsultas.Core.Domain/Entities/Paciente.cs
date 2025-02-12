@@ -32,6 +32,31 @@ public class Paciente
 
     protected Paciente() { }
 
+    public Paciente(int pacienteId, string userId, string nome, string cpf, string email, string telefone, string genero, string dataNascimento, string nomeSocial = null, decimal? peso = null, decimal? altura = null, bool? telefoneVerificado = null, bool? emailVerificado = null, bool? termoUsoAceito = null)
+    {
+        DomainValidation.IdentifierGreaterThanZero(pacienteId, nameof(PacienteId));
+
+        PacienteId = pacienteId;
+        UserId = userId;
+        Nome = nome;
+        CPF = cpf.RemoverFormatacaoSomenteNumeros();
+        Email = email;
+        Telefone = telefone.RemoverFormatacaoSomenteNumeros();
+        Genero = genero;
+        DataNascimento = dataNascimento;
+        NomeSocial = nomeSocial;
+        Peso = peso;
+        Altura = altura;
+        TelefoneVerificado = telefoneVerificado ?? false;
+        EmailVerificado = emailVerificado ?? false;
+        TermoUsoAceito = termoUsoAceito ?? false;
+        CreatedAt = DateTime.Now;
+        Ativo = true;
+
+        Validate();
+    }
+
+
     public Paciente(string userId, string nome, string cpf, string email, string telefone, string genero, string dataNascimento, string nomeSocial = null, decimal? peso = null, decimal? altura = null, bool? telefoneVerificado = null, bool? emailVerificado = null, bool? termoUsoAceito = null)
     {
         UserId = userId;

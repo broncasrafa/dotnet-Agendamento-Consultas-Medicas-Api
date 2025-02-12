@@ -19,6 +19,20 @@ public class PacientePlanoMedico
     {        
     }
 
+    public PacientePlanoMedico(int id, string nomePlano, string numCartao, int pacienteId, int convenioMedicoId)
+    {
+        DomainValidation.IdentifierGreaterThanZero(id, nameof(PlanoMedicoId));
+
+        PlanoMedicoId = id;
+        NomePlano = nomePlano;
+        NumCartao = numCartao;
+        PacienteId = pacienteId;
+        ConvenioMedicoId = convenioMedicoId;
+        Ativo = true;
+
+        Validate();
+    }
+
     public PacientePlanoMedico(string nomePlano, string numCartao, int pacienteId, int convenioMedicoId)
     {
         NomePlano = nomePlano;

@@ -27,6 +27,28 @@ public class EspecialistaLocalAtendimento
     {        
     }
 
+    public EspecialistaLocalAtendimento(int id, int especialistaId, string nome, string logradouro, string complemento, string bairro, string cep, string cidade, string estado, decimal? preco, string tipoAtendimento, string telefone, string whatsapp)
+    {
+        DomainValidation.IdentifierGreaterThanZero(id, nameof(Id));
+
+        Id = id;
+        EspecialistaId = especialistaId;
+        Nome = nome;
+        Logradouro = logradouro;
+        Complemento = complemento;
+        Bairro = bairro;
+        Cep = cep;
+        Cidade = cidade;
+        Estado = estado;
+        Preco = preco;
+        PrecoDescricao = Utilitarios.ConverterMoedaParaExtenso(Preco);
+        TipoAtendimento = tipoAtendimento;
+        Telefone = telefone;
+        Whatsapp = whatsapp;
+
+        Validate();
+    }
+
     public EspecialistaLocalAtendimento(int especialistaId, string nome, string logradouro, string complemento, string bairro, string cep, string cidade, string estado, decimal? preco, string tipoAtendimento, string telefone, string whatsapp)
     {
         EspecialistaId = especialistaId;

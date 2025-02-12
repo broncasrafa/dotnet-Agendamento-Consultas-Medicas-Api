@@ -40,6 +40,44 @@ public class Especialista
     {        
     }
 
+    public Especialista(int especialistaId, string userId, string nome, string licenca, string email, string genero,
+        string? tipo = null,
+        string? foto = null,
+        bool? agendaOnline = null,
+        bool? telemedicinaOnline = null,
+        bool? telemedicinaAtivo = null,
+        decimal? telemedicinaPrecoNumber = null,
+        string? experienciaProfissional = null,
+        string? formacaoAcademica = null)
+    {
+        DomainValidation.IdentifierGreaterThanZero(especialistaId, nameof(EspecialistaId));
+
+        EspecialistaId = especialistaId;
+        UserId = userId;
+        Tipo = tipo;
+        Code = Utilitarios.GenerateSlugifyString(nome);
+        CodeId = Guid.NewGuid().ToString();
+        EspecCodeId = $"{Code}-{CodeId}";
+        Nome = nome;
+        Licenca = licenca;
+        Email = email;
+        Genero = (string.IsNullOrWhiteSpace(genero) || genero == "Não informado") ? "Não informado" : genero;
+        Tratamento = (genero == "Não informado") ? "Não informado" : (Genero == "Masculino" ? "Dr." : "Dra.");
+        Foto = SetFoto(foto);
+        Ativo = true;
+        AgendaOnline = agendaOnline ?? false;
+        PerfilVerificado = true;
+        PermitirPergunta = true;
+        TelemedicinaOnline = telemedicinaOnline ?? false;
+        TelemedicinaAtivo = telemedicinaAtivo ?? false;
+        TelemedicinaPrecoNumber = telemedicinaPrecoNumber;
+        TelemedicinaPreco = Utilitarios.ConverterMoedaParaExtenso(telemedicinaPrecoNumber);
+        ExperienciaProfissional = experienciaProfissional;
+        FormacaoAcademica = formacaoAcademica;
+
+        Validate();
+    }
+
     public Especialista(string userId, string nome, string licenca, string email, string genero,
         string? tipo = null,
         string? foto = null, 

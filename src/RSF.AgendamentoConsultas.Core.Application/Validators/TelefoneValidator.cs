@@ -12,9 +12,16 @@ public static class TelefoneValidator
             .Must(DeveTerNumerosTamanhosValidos).WithMessage("O telefone deve ter 10 dígitos para fixo ou 11 dígitos para celular.")
             .Must(NaoDeveTerNumerosConsecutivosIguais).WithMessage("O telefone não deve ter somente números consecutivos iguais");
 
-    private static bool NaoDeveTerNumerosConsecutivosIguais(string numeroTelefone) 
-        => numeroTelefone.RemoverFormatacaoSomenteNumeros().Distinct().Count() > 1;
+    private static bool NaoDeveTerNumerosConsecutivosIguais(string numeroTelefone)
+    {
+        if (numeroTelefone.RemoverFormatacaoSomenteNumeros() is null) return false;
+        return numeroTelefone.RemoverFormatacaoSomenteNumeros().Distinct().Count() > 1;
+    }
 
     private static bool DeveTerNumerosTamanhosValidos(string numeroTelefone)
-        => numeroTelefone.RemoverFormatacaoSomenteNumeros().Length == 10 || numeroTelefone.RemoverFormatacaoSomenteNumeros().Length == 11;
+    {
+        if (numeroTelefone.RemoverFormatacaoSomenteNumeros() is null) return false;
+
+        return numeroTelefone.RemoverFormatacaoSomenteNumeros().Length == 10 || numeroTelefone.RemoverFormatacaoSomenteNumeros().Length == 11;
+    } 
 }

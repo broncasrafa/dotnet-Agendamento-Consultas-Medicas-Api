@@ -1,10 +1,9 @@
 ﻿using Microsoft.Extensions.Configuration;
 using RSF.AgendamentoConsultas.Core.Domain.MessageBus.Bus;
-using RSF.AgendamentoConsultas.Core.Domain.MessageBus.Events;
+using RSF.AgendamentoConsultas.Core.Domain.Interfaces.Repositories;
 using RSF.AgendamentoConsultas.CrossCutting.Shareable.Exceptions;
 using MediatR;
 using OperationResult;
-using RSF.AgendamentoConsultas.Core.Domain.Interfaces.Repositories;
 
 
 namespace RSF.AgendamentoConsultas.Core.Application.Features.Agendamento.Command.ConfirmAgendamentoByPaciente;
@@ -31,7 +30,7 @@ public class ConfirmAgendamentoByPacienteRequestHandler : IRequestHandler<Confir
         NotFoundException.ThrowIfNull(agendamento, $"Agendamento com o ID: '{request.AgendamentoId}' não foi encontrado");
 
         var paciente = agendamento.Paciente;
-        var isCurrentPaciente = paciente.PacienteId == request.PacienteId;
+        var isCurrentPaciente = paciente?.PacienteId == request.PacienteId;
         NotFoundException.ThrowIfNull(!isCurrentPaciente ? null : paciente, $"Paciente com o ID: '{request.PacienteId}' não pertence ao Agendamento com o ID: '{request.AgendamentoId}'");
 
         agendamento.ConfirmarPaciente();

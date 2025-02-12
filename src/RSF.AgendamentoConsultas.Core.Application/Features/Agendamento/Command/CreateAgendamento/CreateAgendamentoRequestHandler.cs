@@ -2,11 +2,11 @@
 using RSF.AgendamentoConsultas.Core.Domain.Entities;
 using RSF.AgendamentoConsultas.Core.Domain.MessageBus.Bus;
 using RSF.AgendamentoConsultas.Core.Domain.MessageBus.Events;
+using RSF.AgendamentoConsultas.Core.Domain.Interfaces.Repositories.Common;
+using RSF.AgendamentoConsultas.Core.Domain.Interfaces.Repositories;
 using RSF.AgendamentoConsultas.CrossCutting.Shareable.Exceptions;
 using MediatR;
 using OperationResult;
-using RSF.AgendamentoConsultas.Core.Domain.Interfaces.Repositories.Common;
-using RSF.AgendamentoConsultas.Core.Domain.Interfaces.Repositories;
 
 namespace RSF.AgendamentoConsultas.Core.Application.Features.Agendamento.Command.CreateAgendamento;
 

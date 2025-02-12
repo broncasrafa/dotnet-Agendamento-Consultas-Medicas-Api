@@ -30,7 +30,7 @@ public class ConfirmAgendamentoByEspecialistaRequestHandler : IRequestHandler<Co
         NotFoundException.ThrowIfNull(agendamento, $"Agendamento com o ID: '{request.AgendamentoId}' não foi encontrado");
 
         var especialista = agendamento.Especialista;
-        var isCurrentEspecialista = especialista.EspecialistaId == request.EspecialistaId;
+        var isCurrentEspecialista = especialista?.EspecialistaId == request.EspecialistaId;
         NotFoundException.ThrowIfNull(!isCurrentEspecialista ? null : especialista, $"Especialista com o ID: '{request.EspecialistaId}' não pertence ao Agendamento com o ID: '{request.AgendamentoId}'");
 
         agendamento.ConfirmarProfissional();

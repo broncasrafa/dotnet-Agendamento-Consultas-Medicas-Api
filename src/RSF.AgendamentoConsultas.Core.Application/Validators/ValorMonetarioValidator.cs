@@ -1,4 +1,9 @@
-﻿using FluentValidation;
+﻿using System.Globalization;
+using System.Text.RegularExpressions;
+
+using FluentValidation;
+
+using RSF.AgendamentoConsultas.CrossCutting.Shareable.Helpers;
 
 namespace RSF.AgendamentoConsultas.Core.Application.Validators;
 
@@ -9,16 +14,13 @@ public static class ValorMonetarioValidator
         return builder
             .Must(valor => !valor.HasValue || valor > 0)
                 .WithMessage($"O {field} deve ser maior que zero.")
-            .Must(valor => !valor.HasValue || DecimalPlaces(valor.Value) <= 2)
+            .Must(valor => !valor.HasValue || IsValidDecimalFormat(valor.Value))
                 .WithMessage($"O {field} deve ter no máximo duas casas decimais.");
     }
 
-    private static int DecimalPlaces(decimal value)
+    private static bool IsValidDecimalFormat(decimal value)
     {
-        // Calcula corretamente as casas decimais sem arredondamento
-        var decimalPart = value - Math.Truncate(value); // Obtém a parte decimal exata
-        var decimalString = decimalPart.ToString("G29").TrimEnd('0'); // Remove trailing zeros
-        return decimalString.Contains('.') ? decimalString.Split('.')[1].Length : 0;
+        return Utilitarios.IsCurrencyValid(value, 2, false);
     }
 }
 /*

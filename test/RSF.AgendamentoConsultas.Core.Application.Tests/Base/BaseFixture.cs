@@ -1,5 +1,6 @@
 ﻿using System.Security.Claims;
 using System.IdentityModel.Tokens.Jwt;
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using RSF.AgendamentoConsultas.CrossCutting.Shareable.Enums;
@@ -12,6 +13,7 @@ using Moq;
 
 namespace RSF.AgendamentoConsultas.Core.Application.Tests.Base;
 
+[ExcludeFromCodeCoverage]
 public class BaseFixture
 {
     public Faker Faker { get; }

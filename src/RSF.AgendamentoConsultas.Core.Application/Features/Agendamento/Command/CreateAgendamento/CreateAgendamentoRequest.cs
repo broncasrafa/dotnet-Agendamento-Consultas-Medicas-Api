@@ -1,5 +1,4 @@
 ﻿using MediatR;
-
 using OperationResult;
 
 namespace RSF.AgendamentoConsultas.Core.Application.Features.Agendamento.Command.CreateAgendamento;
@@ -18,6 +17,4 @@ public record CreateAgendamentoRequest(
     bool PrimeiraVez,
     int PacienteId,
     int? DependenteId,
-    int PlanoMedicoId
-
-    ) : IRequest<Result<int>>;
+    int PlanoMedicoId) : IRequest<Result<int>>;
