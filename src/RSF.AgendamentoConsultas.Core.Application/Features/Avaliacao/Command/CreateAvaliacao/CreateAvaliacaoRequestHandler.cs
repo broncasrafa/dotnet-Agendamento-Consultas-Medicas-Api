@@ -37,7 +37,7 @@ public class CreateAvaliacaoRequestHandler : IRequestHandler<CreateAvaliacaoRequ
         if (request.TagId.HasValue)
         {
             var tag = await _tagsRepository.GetByIdAsync(request.TagId.Value);
-            NotFoundException.ThrowIfNull(paciente, $"Tag com o ID: '{request.TagId.Value}' não foi encontrada");
+            NotFoundException.ThrowIfNull(tag, $"Tag com o ID: '{request.TagId.Value}' não foi encontrada");
         }        
 
         var avaliacao = new EspecialistaAvaliacao(request.EspecialistaId, request.PacienteId, request.Feedback, request.Score, request.TagId);

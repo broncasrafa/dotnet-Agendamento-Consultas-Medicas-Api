@@ -9,6 +9,17 @@ public class Tags
     public string Descricao { get; private set; }
     public string Code { get; private set; }
 
+    public Tags(int id, string descricao)
+    {
+        DomainValidation.IdentifierGreaterThanZero(id, nameof(TagId));
+
+        TagId = id;
+        Descricao = descricao;
+        Code = Utilitarios.GenerateSlugifyString(descricao);
+
+        Validate();
+    }
+
     public Tags(string descricao)
     {
         Descricao = descricao;
