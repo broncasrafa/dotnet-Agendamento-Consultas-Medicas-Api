@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using RSF.AgendamentoConsultas.Api.Models;
 using RSF.AgendamentoConsultas.Api.Extensions;
-using RSF.AgendamentoConsultas.Core.Application.Features.Tags.GetAll;
-using RSF.AgendamentoConsultas.Core.Application.Features.Tags.GetById;
+using RSF.AgendamentoConsultas.Core.Application.Features.Tags.Query.GetAll;
+using RSF.AgendamentoConsultas.Core.Application.Features.Tags.Query.GetById;
 using RSF.AgendamentoConsultas.Core.Application.Features.Tags.Responses;
 using MediatR;
 
