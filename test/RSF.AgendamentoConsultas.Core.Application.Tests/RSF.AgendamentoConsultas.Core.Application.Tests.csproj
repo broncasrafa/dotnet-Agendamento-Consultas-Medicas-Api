@@ -30,8 +30,4 @@
 		<Using Include="Xunit" />
 	</ItemGroup>
 
-	<ItemGroup>
-	  <Folder Include="Handlers\Avaliacao\Query\GetAvaliacaoById\" />
-	</ItemGroup>
-
 </Project>

@@ -20,6 +20,20 @@ public class EspecialistaAvaliacao
     {        
     }
 
+    public EspecialistaAvaliacao(int id, int especialistaId, int pacienteId, string feedback, int score, int? tagId)
+    {
+        DomainValidation.IdentifierGreaterThanZero(id, nameof(Id));
+
+        Id = id;
+        EspecialistaId = especialistaId;
+        PacienteId = pacienteId;
+        Feedback = feedback;
+        Score = score;
+        TagId = tagId;
+        CreatedAt = DateTime.Now;
+        Validate(especialistaId, pacienteId, feedback, tagId);
+    }
+
     public EspecialistaAvaliacao(int especialistaId, int pacienteId, string feedback, int score, int? tagId)
     {
         EspecialistaId = especialistaId;
@@ -28,7 +42,11 @@ public class EspecialistaAvaliacao
         Score = score;
         TagId = tagId;
         CreatedAt = DateTime.Now;
+        Validate(especialistaId, pacienteId, feedback, tagId);
+    }
 
+    private void Validate(int especialistaId, int pacienteId, string feedback, int? tagId)
+    {
         DomainValidation.NotNullOrEmpty(feedback, nameof(Feedback));
         DomainValidation.IdentifierGreaterThanZero(especialistaId, nameof(EspecialistaId));
         DomainValidation.IdentifierGreaterThanZero(pacienteId, nameof(PacienteId));
