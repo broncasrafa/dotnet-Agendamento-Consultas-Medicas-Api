@@ -14,13 +14,13 @@ internal static class AppConfigureExtension
 
         app.ConfigureSwaggerUI();
         app.UseHttpsRedirection();
+        app.UseCors("AllowAllPolicy");
         app.UseAuthentication();
         app.UseAuthorization();
         app.UseHealthChecks("/health");
         app.MapHealthChecks("/health");
         app.UseStaticFiles();
         app.UseExceptionHandler();
-        app.UseCors("AllowAllPolicy");
         app.MapEndpoints();
 
         app.Use(async (context, next) =>

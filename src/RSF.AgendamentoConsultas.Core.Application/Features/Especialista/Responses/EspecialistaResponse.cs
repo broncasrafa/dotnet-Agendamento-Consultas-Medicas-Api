@@ -16,7 +16,7 @@ public class EspecialistaResponse
     public bool? TelemedicinaAtivo { get; set; }
     public string TelemedicinaPreco { get; set; }
     public decimal? TelemedicinaPrecoNumber { get; set; }
-    public double? Avaliacao { get; private set; }
+    public double? Avaliacao { get; set; }
     public string ExperienciaProfissional { get; set; }
     public string FormacaoAcademica { get; set; }
     public string Genero { get; set; }

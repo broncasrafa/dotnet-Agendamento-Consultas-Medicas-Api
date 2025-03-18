@@ -1,6 +1,7 @@
 ﻿using RSF.AgendamentoConsultas.Core.Application.Features.Especialidade.Responses;
 using RSF.AgendamentoConsultas.Core.Application.Features.PerguntasRespostas.Responses;
 using RSF.AgendamentoConsultas.CrossCutting.Shareable.Helpers;
+using RSF.AgendamentoConsultas.CrossCutting.Shareable.Results;
 
 namespace RSF.AgendamentoConsultas.Core.Application.Features.Pergunta.Responses;
 
@@ -36,4 +37,13 @@ public class PerguntaResponse
 
     public static IReadOnlyList<PerguntaResponse>? MapFromEntity(IEnumerable<Domain.Entities.Pergunta> convenios)
         => convenios is null || !convenios.Any() ? null : convenios.Select(MapFromEntity).ToList();
+
+    internal static PagedResult<PerguntaResponse> MapFromEntityPaged(PagedResult<Domain.Entities.Pergunta> pagedResult, int pageNumber, int pageSize)
+    {
+        if (pagedResult.Results is null || !pagedResult.Results.Any())
+            pagedResult.Results = [];
+
+        var lista = pagedResult.Results.Select(c => MapFromEntity(c));
+        return new PagedResult<PerguntaResponse>(lista, pagedResult.Total, pageNumber, pageSize);
+    }
 }

@@ -32,7 +32,7 @@ public class LoginRequestHandlerTest : IClassFixture<BaseFixture>
         var request = new LoginRequest(Email: _fixture.Faker.Person.Email, Password: "Usuario@123");
         var authenticatedUser = new UsuarioAutenticadoModel
         {
-            Id = _fixture.UserId,
+            UserId = _fixture.UserId,
             Nome = _fixture.Faker.Person.FullName,
             Documento = _fixture.Faker.Person.Cpf(),
             Username = _fixture.Faker.Person.UserName,
@@ -50,7 +50,7 @@ public class LoginRequestHandlerTest : IClassFixture<BaseFixture>
         // Assert
         result.IsSuccess.Should().BeTrue();
         result.Value!.Credentials.Token.Should().Be(authenticatedUser.Token);
-        result.Value.Usuario.Id.Should().Be(authenticatedUser.Id);
+        result.Value.Usuario.UserId.Should().Be(authenticatedUser.UserId);
 
         _accountManagerServiceMock.Verify(x => x.LoginAsync(It.IsAny<string>(), It.IsAny<string>()), Times.Once);
     }
@@ -63,7 +63,7 @@ public class LoginRequestHandlerTest : IClassFixture<BaseFixture>
         var request = new LoginRequest(Email: _fixture.Faker.Person.Email, Password: "Usuario@123");        
         var authenticatedUser = new UsuarioAutenticadoModel
         {
-            Id = _fixture.UserId,
+            UserId = _fixture.UserId,
             Nome = _fixture.Faker.Person.FullName,
             Documento = _fixture.Faker.Person.Cpf(),
             Username = _fixture.Faker.Person.UserName,

@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using RSF.AgendamentoConsultas.Infra.Data.Context;
 using RSF.AgendamentoConsultas.CrossCutting.Shareable.Extensions;
 using RSF.AgendamentoConsultas.Core.Domain.Interfaces.Repositories.Common;
+using RSF.AgendamentoConsultas.Core.Domain.Entities;
+using RSF.AgendamentoConsultas.CrossCutting.Shareable.Results;
 
 namespace RSF.AgendamentoConsultas.Infra.Data.Repositories.Common;
 
@@ -65,4 +67,18 @@ public class BaseRepository<T> : IBaseRepository<T> where T : class
 
     public async ValueTask<int> SaveChangesAsync() 
         => await Context.SaveChangesAsync().ConfigureAwait(false);
+
+
+    public async ValueTask<PagedResult<T>> BindQueryPagedAsync(IQueryable<T> query, int pageNumber, int pageSize)
+    {
+        var totalCount = await query.CountAsync();
+
+        var paginatedData = await query
+            .Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize)
+        .ToListAsync();
+        var sql = query.ToQueryString();
+        Console.WriteLine(sql);
+        return new PagedResult<T>(data: paginatedData, totalCount: totalCount, pageSize, pageNumber);
+    }
 }

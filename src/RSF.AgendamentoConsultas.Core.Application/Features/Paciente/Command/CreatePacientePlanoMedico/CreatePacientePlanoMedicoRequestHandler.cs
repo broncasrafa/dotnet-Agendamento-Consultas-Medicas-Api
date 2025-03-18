@@ -1,10 +1,10 @@
 ﻿using RSF.AgendamentoConsultas.CrossCutting.Shareable.Exceptions;
-using RSF.AgendamentoConsultas.Core.Domain.Entities;
-using MediatR;
-using OperationResult;
 using RSF.AgendamentoConsultas.Core.Application.Features.Paciente.Responses;
+using RSF.AgendamentoConsultas.Core.Domain.Entities;
 using RSF.AgendamentoConsultas.Core.Domain.Interfaces.Repositories.Common;
 using RSF.AgendamentoConsultas.Core.Domain.Interfaces.Repositories;
+using MediatR;
+using OperationResult;
 
 namespace RSF.AgendamentoConsultas.Core.Application.Features.Paciente.Command.CreatePacientePlanoMedico;
 
@@ -35,6 +35,8 @@ public class CreatePacientePlanoMedicoRequestHandler : IRequestHandler<CreatePac
         var planoMedico = new PacientePlanoMedico(request.NomePlano, request.NumCartao, request.PacienteId, request.ConvenioMedicoId);
         
         await _pacientePlanoMedicoRepository.AddAsync(planoMedico);
+        
+        planoMedico.ConvenioMedico = convenioMedico;
 
         return await Task.FromResult(PacientePlanoMedicoResponse.MapFromEntity(planoMedico));
     }

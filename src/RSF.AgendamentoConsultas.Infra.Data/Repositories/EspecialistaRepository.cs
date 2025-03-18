@@ -5,6 +5,8 @@ using RSF.AgendamentoConsultas.Core.Domain.Entities;
 using RSF.AgendamentoConsultas.CrossCutting.Shareable.Results;
 using RSF.AgendamentoConsultas.Core.Domain.Interfaces.Repositories;
 using RSF.AgendamentoConsultas.CrossCutting.Shareable.Enums;
+using Azure.Core;
+using MediatR;
 
 namespace RSF.AgendamentoConsultas.Infra.Data.Repositories;
 
@@ -16,17 +18,17 @@ public class EspecialistaRepository : BaseRepository<Especialista>, IEspecialist
 
 
 
-    private static async ValueTask<PagedResult<Especialista>> BindQueryPagedAsync(IQueryable<Especialista> query, int pageNumber, int pageSize)
-    {
-        var totalCount = await query.CountAsync();
+    //private static async ValueTask<PagedResult<Especialista>> BindQueryPagedAsync(IQueryable<Especialista> query, int pageNumber, int pageSize)
+    //{
+    //    var totalCount = await query.CountAsync();
 
-        var paginatedData = await query
-            .Skip((pageNumber - 1) * pageSize)
-            .Take(pageSize)
-        .ToListAsync();
+    //    var paginatedData = await query
+    //        .Skip((pageNumber - 1) * pageSize)
+    //        .Take(pageSize)
+    //    .ToListAsync();
 
-        return new PagedResult<Especialista>(data: paginatedData, totalCount: totalCount, pageSize, pageNumber);
-    }
+    //    return new PagedResult<Especialista>(data: paginatedData, totalCount: totalCount, pageSize, pageNumber);
+    //}
 
 
     public async ValueTask<PagedResult<Especialista>> GetAllPagedAsync(int pageNumber = 1, int pageSize = 10)
@@ -39,6 +41,30 @@ public class EspecialistaRepository : BaseRepository<Especialista>, IEspecialist
     public async ValueTask<PagedResult<Especialista>> GetAllByNamePagedAsync(string name, int pageNumber = 1, int pageSize = 10)
     {
         var query = _Context.Especialistas.Where(c => c.Nome.Contains(name, StringComparison.InvariantCultureIgnoreCase)).AsQueryable();
+        return await BindQueryPagedAsync(query, pageNumber, pageSize);
+    }
+
+    public async ValueTask<PagedResult<Especialista>> GetAllByFiltersPagedAsync(int? especialidadeId, string cidade, int pageNumber = 1, int pageSize = 10)
+    {
+        var query = _Context.Especialistas.AsNoTracking()
+                .Include(c => c.Especialidades).ThenInclude(e => e.Especialidade).ThenInclude(g => g.EspecialidadeGrupo)
+                .Include(c => c.ConveniosMedicosAtendidos).ThenInclude(x => x.ConvenioMedico)
+                .Include(c => c.LocaisAtendimento)
+                .Include(c => c.Avaliacoes).ThenInclude(p => p.Paciente)
+                .Include(c => c.Avaliacoes).ThenInclude(t => t.Marcacao)
+                .AsQueryable();
+
+        if (especialidadeId.HasValue)
+            query = query.Where(e => e.Especialidades.Any(es => es.EspecialidadeId == especialidadeId.Value));
+
+        if (!string.IsNullOrWhiteSpace(cidade))
+        {
+            query = query.Where(e => e.LocaisAtendimento.Any(l => EF.Functions.Collate(l.Cidade, "SQL_Latin1_General_CP1_CI_AI").Contains(EF.Functions.Collate(cidade, "SQL_Latin1_General_CP1_CI_AI"))));
+        }
+
+        // 🔹 Paginação otimizada para evitar timeout
+        query = query.OrderBy(e => e.EspecialistaId); // Ordem por ID melhora performance do banco
+
         return await BindQueryPagedAsync(query, pageNumber, pageSize);
     }
 

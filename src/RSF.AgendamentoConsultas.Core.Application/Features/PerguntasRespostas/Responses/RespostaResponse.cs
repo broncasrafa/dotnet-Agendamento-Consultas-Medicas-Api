@@ -33,6 +33,7 @@ public class RespostaResponse
              Nome = entity.Especialista.Nome,
              Licenca = entity.Especialista.Licenca,
              Foto = entity.Especialista.Foto,
+             Avaliacao = entity.Especialista.Avaliacoes is null || !entity.Especialista.Avaliacoes.Any() ? null : entity.Especialista.Avaliacoes.Average(c => c.Score),
              Especialidades = EspecialistaEspecialidadeResponse.MapFromEntity(entity.Especialista.Especialidades?.Select(c => c.Especialidade)),
          },
          PacientesLikeDislike = entity.Reacoes is null ? default! : entity.Reacoes.Select(reacao => new PacienteLikeDislikeResponse

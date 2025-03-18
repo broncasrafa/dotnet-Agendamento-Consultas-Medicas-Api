@@ -24,6 +24,7 @@ using RSF.AgendamentoConsultas.Core.Application.Features.Especialista.Command.Up
 using RSF.AgendamentoConsultas.Core.Application.Features.Especialista.Command.UpdateLocalAtendimento;
 using RSF.AgendamentoConsultas.Core.Application.Features.Especialista.Command.UpdateEspecialista;
 using MediatR;
+using RSF.AgendamentoConsultas.Core.Application.Features.Especialista.Query.GetByFilterPaged;
 
 namespace RSF.AgendamentoConsultas.Api.Endpoints;
 
@@ -44,13 +45,29 @@ internal static class EspecialistaEndpoints
             .AllowAnonymous()
             .WithOpenApi();
 
-        routes.MapGet("/search", static async (IMediator mediator, [FromQuery] int page, [FromQuery] int items, [FromQuery] string name, CancellationToken cancellationToken) 
+        routes.MapGet("/searchByName", static async (IMediator mediator, [FromQuery] int page, [FromQuery] int items, [FromQuery] string name, CancellationToken cancellationToken) 
             => await mediator.SendCommand(new SelectEspecialistaByNamePagedRequest(name, items, page), cancellationToken: cancellationToken))
-            .WithName("GetOneEspecialistaByNamePaged")
+            .WithName("GetEspecialistasByNamePaged")
             .Produces<PagedResult<EspecialistaResponse>>(StatusCodes.Status200OK)
             .Produces<ProblemDetails>(StatusCodes.Status404NotFound)
             .WithDescription("Obter a lista paginada de Especialistas pelo Nome especificado")
             .WithSummary("Obter a lista paginada de Especialistas pelo Nome especificado")
+            .AllowAnonymous()
+            .WithOpenApi();
+        
+        routes.MapGet("/filter", static async (
+            IMediator mediator, 
+            CancellationToken cancellationToken,
+            [FromQuery] string cidade, 
+            [FromQuery] int? especialidadeId,
+            [FromQuery] int page = 1, 
+            [FromQuery] int items = 10)
+            => await mediator.SendCommand(new SelectEspecialistaByFiltersPagedRequest(especialidadeId, cidade, items, page), cancellationToken: cancellationToken))
+            .WithName("GetEspecialistasByFiltersPaged")
+            .Produces<PagedResult<EspecialistaResponse>>(StatusCodes.Status200OK)
+            .Produces<ProblemDetails>(StatusCodes.Status404NotFound)
+            .WithDescription("Obter a lista paginada de Especialistas pelos filtros especificados")
+            .WithSummary("Obter a lista paginada de Especialistas pelos filtros especificados")
             .AllowAnonymous()
             .WithOpenApi();
 

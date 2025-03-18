@@ -1,5 +1,6 @@
 ﻿using System.Net;
 using System.Net.Mail;
+using System.Text.Json;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using RSF.AgendamentoConsultas.Core.Domain.Notifications;
@@ -40,9 +41,9 @@ public sealed class MailSender : IMailSender
             IsBodyHtml = true
         };
 
-        mailMessage.To.Add(new MailAddress(to.email, to.Name));
+        mailMessage.To.Add(new MailAddress(to.Email, to.Name));
 
-        _logger.LogInformation("Sending e-mail");
+        _logger.LogInformation("Sending e-mail to {Details}", JsonSerializer.Serialize(new { name = to.Name, email = to.Email }));
 
         await smtpClient.SendMailAsync(mailMessage);
     }

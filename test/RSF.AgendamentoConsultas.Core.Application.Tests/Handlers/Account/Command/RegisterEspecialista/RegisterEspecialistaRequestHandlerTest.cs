@@ -57,7 +57,7 @@ public class RegisterEspecialistaRequestHandlerTest : IClassFixture<BaseFixture>
 
         _usuarioAutenticadoModelMock = new UsuarioAutenticadoModel
         {
-            Id = _fixture.UserId,
+            UserId = _fixture.UserId,
             Nome = _fixture.Faker.Person.FullName,
             Documento = _fixture.Faker.Person.NationalNumber(),
             Username = _fixture.Faker.Person.UserName,

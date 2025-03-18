@@ -1,5 +1,6 @@
 ﻿using RSF.AgendamentoConsultas.Core.Application.Validators;
 using FluentValidation;
+using RSF.AgendamentoConsultas.CrossCutting.Shareable.Enums;
 
 namespace RSF.AgendamentoConsultas.Core.Application.Features.Agendamento.Command.CreateAgendamento;
 
@@ -46,7 +47,8 @@ public class CreateAgendamentoRequestValidator : AbstractValidator<CreateAgendam
             .MinimumLength(5).WithMessage("O Motivo da consulta deve ter pelo menos 5 caracteres");
 
         RuleFor(c => c.ValorConsulta)
-            .ValorMonetarioValidations(field: "valor da consulta");
+            .ValorMonetarioValidations(field: "valor da consulta")
+            .When(c => c.TipoAgendamentoId == (int)ETipoAgendamento.Particular);
 
         RuleFor(c => c.TelefoneContato)
             .TelefoneValidators();
@@ -56,7 +58,7 @@ public class CreateAgendamentoRequestValidator : AbstractValidator<CreateAgendam
             .WithMessage("O ID do Paciente deve ser maior que 0");
 
         RuleFor(x => x.PlanoMedicoId)
-            .GreaterThan(0)
+            .GreaterThan(0).When(c => c.TipoAgendamentoId == (int)ETipoAgendamento.Convenio)
             .WithMessage("O ID do Plano Medico do Paciente/Dependente deve ser maior que 0");
 
         RuleFor(x => x.DependenteId)

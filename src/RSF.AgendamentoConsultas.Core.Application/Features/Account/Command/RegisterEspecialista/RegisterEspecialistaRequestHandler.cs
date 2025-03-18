@@ -49,7 +49,7 @@ public class RegisterEspecialistaRequestHandler: IRequestHandler<RegisterEspecia
         if (newUser is not null)
         {
             var newEspecialista = new Domain.Entities.Especialista(
-            userId: newUser.Id,
+            userId: newUser.UserId,
             nome: request.NomeCompleto,
             licenca: request.Licenca,
             email: request.Email,

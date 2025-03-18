@@ -33,7 +33,7 @@ public class AgendamentoConsultaRepository : BaseRepository<AgendamentoConsulta>
     new public async ValueTask<AgendamentoConsulta> GetByIdAsync(int agendamentoId)
         => await _Context.Agendamentos
             .AsNoTracking()
-            .Include(e => e.Especialista)
+            .Include(e => e.Especialista).ThenInclude(ee => ee.Especialidades).ThenInclude(ee => ee.Especialidade)
             .Include(ee => ee.Especialidade).ThenInclude(g => g.EspecialidadeGrupo)
             .Include(el => el.LocalAtendimento)
             .Include(sc => sc.StatusConsulta)

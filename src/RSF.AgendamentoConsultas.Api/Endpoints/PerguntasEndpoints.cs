@@ -8,6 +8,8 @@ using RSF.AgendamentoConsultas.Core.Application.Features.Pergunta.Query.GetPergu
 using RSF.AgendamentoConsultas.Core.Application.Features.Pergunta.Query.GetPerguntaByIdAndIdEspecialidade;
 using RSF.AgendamentoConsultas.Core.Application.Features.Pergunta.Query.GetPerguntaByIdRespostas;
 using MediatR;
+using RSF.AgendamentoConsultas.Core.Application.Features.Pergunta.Query.GetAllPaged;
+using RSF.AgendamentoConsultas.CrossCutting.Shareable.Results;
 
 namespace RSF.AgendamentoConsultas.Api.Endpoints;
 
@@ -34,6 +36,16 @@ internal static class PerguntasEndpoints
         #endregion
 
         #region [ GET ]
+        routes.MapGet("/", static async (IMediator mediator, [FromQuery] int page, [FromQuery] int items, CancellationToken cancellationToken)
+            => await mediator.SendCommand(new SelectPerguntaPagedRequest(items, page), cancellationToken: cancellationToken))
+            .WithName("GetOnePerguntaPaged")
+            .Produces<PagedResult<PerguntaResponse>>(StatusCodes.Status200OK)
+            .Produces(StatusCodes.Status204NoContent)
+            .WithDescription("Obter a lista paginada de Perguntas")
+            .WithSummary("Obter a lista paginada de Perguntas")
+            .AllowAnonymous()
+            .WithOpenApi();
+
         routes.MapGet("/{id:int}", static async (IMediator mediator, [FromRoute] int id, CancellationToken cancellationToken)
             => await mediator.SendCommand(new SelectPerguntaByIdRequest(id), cancellationToken: cancellationToken))
             .WithName("GetPerguntaById")

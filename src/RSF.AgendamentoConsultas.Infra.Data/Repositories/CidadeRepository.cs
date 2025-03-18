@@ -8,7 +8,7 @@ namespace RSF.AgendamentoConsultas.Infra.Data.Repositories;
 public class CidadeRepository(AppDbContext context) : ICidadeRepository
 {
     private readonly AppDbContext _context = context;
-
+    
     public async ValueTask<Cidade> GetByIdAsync(int id) 
         => await _context.Cidades
                     .AsNoTracking()
@@ -26,4 +26,20 @@ public class CidadeRepository(AppDbContext context) : ICidadeRepository
                         }
                     })
                     .FirstOrDefaultAsync(e => e.CidadeId == id);
+
+    public async ValueTask<IReadOnlyList<Cidade>> GetAllByNameAsync(string name)
+    {
+        return await _context.Cidades
+        .AsNoTracking()
+        .Include(e => e.Estado).ThenInclude(r => r.Regiao)
+        .Where(c => EF.Functions.Collate(c.Descricao, "Latin1_General_CI_AS").Contains(name))
+        .ToListAsync();
+    }
+
+    public async ValueTask<IReadOnlyList<Cidade>> GetAllAsync()
+    {
+        return await _context.Cidades.AsNoTracking()
+                        .Include(e => e.Estado).ThenInclude(r => r.Regiao)
+                        .ToListAsync();
+    }
 }

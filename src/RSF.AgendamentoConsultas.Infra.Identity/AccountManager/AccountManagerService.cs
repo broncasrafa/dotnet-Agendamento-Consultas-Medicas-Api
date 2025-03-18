@@ -47,6 +47,9 @@ public class AccountManagerService : IAccountManagerService
 
     public async Task<ApplicationUser> FindByEmailAsync(string email) 
         => await _userManager.FindByEmailAsync(email);
+    
+    public async Task<ApplicationUser> FindByUsernameAsync(string username) 
+        => await _userManager.Users.FirstOrDefaultAsync(c => c.UserName == username);
 
     public async Task<ApplicationUser> FindByFilterAsync(Expression<Func<ApplicationUser, bool>> filter)
         => await _userManager.Users.SingleOrDefaultAsync(filter);
@@ -107,7 +110,7 @@ public class AccountManagerService : IAccountManagerService
 
         var token = _jwtTokenService.GenerateTokenJwt(user, id, roleClaims, userClaims);
 
-        var response = UsuarioAutenticadoModel.MapFromEntity(user, token);
+        var response = UsuarioAutenticadoModel.MapFromEntity(id, user, token);
 
         return response;
     }

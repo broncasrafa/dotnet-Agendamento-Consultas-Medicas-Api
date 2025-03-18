@@ -47,7 +47,7 @@ public class RegisterRequestHandlerTest : IClassFixture<BaseFixture>
                 ConfirmPassword: "Usuario@123");
         var authenticatedUser = new UsuarioAutenticadoModel
         {
-            Id = _fixture.UserId,
+            UserId = _fixture.UserId,
             Nome = _fixture.Faker.Person.FullName,
             Documento = _fixture.Faker.Person.Cpf(),
             Username = _fixture.Faker.Person.UserName,
@@ -124,7 +124,7 @@ public class RegisterRequestHandlerTest : IClassFixture<BaseFixture>
                 ConfirmPassword: "Usuario@123");
         var authenticatedUser = new UsuarioAutenticadoModel
         {
-            Id = _fixture.UserId,
+            UserId = _fixture.UserId,
             Nome = _fixture.Faker.Person.FullName,
             Documento = _fixture.Faker.Person.Cpf(),
             Username = _fixture.Faker.Person.UserName,

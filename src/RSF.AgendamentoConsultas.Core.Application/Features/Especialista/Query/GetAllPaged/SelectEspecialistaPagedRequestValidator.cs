@@ -13,6 +13,6 @@ public class SelectEspecialistaPagedRequestValidator : AbstractValidator<SelectE
             .Must(pageSize => validPageSizes.Contains(pageSize)).WithMessage("PageSize deve ser 5, 10, 20, 50 ou 100.");
 
         RuleFor(x => x.PageNum)
-            .GreaterThan(0).WithMessage("PageNum deve ser que zero.");
+            .GreaterThan(0).WithMessage("PageNum deve ser maior que zero.");
     }
 }

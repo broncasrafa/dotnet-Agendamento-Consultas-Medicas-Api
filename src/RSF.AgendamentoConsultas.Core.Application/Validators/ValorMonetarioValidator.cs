@@ -1,9 +1,5 @@
-﻿using System.Globalization;
-using System.Text.RegularExpressions;
-
+﻿using RSF.AgendamentoConsultas.CrossCutting.Shareable.Helpers;
 using FluentValidation;
-
-using RSF.AgendamentoConsultas.CrossCutting.Shareable.Helpers;
 
 namespace RSF.AgendamentoConsultas.Core.Application.Validators;
 
@@ -16,6 +12,7 @@ public static class ValorMonetarioValidator
                 .WithMessage($"O {field} deve ser maior que zero.")
             .Must(valor => !valor.HasValue || IsValidDecimalFormat(valor.Value))
                 .WithMessage($"O {field} deve ter no máximo duas casas decimais.");
+        //PrecisionScale(100, 2, true).WithMessage("Máximo 2 valores decimais após a virgula");
     }
 
     private static bool IsValidDecimalFormat(decimal value)

@@ -18,8 +18,6 @@ public class LoginRequestHandler : IRequestHandler<LoginRequest, Result<Authenti
 
         var response = new AuthenticatedUserResponse(new Credentials(usuarioAutenticado.Token), usuario: usuarioAutenticado);
 
-        //return await Task.FromResult(response);
-
         return !string.IsNullOrWhiteSpace(response.Credentials.Token) 
             ? Result.Success(response)
             : Result.Error<AuthenticatedUserResponse>(new OperationErrorException("Falha ao realizar o login do usuário."));

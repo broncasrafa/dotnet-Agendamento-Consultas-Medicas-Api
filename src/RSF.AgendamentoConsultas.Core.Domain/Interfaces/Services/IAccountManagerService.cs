@@ -10,6 +10,7 @@ namespace RSF.AgendamentoConsultas.Core.Domain.Interfaces.Services;
 public interface IAccountManagerService
 {
     Task<ApplicationUser> FindByEmailAsync(string email);
+    Task<ApplicationUser> FindByUsernameAsync(string username);
     Task<ApplicationUser> FindByFilterAsync(Expression<Func<ApplicationUser, bool>> filter);
     Task<UsuarioAutenticadoModel> LoginAsync(string email, string password);
     Task<UsuarioAutenticadoModel> RegisterAsync(string nomeCompleto, string documento, string username, string email, string telefone, string genero, string password, ETipoPerfilAcesso tipoAcesso);

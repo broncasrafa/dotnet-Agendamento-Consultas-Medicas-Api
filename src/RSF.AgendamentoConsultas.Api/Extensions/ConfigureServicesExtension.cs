@@ -31,7 +31,7 @@ internal static class ConfigureServicesExtension
 
         services.AddSwaggerGen();
 
-        services.AddCorsConfig();
+        services.AddCorsConfig(configuration);
 
         services.AddHealthChecks();
 
@@ -126,11 +126,16 @@ internal static class ConfigureServicesExtension
         });
     }
 
-    private static void AddCorsConfig(this IServiceCollection services)
+    private static void AddCorsConfig(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddCors(options =>
         {
-            options.AddPolicy("AllowAllPolicy", policy => policy.AllowAnyHeader().AllowAnyOrigin().AllowAnyMethod());
+            options.AddPolicy("AllowAllPolicy", policy =>
+            {
+                policy.AllowAnyHeader()
+                      .AllowAnyMethod()
+                      .WithOrigins(configuration["ClientUrl"]);
+            });
         });
     }
 

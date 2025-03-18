@@ -9,6 +9,7 @@ using RSF.AgendamentoConsultas.Core.Domain.MessageBus.Events;
 using RSF.AgendamentoConsultas.Core.Domain.Models;
 using MediatR;
 using OperationResult;
+using System.Security.Claims;
 
 namespace RSF.AgendamentoConsultas.Core.Application.Features.Account.Command.UpdateAuthenticatedUserInfo;
 
@@ -40,9 +41,11 @@ public class UpdateAuthenticatedUserInfoRequestHandler : IRequestHandler<UpdateA
     public async Task<Result<bool>> Handle(UpdateAuthenticatedUserInfoRequest request, CancellationToken cancellationToken)
     {
         var authenticatedUser = _httpContext.HttpContext.User;
+        var userId = authenticatedUser.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? authenticatedUser.FindFirst("sub")?.Value;
+        
         UnauthorizedRequestException.ThrowIfNotAuthenticated(authenticatedUser.Identity!.IsAuthenticated, "Usuário não está autenticado na plataforma");
 
-        var user = await _accountManagerService.GetUserAsync(authenticatedUser);
+        var user = await _accountManagerService.GetUserAsync(authenticatedUser);// ?? await _accountManagerService.FindByUsernameAsync(userId);
         NotFoundException.ThrowIfNull(user, "Usuário não está autenticado na plataforma");
 
         var isPaciente = authenticatedUser.IsInRole(ETipoPerfilAcesso.Paciente.ToString());

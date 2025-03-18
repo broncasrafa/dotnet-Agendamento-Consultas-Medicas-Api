@@ -4,8 +4,9 @@ namespace RSF.AgendamentoConsultas.Core.Domain.Models;
 
 public class UsuarioAutenticadoModel
 {
+    public int? Id { get; set; }
     public string Token { get; set; }
-    public string Id { get; set; }
+    public string UserId { get; set; }
     public string Nome { get; set; }
     public string Documento { get; set; }
     public string Username { get; set; }
@@ -17,7 +18,7 @@ public class UsuarioAutenticadoModel
     public static UsuarioAutenticadoModel MapFromEntity(ApplicationUser user)
         => user is null ? default! : new UsuarioAutenticadoModel
         {
-            Id = user.Id,
+            UserId = user.Id,
             Nome = user.NomeCompleto,
             Documento = user.Documento,
             Username = user.UserName,
@@ -26,14 +27,15 @@ public class UsuarioAutenticadoModel
             IsActive = user.IsActive.Value,
             CreatedAt = user.CreatedAt.Value
         };
-    public static UsuarioAutenticadoModel MapFromEntity(ApplicationUser user, string token)
+    public static UsuarioAutenticadoModel MapFromEntity(int? id, ApplicationUser user, string token)
     {
         if (string.IsNullOrWhiteSpace(token)) throw new ArgumentNullException(nameof(token));
 
         return new UsuarioAutenticadoModel
         {
+            Id = id,
             Token = token,
-            Id = user.Id,
+            UserId = user.Id,
             Nome = user.NomeCompleto,
             Documento = user.Documento,
             Username = user.UserName,

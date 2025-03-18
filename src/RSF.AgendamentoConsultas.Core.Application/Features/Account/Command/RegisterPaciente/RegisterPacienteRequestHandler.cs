@@ -43,7 +43,7 @@ public class RegisterPacienteRequestHandler : IRequestHandler<RegisterPacienteRe
         if (newUser is not null)
         {
             var newPaciente = new Domain.Entities.Paciente(
-            userId: newUser.Id,
+            userId: newUser.UserId,
             nome: request.NomeCompleto,
             cpf: request.CPF,
             email: request.Email,

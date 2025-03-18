@@ -1,5 +1,6 @@
 ﻿using System.Text;
 using System.Diagnostics.CodeAnalysis;
+
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -29,6 +30,7 @@ using RSF.AgendamentoConsultas.Infra.Identity.Configurations;
 using RSF.AgendamentoConsultas.Infra.Identity.JWT;
 using RSF.AgendamentoConsultas.Infra.Identity.AccountManager;
 using Amazon.S3;
+using Microsoft.IdentityModel.JsonWebTokens;
 
 namespace RSF.AgendamentoConsultas.CrossCutting.IoC;
 
@@ -74,7 +76,9 @@ public static class ServiceCollectionInfrastructure
             {
                 //options.UseLoggerFactory(LoggerFactory.Create(builder => builder.AddConsole()));
                 options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"),
-                            b => b.MigrationsAssembly(typeof(AppDbContext).Assembly.FullName))
+                            b => b.MigrationsAssembly(typeof(AppDbContext).Assembly.FullName)
+                                  .CommandTimeout(180) // Timeout de 180 segundos
+                                  ) 
                                     .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking)
                                     .EnableSensitiveDataLogging(false)
                                     .EnableDetailedErrors()
@@ -180,7 +184,8 @@ public static class ServiceCollectionInfrastructure
                     ClockSkew = TimeSpan.Zero,
                     ValidIssuer = configuration["Jwt:Issuer"],
                     ValidAudience = configuration["Jwt:Audience"],
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Key"]))
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Key"])),
+                    NameClaimType = JwtRegisteredClaimNames.Sub
                 };
                 options.Events = new JwtBearerEvents
                 {
