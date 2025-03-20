@@ -29,6 +29,7 @@ public class Paciente
     public ICollection<EspecialistaAvaliacao> AvaliacoesFeitas { get; set; }
     public ICollection<Pergunta> PerguntasRealizadas { get; set; }
     public ICollection<AgendamentoConsulta> AgendamentosRealizados { get; set; }
+    public ICollection<PacienteEspecialistaFavoritos> EspecialistasFavoritos { get; set; }
 
     protected Paciente() { }
 

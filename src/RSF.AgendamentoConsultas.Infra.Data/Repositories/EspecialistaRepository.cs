@@ -5,8 +5,6 @@ using RSF.AgendamentoConsultas.Core.Domain.Entities;
 using RSF.AgendamentoConsultas.CrossCutting.Shareable.Results;
 using RSF.AgendamentoConsultas.Core.Domain.Interfaces.Repositories;
 using RSF.AgendamentoConsultas.CrossCutting.Shareable.Enums;
-using Azure.Core;
-using MediatR;
 
 namespace RSF.AgendamentoConsultas.Infra.Data.Repositories;
 
@@ -15,20 +13,6 @@ public class EspecialistaRepository : BaseRepository<Especialista>, IEspecialist
     private readonly AppDbContext _Context;
 
     public EspecialistaRepository(AppDbContext context) : base(context) => _Context = context;
-
-
-
-    //private static async ValueTask<PagedResult<Especialista>> BindQueryPagedAsync(IQueryable<Especialista> query, int pageNumber, int pageSize)
-    //{
-    //    var totalCount = await query.CountAsync();
-
-    //    var paginatedData = await query
-    //        .Skip((pageNumber - 1) * pageSize)
-    //        .Take(pageSize)
-    //    .ToListAsync();
-
-    //    return new PagedResult<Especialista>(data: paginatedData, totalCount: totalCount, pageSize, pageNumber);
-    //}
 
 
     public async ValueTask<PagedResult<Especialista>> GetAllPagedAsync(int pageNumber = 1, int pageSize = 10)

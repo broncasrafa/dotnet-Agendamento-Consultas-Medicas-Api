@@ -5,6 +5,7 @@ public record PacienteDependentePlanoMedicoResponse
     int Id,
     string NomePlano,
     string NumCartao,
+    int? ConvenioMedicoId,
     string ConvenioMedico,
     bool Ativo
 )
@@ -14,6 +15,7 @@ public record PacienteDependentePlanoMedicoResponse
             entity.PlanoMedicoId,
             entity.NomePlano,
             entity.NumCartao,
+            entity.ConvenioMedico?.ConvenioMedicoId,
             entity.ConvenioMedico?.Nome,
             entity.Ativo ?? false);
 

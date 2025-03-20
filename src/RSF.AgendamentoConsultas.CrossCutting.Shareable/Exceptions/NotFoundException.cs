@@ -17,4 +17,10 @@ public class NotFoundException : BaseException
         if (obj is null)
             throw new NotFoundException(exceptionMessage);
     }
+
+    public static void ThrowIfNotExists(bool exists, string exceptionMessage)
+    {
+        if (!exists)
+            throw new NotFoundException(exceptionMessage);
+    }
 }

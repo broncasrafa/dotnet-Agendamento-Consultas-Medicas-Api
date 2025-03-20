@@ -10,12 +10,15 @@ using RSF.AgendamentoConsultas.Core.Application.Features.Paciente.Query.GetPacie
 using RSF.AgendamentoConsultas.Core.Application.Features.Paciente.Query.GetPacienteByIdPlanosMedicos;
 using RSF.AgendamentoConsultas.Core.Application.Features.Paciente.Query.GetPacienteByIdAgendamentos;
 using RSF.AgendamentoConsultas.Core.Application.Features.Paciente.Query.GetPacienteByIdAvaliacoes;
+using RSF.AgendamentoConsultas.Core.Application.Features.Paciente.Query.GetEspecialistasFavoritos;
 using RSF.AgendamentoConsultas.Core.Application.Features.Paciente.Command.CreatePacientePlanoMedico;
 using RSF.AgendamentoConsultas.Core.Application.Features.Paciente.Command.UpdatePaciente;
 using RSF.AgendamentoConsultas.Core.Application.Features.Paciente.Command.UpdatePacientePlanoMedico;
 using RSF.AgendamentoConsultas.Core.Application.Features.Paciente.Command.DeletePaciente;
 using RSF.AgendamentoConsultas.Core.Application.Features.Paciente.Command.DeletePacientePlanoMedico;
 using RSF.AgendamentoConsultas.Core.Application.Features.Paciente.Command.DeletePacienteAgendamento;
+using RSF.AgendamentoConsultas.Core.Application.Features.Paciente.Command.FavoritarEspecialista;
+using RSF.AgendamentoConsultas.Core.Application.Features.Paciente.Command.DesfavoritarEspecialista;
 using MediatR;
 using FluentValidation;
 
@@ -81,6 +84,16 @@ internal static class PacienteEndpoints
             .WithSummary("Obter a lista dos Avaliações feitas pelo Paciente pelo ID especificado")
             .WithOpenApi();
 
+        routes.MapGet("/{id:int}/favoritos", static async (IMediator mediator, [FromRoute] int id, [FromQuery] int page, [FromQuery] int items, CancellationToken cancellationToken)
+            => await mediator.SendCommand(new SelectEspecialistasFavoritosPacienteRequest(id, items, page), cancellationToken: cancellationToken))
+            .WithName("GetEspecialistasFavoritosPacienteById")
+            .Produces<ApiResponse<PacienteResultList<PacienteAvaliacaoResponse>>>(StatusCodes.Status200OK)
+            .Produces<ProblemDetails>(StatusCodes.Status401Unauthorized)
+            .Produces<ProblemDetails>(StatusCodes.Status403Forbidden)
+            .WithDescription("Obter a lista dos Especialistas favoritados pelo Paciente pelo ID especificado")
+            .WithSummary("Obter a lista dos Especialistas favoritados pelo Paciente pelo ID especificado")
+            .WithOpenApi();
+        
         #endregion
 
         #region [ POST ]
@@ -101,6 +114,24 @@ internal static class PacienteEndpoints
             .Produces<ProblemDetails>(StatusCodes.Status403Forbidden)
             .WithDescription("Adicionar um Plano Medico para o Paciente pelo ID especificado do Paciente")
             .WithSummary("Adicionar um Plano Medico para o Paciente pelo ID especificado do Paciente")
+            .WithOpenApi();
+
+        routes.MapPost("/{id:int}/favoritos/like", static async (IMediator mediator, [FromBody] FavoritarEspecialistaRequest request, [FromRoute] int id, CancellationToken cancellationToken) =>
+        {
+            if (id != request.PacienteId)
+                throw new InputRequestDataInvalidException("Id", "Os IDs do paciente não conferem");
+
+            return await mediator.SendCommand(request, cancellationToken: cancellationToken);
+        })
+            .WithName("FavoritarEspecialista")
+            .Accepts<FavoritarEspecialistaRequest>("application/json")
+            .Produces<ApiResponse<bool>>(StatusCodes.Status201Created)
+            .Produces<ProblemDetails>(StatusCodes.Status400BadRequest)
+            .Produces<ProblemDetails>(StatusCodes.Status404NotFound)
+            .Produces<ProblemDetails>(StatusCodes.Status401Unauthorized)
+            .Produces<ProblemDetails>(StatusCodes.Status403Forbidden)
+            .WithDescription("Favoritar um especialista para o paciente")
+            .WithSummary("Favoritar um especialista para o paciente")
             .WithOpenApi();
 
         #endregion
@@ -201,6 +232,25 @@ internal static class PacienteEndpoints
             .Produces<ProblemDetails>(StatusCodes.Status403Forbidden)
             .WithDescription("Cancela um agendamento do Paciente pelo ID especificado")
             .WithSummary("Cancela um agendamento Paciente pelo ID especificado")
+            .WithOpenApi();
+
+        routes.MapDelete("/{id:int}/favoritos/dislike", static async (IMediator mediator, [FromBody] DesfavoritarEspecialistaRequest request, [FromRoute] int id, CancellationToken cancellationToken)
+            =>
+        {
+            if (id != request.PacienteId)
+                throw new InputRequestDataInvalidException("Id", "Os IDs do paciente não conferem");
+
+            return await mediator.SendCommand(request, cancellationToken: cancellationToken);
+        })
+            .WithName("DesfavoritarEspecialista")
+            .Accepts<DeletePacienteRequest>("application/json")
+            .Produces<ApiResponse<bool>>(StatusCodes.Status200OK)
+            .Produces<ProblemDetails>(StatusCodes.Status400BadRequest)
+            .Produces<ProblemDetails>(StatusCodes.Status404NotFound)
+            .Produces<ProblemDetails>(StatusCodes.Status401Unauthorized)
+            .Produces<ProblemDetails>(StatusCodes.Status403Forbidden)
+            .WithDescription("Desfavoritar um especialista para o paciente")
+            .WithSummary("Desfavoritar um especialista para o paciente")
             .WithOpenApi();
         #endregion
 

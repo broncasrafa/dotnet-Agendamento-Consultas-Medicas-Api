@@ -47,6 +47,8 @@ public class CreatePacienteDependentePlanoMedicoRequestHandler : IRequestHandler
         
         await _dependentePlanoMedicoRepository.AddAsync(planoMedico);
 
+        planoMedico.ConvenioMedico = convenioMedico;
+
         return await Task.FromResult(PacienteDependentePlanoMedicoResponse.MapFromEntity(planoMedico));
     }
 }
