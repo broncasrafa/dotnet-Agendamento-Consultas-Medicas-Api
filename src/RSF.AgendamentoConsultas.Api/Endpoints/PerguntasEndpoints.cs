@@ -7,9 +7,11 @@ using RSF.AgendamentoConsultas.Core.Application.Features.Pergunta.Command.Create
 using RSF.AgendamentoConsultas.Core.Application.Features.Pergunta.Query.GetPerguntaById;
 using RSF.AgendamentoConsultas.Core.Application.Features.Pergunta.Query.GetPerguntaByIdAndIdEspecialidade;
 using RSF.AgendamentoConsultas.Core.Application.Features.Pergunta.Query.GetPerguntaByIdRespostas;
-using MediatR;
 using RSF.AgendamentoConsultas.Core.Application.Features.Pergunta.Query.GetAllPaged;
 using RSF.AgendamentoConsultas.CrossCutting.Shareable.Results;
+using RSF.AgendamentoConsultas.CrossCutting.Shareable.Enums;
+using RSF.AgendamentoConsultas.CrossCutting.Shareable.Extensions;
+using MediatR;
 
 namespace RSF.AgendamentoConsultas.Api.Endpoints;
 
@@ -20,10 +22,10 @@ internal static class PerguntasEndpoints
         var routes = builder.MapGroup("api/perguntas").WithTags("Pergunta");
 
         #region [ POST ]
-        routes.MapPost("/", static async (IMediator mediator, [FromBody] CreatePerguntaRequest request, CancellationToken cancellationToken)
+        routes.MapPost("/", static async (IMediator mediator, [FromBody] CreatePerguntaEspecialidadeRequest request, CancellationToken cancellationToken)
             => await mediator.SendCommand(request, cancellationToken: cancellationToken))
             .WithName("CreatePergunta")
-            .Accepts<CreatePerguntaRequest>("application/json")
+            .Accepts<CreatePerguntaEspecialidadeRequest>("application/json")
             .Produces<ApiResponse<bool>>(StatusCodes.Status200OK)
             .Produces<ProblemDetails>(StatusCodes.Status400BadRequest)
             .Produces<ProblemDetails>(StatusCodes.Status404NotFound)
@@ -31,7 +33,7 @@ internal static class PerguntasEndpoints
             .Produces<ProblemDetails>(StatusCodes.Status403Forbidden)
             .WithDescription("Adicionar uma pergunta para uma Especialidade")
             .WithSummary("Adicionar uma pergunta para uma Especialidade")
-            .RequireAuthorization("AdminOrPaciente")
+            .RequireAuthorization(ETipoRequireAuthorization.AdminOrPaciente.GetEnumDescription())
             .WithOpenApi();
         #endregion
 
@@ -77,7 +79,7 @@ internal static class PerguntasEndpoints
             .Produces<ProblemDetails>(StatusCodes.Status403Forbidden)
             .WithDescription("Obter os dados da Pergunta pelo ID especificado da Pergunta e da Especialidade")
             .WithSummary("Obter os dados da Pergunta pelo ID especificado da Pergunta e da Especialidade")
-            .RequireAuthorization("AdminOrEspecialista")
+            .RequireAuthorization(ETipoRequireAuthorization.AdminOrEspecialista.GetEnumDescription())
             .WithOpenApi();
         #endregion
 

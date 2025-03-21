@@ -9,17 +9,17 @@ using RSF.AgendamentoConsultas.Infra.Notifications.Templates;
 
 namespace RSF.AgendamentoConsultas.Consumers.Notification.Subscribers;
 
-public class RespostaCreatedSubscriber : RabbitMQConsumerBase
+public sealed class PerguntaEspecialistaCreatedSubscriber : RabbitMQConsumerBase
 {
-    private readonly ILogger<RespostaCreatedSubscriber> _logger;
+    private readonly ILogger<PerguntaEspecialistaCreatedSubscriber> _logger;
     private readonly IServiceProvider _serviceProvider;
     private readonly string _queueName;
 
-    public RespostaCreatedSubscriber(ILogger<RespostaCreatedSubscriber> logger, IOptions<RabbitMQSettings> options, IServiceProvider serviceProvider)
-        : base(logger, options, options.Value.RespostasPerguntasQueueName)
+    public PerguntaEspecialistaCreatedSubscriber(ILogger<PerguntaEspecialistaCreatedSubscriber> logger, IOptions<RabbitMQSettings> options, IServiceProvider serviceProvider) 
+        : base(logger, options, options.Value.PerguntasEspecialistaQueueName)
     {
         _logger = logger;
-        _queueName = options.Value.RespostasPerguntasQueueName;
+        _queueName = options.Value.PerguntasEspecialistaQueueName;
         _serviceProvider = serviceProvider;
     }
 
@@ -29,18 +29,17 @@ public class RespostaCreatedSubscriber : RabbitMQConsumerBase
 
         using var scope = _serviceProvider.CreateScope();
 
-        var mailSender = scope.ServiceProvider.GetRequiredService<RespostaCreatedEmail>();
+        var mailSender = scope.ServiceProvider.GetRequiredService<PerguntaEspecialistaCreatedEmail>();
 
-        var @event = JsonSerializer.Deserialize<RespostaCreatedEvent>(message);
+        var @event = JsonSerializer.Deserialize<PerguntaEspecialistaCreatedEvent>(message);
 
         await mailSender.SendEmailAsync(
-            new MailTo(@event.PacienteNome,
-            @event.PacienteEmail),
+            new MailTo(@event.EspecialistaNome, @event.EspecialistaEmail),
             @event.PacienteNome,
             @event.EspecialistaNome,
             @event.EspecialidadeNome,
-            @event.RespostaId,
-            @event.Resposta);
+            @event.Pergunta,
+            @event.PerguntaId);
 
         await Task.CompletedTask;
     }

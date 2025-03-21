@@ -2,6 +2,8 @@
 using RSF.AgendamentoConsultas.Api.Extensions;
 using RSF.AgendamentoConsultas.Api.Models;
 using RSF.AgendamentoConsultas.CrossCutting.Shareable.Exceptions;
+using RSF.AgendamentoConsultas.CrossCutting.Shareable.Enums;
+using RSF.AgendamentoConsultas.CrossCutting.Shareable.Extensions;
 using RSF.AgendamentoConsultas.Core.Application.Features.Paciente.Responses;
 using RSF.AgendamentoConsultas.Core.Application.Features.PacienteDependente.Responses;
 using RSF.AgendamentoConsultas.Core.Application.Features.Agendamento.Responses;
@@ -30,7 +32,7 @@ internal static class PacienteEndpoints
     {
         var routes = builder.MapGroup("api/pacientes")
                             .WithTags("Paciente")
-                            .RequireAuthorization("AdminOrPaciente");
+                            .RequireAuthorization(ETipoRequireAuthorization.AdminOrPaciente.GetEnumDescription());
 
         #region [ GET ]
 

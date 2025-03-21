@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using RSF.AgendamentoConsultas.Api.Extensions;
 using RSF.AgendamentoConsultas.Api.Models;
-using RSF.AgendamentoConsultas.CrossCutting.Shareable.Results;
-using RSF.AgendamentoConsultas.CrossCutting.Shareable.Exceptions;
 using RSF.AgendamentoConsultas.Core.Application.Features.Especialista.Responses;
 using RSF.AgendamentoConsultas.Core.Application.Features.Especialista.Query.GetById;
 using RSF.AgendamentoConsultas.Core.Application.Features.Especialista.Query.GetEspecialistaRespostas;
@@ -13,6 +11,7 @@ using RSF.AgendamentoConsultas.Core.Application.Features.Especialista.Query.GetB
 using RSF.AgendamentoConsultas.Core.Application.Features.Especialista.Query.GetByIdWithTags;
 using RSF.AgendamentoConsultas.Core.Application.Features.Especialista.Query.GetByNamePaged;
 using RSF.AgendamentoConsultas.Core.Application.Features.Especialista.Query.GetAllPaged;
+using RSF.AgendamentoConsultas.Core.Application.Features.Especialista.Query.GetByFilterPaged;
 using RSF.AgendamentoConsultas.Core.Application.Features.Especialista.Command.AddConvenioMedico;
 using RSF.AgendamentoConsultas.Core.Application.Features.Especialista.Command.AddEspecialidade;
 using RSF.AgendamentoConsultas.Core.Application.Features.Especialista.Command.AddLocalAtendimento;
@@ -23,8 +22,12 @@ using RSF.AgendamentoConsultas.Core.Application.Features.Especialista.Command.Up
 using RSF.AgendamentoConsultas.Core.Application.Features.Especialista.Command.UpdateEspecialidade;
 using RSF.AgendamentoConsultas.Core.Application.Features.Especialista.Command.UpdateLocalAtendimento;
 using RSF.AgendamentoConsultas.Core.Application.Features.Especialista.Command.UpdateEspecialista;
+using RSF.AgendamentoConsultas.Core.Application.Features.Especialista.Command.AddPerguntaEspecialista;
+using RSF.AgendamentoConsultas.CrossCutting.Shareable.Results;
+using RSF.AgendamentoConsultas.CrossCutting.Shareable.Exceptions;
+using RSF.AgendamentoConsultas.CrossCutting.Shareable.Enums;
+using RSF.AgendamentoConsultas.CrossCutting.Shareable.Extensions;
 using MediatR;
-using RSF.AgendamentoConsultas.Core.Application.Features.Especialista.Query.GetByFilterPaged;
 
 namespace RSF.AgendamentoConsultas.Api.Endpoints;
 
@@ -161,7 +164,7 @@ internal static class EspecialistaEndpoints
            .Produces<ProblemDetails>(StatusCodes.Status403Forbidden)
            .WithDescription("Adicionar o convênio médico atendido pelo Especialista pelo ID especificado do Especialista")
            .WithSummary("Adicionar o convênio médico atendido pelo Especialista pelo ID especificado do Especialista")
-           .RequireAuthorization("AdminOrEspecialista")
+           .RequireAuthorization(ETipoRequireAuthorization.AdminOrEspecialista.GetEnumDescription())
            .WithOpenApi();
 
         routes.MapPost("/{id:int}/especialidades", static async (IMediator mediator, [FromBody] AddEspecialidadeRequest request, [FromRoute] int id, CancellationToken cancellationToken)
@@ -181,7 +184,7 @@ internal static class EspecialistaEndpoints
            .Produces<ProblemDetails>(StatusCodes.Status403Forbidden)
            .WithDescription("Adicionar a especialidade atendida pelo Especialista pelo ID especificado do Especialista")
            .WithSummary("Adicionar a especialidade atendida pelo Especialista pelo ID especificado do Especialista")
-           .RequireAuthorization("AdminOrEspecialista")
+           .RequireAuthorization(ETipoRequireAuthorization.AdminOrEspecialista.GetEnumDescription())
            .WithOpenApi();
 
         routes.MapPost("/{id:int}/locais-atendimento", static async (IMediator mediator, [FromBody] AddLocalAtendimentoRequest request, [FromRoute] int id, CancellationToken cancellationToken)
@@ -201,8 +204,29 @@ internal static class EspecialistaEndpoints
            .Produces<ProblemDetails>(StatusCodes.Status403Forbidden)
            .WithDescription("Adicionar o local de atendimento do Especialista pelo ID especificado do Especialista")
            .WithSummary("Adicionar o local de atendimento do Especialista pelo ID especificado do Especialista")
-           .RequireAuthorization("AdminOrEspecialista")
+           .RequireAuthorization(ETipoRequireAuthorization.AdminOrEspecialista.GetEnumDescription())
            .WithOpenApi();
+
+        routes.MapPost("/{id:int}/pergunta", static async (IMediator mediator, [FromBody] CreatePerguntaEspecialistaRequest request, [FromRoute] int id, CancellationToken cancellationToken)
+            =>
+        {
+            if (id != request.EspecialistaId)
+                throw new InputRequestDataInvalidException("Id", "Os IDs do especialista não conferem");
+
+            return await mediator.SendCommand(request, cancellationToken: cancellationToken);
+        })
+           .WithName("AddEspecialistaPergunta")
+           .Accepts<CreatePerguntaEspecialistaRequest>("application/json")
+           .Produces<ApiResponse<bool>>(StatusCodes.Status200OK)
+           .Produces<ProblemDetails>(StatusCodes.Status400BadRequest)
+           .Produces<ProblemDetails>(StatusCodes.Status404NotFound)
+           .Produces<ProblemDetails>(StatusCodes.Status401Unauthorized)
+           .Produces<ProblemDetails>(StatusCodes.Status403Forbidden)
+           .WithDescription("Adicionar uma pergunta diretamente para o Especialista pelo ID especificado do Especialista")
+           .WithSummary("Adicionar uma pergunta diretamente para o Especialista pelo ID especificado do Especialista")
+           .RequireAuthorization(ETipoRequireAuthorization.OnlyPacientes.GetEnumDescription())
+           .WithOpenApi();
+        
         #endregion
 
         #region [ PUT ]
@@ -223,7 +247,7 @@ internal static class EspecialistaEndpoints
            .Produces<ProblemDetails>(StatusCodes.Status403Forbidden)
            .WithDescription("Atualizar os dados do Especialista pelo ID especificado do Especialista")
            .WithSummary("Atualizar os dados do Especialista pelo ID especificado do Especialista")
-           .RequireAuthorization("AdminOrEspecialista")
+           .RequireAuthorization(ETipoRequireAuthorization.AdminOrEspecialista.GetEnumDescription())
            .WithOpenApi();
 
         routes.MapPut("/{id:int}/convenios-medicos", static async (IMediator mediator, [FromBody] UpdateConvenioMedicoRequest request, [FromRoute] int id, CancellationToken cancellationToken)
@@ -243,7 +267,7 @@ internal static class EspecialistaEndpoints
            .Produces<ProblemDetails>(StatusCodes.Status403Forbidden)
            .WithDescription("Atualizar o convênio médico atendido pelo Especialista pelo ID especificado do Especialista")
            .WithSummary("Atualizar o convênio médico atendido pelo Especialista pelo ID especificado do Especialista")
-           .RequireAuthorization("AdminOrEspecialista")
+           .RequireAuthorization(ETipoRequireAuthorization.AdminOrEspecialista.GetEnumDescription())
            .WithOpenApi();
 
         routes.MapPut("/{id:int}/especialidades", static async (IMediator mediator, [FromBody] UpdateEspecialidadeRequest request, [FromRoute] int id, CancellationToken cancellationToken)
@@ -263,7 +287,7 @@ internal static class EspecialistaEndpoints
            .Produces<ProblemDetails>(StatusCodes.Status403Forbidden)
            .WithDescription("Atualizar a especialidade atendida pelo Especialista pelo ID especificado do Especialista")
            .WithSummary("Atualizar a especialidade atendida pelo Especialista pelo ID especificado do Especialista")
-           .RequireAuthorization("AdminOrEspecialista")
+           .RequireAuthorization(ETipoRequireAuthorization.AdminOrEspecialista.GetEnumDescription())
            .WithOpenApi();
 
         routes.MapPut("/{id:int}/locais-atendimento", static async (IMediator mediator, [FromBody] UpdateLocalAtendimentoRequest request, [FromRoute] int id, CancellationToken cancellationToken)
@@ -283,7 +307,7 @@ internal static class EspecialistaEndpoints
            .Produces<ProblemDetails>(StatusCodes.Status403Forbidden)
            .WithDescription("Atualizar o local de atendimento do Especialista pelo ID especificado do Especialista")
            .WithSummary("Atualizar o local de atendimento do Especialista pelo ID especificado do Especialista")
-           .RequireAuthorization("AdminOrEspecialista")
+           .RequireAuthorization(ETipoRequireAuthorization.AdminOrEspecialista.GetEnumDescription())
            .WithOpenApi();
         #endregion
 
@@ -305,7 +329,7 @@ internal static class EspecialistaEndpoints
            .Produces<ProblemDetails>(StatusCodes.Status403Forbidden)
            .WithDescription("Deletar o convênio médico atendido pelo Especialista pelo ID especificado do Especialista")
            .WithSummary("Deletar o convênio médico atendido pelo Especialista pelo ID especificado do Especialista")
-           .RequireAuthorization("AdminOrEspecialista")
+           .RequireAuthorization(ETipoRequireAuthorization.AdminOrEspecialista.GetEnumDescription())
            .WithOpenApi();
 
         routes.MapDelete("/{id:int}/especialidades", static async (IMediator mediator, [FromBody] DeleteEspecialidadeRequest request, [FromRoute] int id, CancellationToken cancellationToken)
@@ -325,7 +349,7 @@ internal static class EspecialistaEndpoints
            .Produces<ProblemDetails>(StatusCodes.Status403Forbidden)
            .WithDescription("Deletar a especialidade atendida pelo Especialista pelo ID especificado do Especialista")
            .WithSummary("Deletar a especialidade atendida pelo Especialista pelo ID especificado do Especialista")
-           .RequireAuthorization("AdminOrEspecialista")
+           .RequireAuthorization(ETipoRequireAuthorization.AdminOrEspecialista.GetEnumDescription())
            .WithOpenApi();
 
         routes.MapDelete("/{id:int}/locais-atendimento", static async (IMediator mediator, [FromBody] DeleteLocalAtendimentoRequest request, [FromRoute] int id, CancellationToken cancellationToken)
@@ -345,7 +369,7 @@ internal static class EspecialistaEndpoints
            .Produces<ProblemDetails>(StatusCodes.Status403Forbidden)
            .WithDescription("Deletar o local de atendimento do Especialista pelo ID especificado do Especialista")
            .WithSummary("Deletar o local de atendimento do Especialista pelo ID especificado do Especialista")
-           .RequireAuthorization("AdminOrEspecialista")
+           .RequireAuthorization(ETipoRequireAuthorization.AdminOrEspecialista.GetEnumDescription())
            .WithOpenApi();
         #endregion
 

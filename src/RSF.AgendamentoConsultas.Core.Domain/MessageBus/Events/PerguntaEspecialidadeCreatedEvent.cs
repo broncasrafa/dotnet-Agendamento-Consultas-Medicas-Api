@@ -1,6 +1,6 @@
 ﻿namespace RSF.AgendamentoConsultas.Core.Domain.MessageBus.Events;
 
-public class PerguntaCreatedEvent : Event
+public class PerguntaEspecialidadeCreatedEvent : Event
 {
     public int EspecialidadeId { get; private set; }
     public string EspecialidadeNome { get; private set; }
@@ -10,7 +10,7 @@ public class PerguntaCreatedEvent : Event
     public int PerguntaId { get; private set; }
     public string Pergunta { get; private set; }
 
-    public PerguntaCreatedEvent(int especialidadeId, string especialidadeNome, int pacienteId, string pacienteNome, string pacienteEmail, int perguntaId, string pergunta)
+    public PerguntaEspecialidadeCreatedEvent(int especialidadeId, string especialidadeNome, int pacienteId, string pacienteNome, string pacienteEmail, int perguntaId, string pergunta)
     {
         EspecialidadeId = especialidadeId;
         EspecialidadeNome = especialidadeNome;

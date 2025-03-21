@@ -4,23 +4,23 @@ using Microsoft.Extensions.Options;
 using Microsoft.Extensions.DependencyInjection;
 using RSF.AgendamentoConsultas.Core.Domain.Notifications;
 using RSF.AgendamentoConsultas.Core.Domain.MessageBus.Events;
+using RSF.AgendamentoConsultas.Core.Domain.Interfaces.Repositories;
 using RSF.AgendamentoConsultas.Infra.MessageBroker.Configurations;
 using RSF.AgendamentoConsultas.Infra.Notifications.Templates;
-using RSF.AgendamentoConsultas.Core.Domain.Interfaces.Repositories;
 
 namespace RSF.AgendamentoConsultas.Consumers.Notification.Subscribers;
 
-public sealed class PerguntaCreatedSubscriber : RabbitMQConsumerBase
+public sealed class PerguntaEspecialidadeCreatedSubscriber : RabbitMQConsumerBase
 {
-    private readonly ILogger<PerguntaCreatedSubscriber> _logger;
+    private readonly ILogger<PerguntaEspecialidadeCreatedSubscriber> _logger;
     private readonly IServiceProvider _serviceProvider;
     private readonly string _queueName;
 
-    public PerguntaCreatedSubscriber(ILogger<PerguntaCreatedSubscriber> logger, IOptions<RabbitMQSettings> options, IServiceProvider serviceProvider)
-        : base(logger, options, options.Value.PerguntasQueueName)
+    public PerguntaEspecialidadeCreatedSubscriber(ILogger<PerguntaEspecialidadeCreatedSubscriber> logger, IOptions<RabbitMQSettings> options, IServiceProvider serviceProvider)
+        : base(logger, options, options.Value.PerguntasEspecialidadeQueueName)
     {
         _logger = logger;
-        _queueName = options.Value.PerguntasQueueName;
+        _queueName = options.Value.PerguntasEspecialidadeQueueName;
         _serviceProvider = serviceProvider;
     }
 
@@ -31,23 +31,21 @@ public sealed class PerguntaCreatedSubscriber : RabbitMQConsumerBase
         using var scope = _serviceProvider.CreateScope();
 
         var especialistaRepository = scope.ServiceProvider.GetRequiredService<IEspecialistaRepository>();
-        var mailSender = scope.ServiceProvider.GetRequiredService<PerguntaCreatedEmail>();
 
-        var @event = JsonSerializer.Deserialize<PerguntaCreatedEvent>(message);
+        var mailSender = scope.ServiceProvider.GetRequiredService<PerguntaEspecialidadeCreatedEmail>();
+
+        var @event = JsonSerializer.Deserialize<PerguntaEspecialidadeCreatedEvent>(message);
 
         var especialistas = await especialistaRepository.GetAllByEspecialidadeIdAsync(@event.EspecialidadeId);
+        var listTo = new List<MailTo>();
+        listTo = especialistas.Select(esp => new MailTo(esp.Nome, esp.Email)).ToList();
 
-        foreach (var esp in especialistas)
-        {
-            await mailSender.SendEmailAsync(
-                to: new MailTo(esp.Nome, esp.Email),
+        await mailSender.SendEmailAsync(
+                toList: listTo,
                 pacienteNome: @event.PacienteNome,
                 especialidadeNome: @event.EspecialidadeNome,
                 pergunta: @event.Pergunta,
-                perguntaId: @event.PerguntaId,
-                especialistaId: esp.EspecialistaId,
-                especialistaNome: esp.Nome);
-        }
+                perguntaId: @event.PerguntaId);
 
         await Task.CompletedTask;
     }

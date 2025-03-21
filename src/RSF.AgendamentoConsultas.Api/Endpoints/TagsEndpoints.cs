@@ -4,6 +4,8 @@ using RSF.AgendamentoConsultas.Api.Extensions;
 using RSF.AgendamentoConsultas.Core.Application.Features.Tags.Query.GetAll;
 using RSF.AgendamentoConsultas.Core.Application.Features.Tags.Query.GetById;
 using RSF.AgendamentoConsultas.Core.Application.Features.Tags.Responses;
+using RSF.AgendamentoConsultas.CrossCutting.Shareable.Enums;
+using RSF.AgendamentoConsultas.CrossCutting.Shareable.Extensions;
 using MediatR;
 
 namespace RSF.AgendamentoConsultas.Api.Endpoints;
@@ -22,7 +24,7 @@ internal static class TagsEndpoints
             .Produces<ProblemDetails>(StatusCodes.Status403Forbidden)
             .WithDescription("Obter a lista de Tags")
             .WithSummary("Obter a lista de Tags")
-            .RequireAuthorization("AdminOrPaciente")
+            .RequireAuthorization(ETipoRequireAuthorization.AdminOrPaciente.GetEnumDescription())
             .WithOpenApi();
 
         routes.MapGet("/{id:int}", static async (IMediator mediator, [FromRoute] int id, CancellationToken cancellationToken) => await mediator.SendCommand(new SelectTagsByIdRequest(id), cancellationToken: cancellationToken))
@@ -33,7 +35,7 @@ internal static class TagsEndpoints
             .Produces<ProblemDetails>(StatusCodes.Status403Forbidden)
             .WithDescription("Obter a Tag pelo ID especificado")
             .WithSummary("Obter a Tag pelo ID especificado")
-            .RequireAuthorization("AdminOrPaciente")
+            .RequireAuthorization(ETipoRequireAuthorization.AdminOrPaciente.GetEnumDescription())
             .WithOpenApi();
 
         return routes;

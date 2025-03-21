@@ -9,7 +9,8 @@ public static class ServiceCollectionConsumers
 {
     public static IServiceCollection RegisterConsumersServices(this IServiceCollection services)
     {
-        services.AddHostedService<PerguntaCreatedSubscriber>();
+        services.AddHostedService<PerguntaEspecialidadeCreatedSubscriber>();
+        services.AddHostedService<PerguntaEspecialistaCreatedSubscriber>();
         services.AddHostedService<RespostaCreatedSubscriber>();
         services.AddHostedService<AgendamentoCreatedSubscriber>();
         services.AddHostedService<AgendamentoCanceledByPacienteSubscriber>();

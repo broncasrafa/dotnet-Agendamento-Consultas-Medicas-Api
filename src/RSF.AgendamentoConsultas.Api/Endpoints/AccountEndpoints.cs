@@ -14,6 +14,8 @@ using RSF.AgendamentoConsultas.Core.Application.Features.Account.Command.ChangeP
 using RSF.AgendamentoConsultas.Core.Application.Features.Account.Command.UpdateAuthenticatedUserInfo;
 using RSF.AgendamentoConsultas.Core.Application.Features.Account.Command.DeleteAuthenticatedUserInfo;
 using RSF.AgendamentoConsultas.Core.Application.Features.Account.Query.GetAuthenticatedUserInfo;
+using RSF.AgendamentoConsultas.CrossCutting.Shareable.Enums;
+using RSF.AgendamentoConsultas.CrossCutting.Shareable.Extensions;
 using MediatR;
 
 namespace RSF.AgendamentoConsultas.Api.Endpoints;
@@ -47,7 +49,7 @@ internal static class AccountEndpoints
             .Produces<ProblemDetails>(StatusCodes.Status403Forbidden)
             .WithDescription("Realizar o registro de Administradores e Consultores na plataforma")
             .WithSummary("Realizar o registro de Administradores e Consultores na plataforma")
-            .RequireAuthorization("OnlyAdmin")
+            .RequireAuthorization(ETipoRequireAuthorization.OnlyAdmin.GetEnumDescription())
             .WithOpenApi();
 
         routes.MapPost("/register/pacientes", static async (IMediator mediator, [FromBody] RegisterPacienteRequest request, CancellationToken cancellationToken)

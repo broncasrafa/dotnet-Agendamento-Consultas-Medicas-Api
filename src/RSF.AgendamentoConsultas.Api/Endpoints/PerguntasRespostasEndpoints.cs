@@ -4,6 +4,8 @@ using RSF.AgendamentoConsultas.Api.Models;
 using RSF.AgendamentoConsultas.Core.Application.Features.PerguntasRespostas.Responses;
 using RSF.AgendamentoConsultas.Core.Application.Features.PerguntasRespostas.Query.GetRespostasById;
 using RSF.AgendamentoConsultas.Core.Application.Features.PerguntasRespostas.Command.CreateResposta;
+using RSF.AgendamentoConsultas.CrossCutting.Shareable.Enums;
+using RSF.AgendamentoConsultas.CrossCutting.Shareable.Extensions;
 using MediatR;
 
 namespace RSF.AgendamentoConsultas.Api.Endpoints;
@@ -26,7 +28,7 @@ internal static class PerguntasRespostasEndpoints
             .Produces<ProblemDetails>(StatusCodes.Status403Forbidden)
             .WithDescription("Adicionar uma Resposta a pergunta feita ao Especialista pelo ID especificado da Pergunta")
             .WithSummary("Adicionar uma Resposta a pergunta feita ao Especialista pelo ID especificado da Pergunta")
-            .RequireAuthorization("AdminOrEspecialista")
+            .RequireAuthorization(ETipoRequireAuthorization.AdminOrEspecialista.GetEnumDescription())
             .WithOpenApi();
         #endregion
 

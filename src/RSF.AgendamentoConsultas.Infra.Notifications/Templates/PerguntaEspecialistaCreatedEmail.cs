@@ -3,9 +3,9 @@ using Amazon.S3;
 
 namespace RSF.AgendamentoConsultas.Infra.Notifications.Templates;
 
-public class PerguntaCreatedEmail : MailTemplateBase
+public class PerguntaEspecialistaCreatedEmail : MailTemplateBase
 {
-    public PerguntaCreatedEmail(IMailSender mailSender, IAmazonS3 s3Client) 
+    public PerguntaEspecialistaCreatedEmail(IMailSender mailSender, IAmazonS3 s3Client) 
         : base(mailSender, s3Client)
     {
     }
@@ -13,21 +13,19 @@ public class PerguntaCreatedEmail : MailTemplateBase
     public async Task SendEmailAsync(
         MailTo to,
         string pacienteNome,
+        string especialistaNome,
         string especialidadeNome,
         string pergunta,
-        int perguntaId,
-        int especialistaId,
-        string especialistaNome)
+        int perguntaId)
     {
-        var htmlBody = await GetHtmlTemplateFromS3Async(key: "pergunta_created_template.html");
+        var htmlBody = await GetHtmlTemplateFromS3Async(key: "pergunta_especialista_created_template.html");
         
         htmlBody = htmlBody
             .Replace("{{PacienteNome}}", pacienteNome)
+            .Replace("{{EspecialistaNome}}", especialistaNome)
             .Replace("{{EspecialidadeNome}}", especialidadeNome)
             .Replace("{{Pergunta}}", pergunta)
-            .Replace("{{PerguntaId}}", perguntaId.ToString())
-            .Replace("{{EspecialistaId}}", especialistaId.ToString())
-            .Replace("{{EspecialistaNome}}", especialistaNome);
+            .Replace("{{PerguntaId}}", perguntaId.ToString());
         
         await SendEmailAsync(to, "Você tem uma nova Pergunta!", htmlBody);
     }

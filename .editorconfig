@@ -120,6 +120,9 @@ dotnet_diagnostic.CS8618.severity = none
 # CS8632: The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
 dotnet_diagnostic.CS8632.severity = none
 
+# CA1002: Não expor listas genéricas
+dotnet_diagnostic.CA1002.severity = suggestion
+
 # CA1008: Enumerações devem ter valor zero
 dotnet_diagnostic.CA1008.severity = suggestion
 

@@ -1,6 +1,5 @@
 ﻿using System.Text;
 using System.Diagnostics.CodeAnalysis;
-
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -11,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.IdentityModel.JsonWebTokens;
 using RSF.AgendamentoConsultas.Core.Domain.Notifications;
 using RSF.AgendamentoConsultas.Core.Domain.MessageBus.Bus;
 using RSF.AgendamentoConsultas.Core.Domain.Entities;
@@ -30,7 +30,6 @@ using RSF.AgendamentoConsultas.Infra.Identity.Configurations;
 using RSF.AgendamentoConsultas.Infra.Identity.JWT;
 using RSF.AgendamentoConsultas.Infra.Identity.AccountManager;
 using Amazon.S3;
-using Microsoft.IdentityModel.JsonWebTokens;
 
 namespace RSF.AgendamentoConsultas.CrossCutting.IoC;
 
@@ -123,6 +122,7 @@ public static class ServiceCollectionInfrastructure
         services.AddScoped<IPerguntaRespostaReacaoRepository, PerguntaRespostaReacaoRepository>();
         services.AddScoped<ITipoStatusConsultaRepository, TipoStatusConsultaRepository>();
         services.AddScoped<IPacienteEspecialistaFavoritosRepository, PacienteEspecialistaFavoritosRepository>();
+        services.AddScoped<IEspecialistaPerguntaRepository, EspecialistaPerguntaRepository>();
     }
 
     private static void AddRabbitMQ(this IServiceCollection services, IConfiguration configuration)
@@ -146,7 +146,8 @@ public static class ServiceCollectionInfrastructure
         services.AddTransient<IMailSender, MailSender>();
 
         // Registrando e-mails específicos
-        services.AddTransient<PerguntaCreatedEmail>();
+        services.AddTransient<PerguntaEspecialidadeCreatedEmail>();
+        services.AddTransient<PerguntaEspecialistaCreatedEmail>();
         services.AddTransient<RespostaCreatedEmail>();
         services.AddTransient<AgendamentoCreatedEmail>();
         services.AddTransient<AgendamentoCanceledByPacienteEmail>();

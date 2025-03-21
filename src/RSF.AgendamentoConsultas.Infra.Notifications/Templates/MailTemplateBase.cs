@@ -49,4 +49,6 @@ public abstract class MailTemplateBase
 
     protected async Task SendEmailAsync(MailTo to, string subject, string body)
         => await _mailSender.SendMailAsync(to, subject, body);
+    protected async Task SendEmailAsync(List<MailTo> toList, string subject, string body)
+        => await _mailSender.SendMailAsync(toList, subject, body);
 }

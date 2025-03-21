@@ -2,6 +2,8 @@
 using RSF.AgendamentoConsultas.Api.Extensions;
 using RSF.AgendamentoConsultas.Api.Models;
 using RSF.AgendamentoConsultas.CrossCutting.Shareable.Exceptions;
+using RSF.AgendamentoConsultas.CrossCutting.Shareable.Enums;
+using RSF.AgendamentoConsultas.CrossCutting.Shareable.Extensions;
 using RSF.AgendamentoConsultas.Core.Application.Features.PacienteDependente.Responses;
 using RSF.AgendamentoConsultas.Core.Application.Features.PacienteDependente.Query.GetDependenteById;
 using RSF.AgendamentoConsultas.Core.Application.Features.PacienteDependente.Query.GetDependenteByIdPlanosMedicos;
@@ -22,7 +24,7 @@ internal static class PacienteDependenteEndpoints
     {
         var routes = builder.MapGroup("api/dependentes")
                             .WithTags("Paciente Dependente")
-                            .RequireAuthorization("AdminOrPaciente");
+                            .RequireAuthorization(ETipoRequireAuthorization.AdminOrPaciente.GetEnumDescription());
 
         #region [ POST ]
         routes.MapPost("/", static async (IMediator mediator, [FromBody] CreatePacienteDependenteRequest request, CancellationToken cancellationToken) 

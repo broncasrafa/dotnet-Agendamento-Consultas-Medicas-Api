@@ -10,8 +10,9 @@ public class RabbitMQSettings
     public int Port { get; set; }
 
     
-    public string PerguntasQueueName { get; set; }
-    public string RespostasQueueName { get; set; }    
+    public string PerguntasEspecialidadeQueueName { get; set; }
+    public string PerguntasEspecialistaQueueName { get; set; }
+    public string RespostasPerguntasQueueName { get; set; }    
     public string AgendamentoQueueName { get; set; }    
     public string AgendamentoCanceladoPacienteQueueName { get; set; }    
     public string AgendamentoCanceladoEspecialistaQueueName { get; set; }  

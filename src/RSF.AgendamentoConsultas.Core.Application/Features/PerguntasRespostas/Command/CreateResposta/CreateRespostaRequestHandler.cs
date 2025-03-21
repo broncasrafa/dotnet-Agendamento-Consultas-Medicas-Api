@@ -51,7 +51,7 @@ public class CreateRespostaRequestHandler : IRequestHandler<CreateRespostaReques
 
         // envia a mensagem para a fila de respostas
         var @event = new RespostaCreatedEvent(pergunta.PacienteId, paciente.Nome, paciente.Email, pergunta.Especialidade.NomePlural, request.EspecialistaId, especialista.Nome, resposta.PerguntaRespostaId, request.Resposta);
-        _eventBus.Publish(@event, _configuration.GetSection("RabbitMQ:RespostasQueueName").Value);
+        _eventBus.Publish(@event, _configuration.GetSection("RabbitMQ:RespostasPerguntasQueueName").Value);
 
         return await Task.FromResult(rowsAffected > 0);
     }

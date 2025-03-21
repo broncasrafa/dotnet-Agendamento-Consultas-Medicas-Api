@@ -8,6 +8,8 @@ using RSF.AgendamentoConsultas.Core.Application.Features.Agendamento.Command.Can
 using RSF.AgendamentoConsultas.Core.Application.Features.Agendamento.Command.CancelAgendamentoByEspecialista;
 using RSF.AgendamentoConsultas.Core.Application.Features.Agendamento.Command.ConfirmAgendamentoByPaciente;
 using RSF.AgendamentoConsultas.Core.Application.Features.Agendamento.Command.ConfirmAgendamentoByEspecialista;
+using RSF.AgendamentoConsultas.CrossCutting.Shareable.Enums;
+using RSF.AgendamentoConsultas.CrossCutting.Shareable.Extensions;
 using MediatR;
 
 namespace RSF.AgendamentoConsultas.Api.Endpoints;
@@ -30,7 +32,7 @@ internal static class AgendamentoConsultaEndpoints
             .Produces<ProblemDetails>(StatusCodes.Status403Forbidden)
             .WithDescription("Adicionar um agendamento de uma consulta")
             .WithSummary("Adicionar um agendamento de uma consulta")
-            .RequireAuthorization("AdminOrPaciente")
+            .RequireAuthorization(ETipoRequireAuthorization.AdminOrPaciente.GetEnumDescription())
             .WithOpenApi();
         #endregion
 
@@ -46,7 +48,7 @@ internal static class AgendamentoConsultaEndpoints
             .Produces<ProblemDetails>(StatusCodes.Status403Forbidden)
             .WithDescription("Cancelamento do agendamento de uma consulta pelo paciente")
             .WithSummary("Cancelamento do agendamento de uma consulta pelo paciente")
-            .RequireAuthorization("AdminOrPaciente")
+            .RequireAuthorization(ETipoRequireAuthorization.AdminOrPaciente.GetEnumDescription())
             .WithOpenApi();
 
         routes.MapPut("/cancelamento/especialista", static async (IMediator mediator, [FromBody] CancelAgendamentoByEspecialistaRequest request, CancellationToken cancellationToken)
@@ -60,7 +62,7 @@ internal static class AgendamentoConsultaEndpoints
             .Produces<ProblemDetails>(StatusCodes.Status403Forbidden)
             .WithDescription("Cancelamento do agendamento de uma consulta pelo especialista")
             .WithSummary("Cancelamento do agendamento de uma consulta pelo especialista")
-            .RequireAuthorization("AdminOrEspecialista")
+            .RequireAuthorization(ETipoRequireAuthorization.AdminOrEspecialista.GetEnumDescription())
             .WithOpenApi();
 
         routes.MapPut("/confirmacao/paciente", static async (IMediator mediator, [FromBody] ConfirmAgendamentoByPacienteRequest request, CancellationToken cancellationToken)
@@ -74,7 +76,7 @@ internal static class AgendamentoConsultaEndpoints
             .Produces<ProblemDetails>(StatusCodes.Status403Forbidden)
             .WithDescription("Confirmação do agendamento de uma consulta pelo paciente")
             .WithSummary("Confirmação do agendamento de uma consulta pelo paciente")
-            .RequireAuthorization("AdminOrPaciente")
+            .RequireAuthorization(ETipoRequireAuthorization.AdminOrPaciente.GetEnumDescription())
             .WithOpenApi();
 
         routes.MapPut("/confirmacao/especialista", static async (IMediator mediator, [FromBody] ConfirmAgendamentoByEspecialistaRequest request, CancellationToken cancellationToken)
@@ -88,7 +90,7 @@ internal static class AgendamentoConsultaEndpoints
             .Produces<ProblemDetails>(StatusCodes.Status403Forbidden)
             .WithDescription("Confirmação do agendamento de uma consulta pelo especialista")
             .WithSummary("Confirmação do agendamento de uma consulta pelo especialista")
-            .RequireAuthorization("AdminOrEspecialista")
+            .RequireAuthorization(ETipoRequireAuthorization.AdminOrEspecialista.GetEnumDescription())
             .WithOpenApi();
         #endregion
 

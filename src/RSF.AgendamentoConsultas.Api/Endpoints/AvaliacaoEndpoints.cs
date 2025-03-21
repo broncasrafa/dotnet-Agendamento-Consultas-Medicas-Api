@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using RSF.AgendamentoConsultas.Api.Extensions;
 using RSF.AgendamentoConsultas.Api.Models;
-using RSF.AgendamentoConsultas.Core.Application.Features.Avaliacao.Query.GetAvaliacaoById;
 using RSF.AgendamentoConsultas.Core.Application.Features.Avaliacao.Responses;
+using RSF.AgendamentoConsultas.Core.Application.Features.Avaliacao.Query.GetAvaliacaoById;
 using RSF.AgendamentoConsultas.Core.Application.Features.Avaliacao.Command.CreateAvaliacao;
+using RSF.AgendamentoConsultas.CrossCutting.Shareable.Enums;
+using RSF.AgendamentoConsultas.CrossCutting.Shareable.Extensions;
 using MediatR;
 
 namespace RSF.AgendamentoConsultas.Api.Endpoints;
@@ -25,7 +27,7 @@ internal static class AvaliacaoEndpoints
             .Produces<ProblemDetails>(StatusCodes.Status403Forbidden)
             .WithDescription("Adicionar uma avaliação sobre o Especialista")
             .WithSummary("Adicionar uma avaliação sobre o Especialista")
-            .RequireAuthorization("AdminOrPaciente")
+            .RequireAuthorization(ETipoRequireAuthorization.AdminOrPaciente.GetEnumDescription())
             .WithOpenApi();
 
         routes.MapGet("/{id:int}", static async (IMediator mediator, [FromRoute] int id, CancellationToken cancellationToken) 

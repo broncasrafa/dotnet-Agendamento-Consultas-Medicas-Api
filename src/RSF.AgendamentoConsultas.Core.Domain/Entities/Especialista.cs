@@ -34,6 +34,7 @@ public class Especialista
     public ICollection<EspecialistaAvaliacao> Avaliacoes { get; set; }
     public ICollection<PerguntaResposta> Respostas { get; set; }
     public ICollection<AgendamentoConsulta> ConsultasAtendidas { get; set; }
+    public ICollection<EspecialistaPergunta> PerguntasEspecialista { get; set; }
 
 
     protected Especialista()

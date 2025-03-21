@@ -1,18 +1,18 @@
 ﻿using FluentValidation;
 
-namespace RSF.AgendamentoConsultas.Core.Application.Features.Pergunta.Command.CreatePergunta;
+namespace RSF.AgendamentoConsultas.Core.Application.Features.Especialista.Command.AddPerguntaEspecialista;
 
-public class CreatePerguntaRequestValidator : AbstractValidator<CreatePerguntaEspecialidadeRequest>
+public class AddPerguntaEspecialistaRequestValidator : AbstractValidator<CreatePerguntaEspecialistaRequest>
 {
-    public CreatePerguntaRequestValidator()
+    public AddPerguntaEspecialistaRequestValidator()
     {
         RuleFor(x => x.PacienteId)
             .GreaterThan(0)
             .WithMessage("O ID do Paciente deve ser maior que 0");
 
-        RuleFor(x => x.EspecialidadeId)
+        RuleFor(x => x.EspecialistaId)
             .GreaterThan(0)
-            .WithMessage("O ID da Especialidade deve ser maior que 0");
+            .WithMessage("O ID do Especialista deve ser maior que 0");
 
         RuleFor(c => c.Pergunta)
             .NotEmpty().WithMessage("O texto da Pergunta é obrigatório, não deve ser nulo ou vazio")

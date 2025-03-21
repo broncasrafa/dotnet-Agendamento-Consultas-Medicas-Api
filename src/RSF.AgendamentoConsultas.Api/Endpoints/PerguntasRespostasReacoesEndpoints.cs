@@ -3,6 +3,8 @@ using RSF.AgendamentoConsultas.Api.Extensions;
 using RSF.AgendamentoConsultas.Api.Models;
 using RSF.AgendamentoConsultas.Core.Application.Features.PerguntasRespostasReacoes.Command.CreateReacao;
 using RSF.AgendamentoConsultas.Core.Application.Features.PerguntasRespostasReacoes.Command.UpdateReacao;
+using RSF.AgendamentoConsultas.CrossCutting.Shareable.Enums;
+using RSF.AgendamentoConsultas.CrossCutting.Shareable.Extensions;
 using MediatR;
 
 namespace RSF.AgendamentoConsultas.Api.Endpoints;
@@ -25,7 +27,7 @@ internal static class PerguntasRespostasReacoesEndpoints
             .Produces<ProblemDetails>(StatusCodes.Status403Forbidden)
             .WithDescription("Adicionar uma Reação de like ou dislike a Resposta")
             .WithSummary("Adicionar uma Reação de like ou dislike a Resposta")
-            .RequireAuthorization("AdminOrPaciente")
+            .RequireAuthorization(ETipoRequireAuthorization.AdminOrPaciente.GetEnumDescription())
             .WithOpenApi();
         #endregion
 
@@ -41,7 +43,7 @@ internal static class PerguntasRespostasReacoesEndpoints
             .Produces<ProblemDetails>(StatusCodes.Status403Forbidden)
             .WithDescription("Atualiza os dados de uma Reação a Resposta, de like ou dislike ou retirar a reação")
             .WithSummary("Atualiza os dados de uma Reação a Resposta, de like ou dislike ou retirar a reação")
-            .RequireAuthorization("AdminOrPaciente")
+            .RequireAuthorization(ETipoRequireAuthorization.AdminOrPaciente.GetEnumDescription())
             .WithOpenApi();
         #endregion
 
