@@ -17,14 +17,29 @@ public class EspecialistaRepository : BaseRepository<Especialista>, IEspecialist
 
     public async ValueTask<PagedResult<Especialista>> GetAllPagedAsync(int pageNumber = 1, int pageSize = 10)
     {
-        var query = _Context.Especialistas.AsQueryable();
+        var query = _Context.Especialistas
+                        .Include(c => c.Especialidades).ThenInclude(e => e.Especialidade).ThenInclude(g => g.EspecialidadeGrupo)
+                        .Include(c => c.ConveniosMedicosAtendidos).ThenInclude(x => x.ConvenioMedico)
+                        .Include(c => c.LocaisAtendimento)
+                        .Include(c => c.Avaliacoes).ThenInclude(p => p.Paciente)
+                        .Include(c => c.Avaliacoes).ThenInclude(t => t.Marcacao)
+                        .Include(c => c.PerguntasEspecialista)
+                    .AsQueryable();
 
         return await BindQueryPagedAsync(query, pageNumber, pageSize);
     }
 
     public async ValueTask<PagedResult<Especialista>> GetAllByNamePagedAsync(string name, int pageNumber = 1, int pageSize = 10)
     {
-        var query = _Context.Especialistas.Where(c => c.Nome.Contains(name, StringComparison.InvariantCultureIgnoreCase)).AsQueryable();
+        var query = _Context.Especialistas
+                        .Include(c => c.Especialidades).ThenInclude(e => e.Especialidade).ThenInclude(g => g.EspecialidadeGrupo)
+                        .Include(c => c.ConveniosMedicosAtendidos).ThenInclude(x => x.ConvenioMedico)
+                        .Include(c => c.LocaisAtendimento)
+                        .Include(c => c.Avaliacoes).ThenInclude(p => p.Paciente)
+                        .Include(c => c.Avaliacoes).ThenInclude(t => t.Marcacao)
+                        .Include(c => c.PerguntasEspecialista)
+                        .Where(c => EF.Functions.Collate(c.Nome, "Latin1_General_CI_AS").Contains(name))
+                        .AsQueryable();
         return await BindQueryPagedAsync(query, pageNumber, pageSize);
     }
 
@@ -52,6 +67,12 @@ public class EspecialistaRepository : BaseRepository<Especialista>, IEspecialist
         return await BindQueryPagedAsync(query, pageNumber, pageSize);
     }
 
+    public async ValueTask<IReadOnlyList<Especialista>> GetByNameAsync(string name)
+        => await _Context.Especialistas
+                    .AsNoTracking()
+                    .Where(c => EF.Functions.Collate(c.Nome, "Latin1_General_CI_AS").Contains(name))
+                    .ToListAsync();
+
     public new async ValueTask<Especialista> GetByIdAsync(int id)
         => await _Context.Especialistas.AsNoTracking()
                 .Include(c => c.Especialidades).ThenInclude(e => e.Especialidade).ThenInclude(g => g.EspecialidadeGrupo)
@@ -59,6 +80,7 @@ public class EspecialistaRepository : BaseRepository<Especialista>, IEspecialist
                 .Include(c => c.LocaisAtendimento)
                 .Include(c => c.Avaliacoes).ThenInclude(p => p.Paciente)
                 .Include(c => c.Avaliacoes).ThenInclude(t => t.Marcacao)
+                .Include(c => c.PerguntasEspecialista)
                 .FirstOrDefaultAsync(c => c.EspecialistaId == id);
 
     public async ValueTask<Especialista> GetByEmailAsync(string email)

@@ -1,4 +1,5 @@
-﻿using RSF.AgendamentoConsultas.CrossCutting.Shareable.Results;
+﻿using RSF.AgendamentoConsultas.Core.Application.Features.Especialidade.Responses;
+using RSF.AgendamentoConsultas.CrossCutting.Shareable.Results;
 
 namespace RSF.AgendamentoConsultas.Core.Application.Features.Especialista.Responses;
 
@@ -62,6 +63,8 @@ public class EspecialistaResponse
             PerguntasRespostas = null
         };
     }
+    public static IReadOnlyList<EspecialistaResponse>? MapFromEntity(IEnumerable<Domain.Entities.Especialista> collection)
+        => collection is null || !collection.Any() ? default! : collection.Select(c => MapFromEntity(c)).ToList();
 
     internal static PagedResult<EspecialistaResponse> MapFromEntityPaged(PagedResult<Domain.Entities.Especialista> pagedResult, int pageNumber, int pageSize)
     {

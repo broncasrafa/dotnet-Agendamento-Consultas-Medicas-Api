@@ -40,4 +40,8 @@ public interface IBaseRepository<T> where T : class
     /// <returns>a quantidade de linhas afetadas na transação (rowsAffected)</returns>
     ValueTask<int> ChangeStatusAsync(T entity);
     ValueTask<int> SaveChangesAsync();
+
+
+    Task<IEnumerable<T>> GetAllAsync(Expression<Func<T, bool>>? expression, Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy = null, List<string>? includes = null);
+    Task<T> GetAsync(Expression<Func<T, bool>> expression, List<string>? includes = null);
 }

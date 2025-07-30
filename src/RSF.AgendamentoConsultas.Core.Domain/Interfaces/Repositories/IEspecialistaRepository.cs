@@ -18,8 +18,7 @@ public interface IEspecialistaRepository : IBaseRepository<Especialista>
     ValueTask<PagedResult<Especialista>> GetAllPagedAsync(int pageNumber = 1, int pageSize = 10);
     ValueTask<PagedResult<Especialista>> GetAllByNamePagedAsync(string name, int pageNumber = 1, int pageSize = 10);
     ValueTask<PagedResult<Especialista>> GetAllByFiltersPagedAsync(int? especialidadeId, string cidade, int pageNumber = 1, int pageSize = 10);
-
     ValueTask<IReadOnlyList<Especialista>> GetAllByEspecialidadeIdAsync(int especialidadeId);
-
+    ValueTask<IReadOnlyList<Especialista>> GetByNameAsync(string name);
     ValueTask<IReadOnlyList<Tags>> GetAllMarcacoesEspecialistaByIdAsync(int id);
 }

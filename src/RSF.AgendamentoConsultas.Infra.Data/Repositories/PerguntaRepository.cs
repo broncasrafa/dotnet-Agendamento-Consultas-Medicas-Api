@@ -43,4 +43,18 @@ public class PerguntaRepository : BaseRepository<Pergunta>, IPerguntaRepository
 
         return await BindQueryPagedAsync(query, pageNumber, pageSize);
     }
+
+    public async ValueTask<PagedResult<Pergunta>> GetByListaPerguntaIdsPagedAsync(List<int> perguntaIds, int pageNumber = 1, int pageSize = 10)
+    {
+        var query = _Context.Perguntas
+                        .AsNoTracking()
+                        .Include(c => c.Paciente)
+                        .Include(r => r.Respostas).ThenInclude(e => e.Especialista).ThenInclude(c => c.Especialidades).ThenInclude(g => g.Especialidade)
+                        .Include(r => r.Respostas).ThenInclude(e => e.Especialista).ThenInclude(c => c.Avaliacoes)
+                        .Include(r => r.Respostas).ThenInclude(rc => rc.Reacoes).ThenInclude(p => p.Paciente)
+                        .Where(c => perguntaIds.Contains(c.PerguntaId))
+                        .AsQueryable();
+
+        return await BindQueryPagedAsync(query, pageNumber, pageSize);
+    }
 }

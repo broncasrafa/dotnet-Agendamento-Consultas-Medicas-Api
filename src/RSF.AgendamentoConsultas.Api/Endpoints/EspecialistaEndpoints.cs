@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using RSF.AgendamentoConsultas.Api.Extensions;
 using RSF.AgendamentoConsultas.Api.Models;
+using RSF.AgendamentoConsultas.Core.Application.Features.Pergunta.Responses;
 using RSF.AgendamentoConsultas.Core.Application.Features.Especialista.Responses;
 using RSF.AgendamentoConsultas.Core.Application.Features.Especialista.Query.GetById;
 using RSF.AgendamentoConsultas.Core.Application.Features.Especialista.Query.GetEspecialistaRespostas;
@@ -12,6 +13,7 @@ using RSF.AgendamentoConsultas.Core.Application.Features.Especialista.Query.GetB
 using RSF.AgendamentoConsultas.Core.Application.Features.Especialista.Query.GetByNamePaged;
 using RSF.AgendamentoConsultas.Core.Application.Features.Especialista.Query.GetAllPaged;
 using RSF.AgendamentoConsultas.Core.Application.Features.Especialista.Query.GetByFilterPaged;
+using RSF.AgendamentoConsultas.Core.Application.Features.Especialista.Query.GetEspecialistaPerguntas;
 using RSF.AgendamentoConsultas.Core.Application.Features.Especialista.Command.AddConvenioMedico;
 using RSF.AgendamentoConsultas.Core.Application.Features.Especialista.Command.AddEspecialidade;
 using RSF.AgendamentoConsultas.Core.Application.Features.Especialista.Command.AddLocalAtendimento;
@@ -144,6 +146,16 @@ internal static class EspecialistaEndpoints
             .WithSummary("Obter a lista das Marcações feitas pelos pacientes sobre o Especialista pelo ID especificado")
             .AllowAnonymous()
             .WithOpenApi();
+
+        routes.MapGet("/{id:int}/perguntas", static async (IMediator mediator, [FromRoute] int id, [FromQuery] int page, [FromQuery] int items, CancellationToken cancellationToken)
+            => await mediator.SendCommand(new SelectEspecialistaPerguntasRequest(id, items, page), cancellationToken: cancellationToken))
+            .WithName("GetEspecialistaPerguntasPaged")
+            .Produces<PagedResult<PerguntaResponse>>(StatusCodes.Status200OK)
+            .Produces<ProblemDetails>(StatusCodes.Status404NotFound)
+            .WithDescription("Obter a lista paginada de Perguntas feitas diretamente ao Especialista pelo ID especificado")
+            .WithSummary("Obter a lista paginada de Perguntas feitas diretamente ao Especialista pelo ID especificado")
+            .AllowAnonymous()
+            .WithOpenApi();
         #endregion
 
         #region [ POST ]
@@ -207,7 +219,7 @@ internal static class EspecialistaEndpoints
            .RequireAuthorization(ETipoRequireAuthorization.AdminOrEspecialista.GetEnumDescription())
            .WithOpenApi();
 
-        routes.MapPost("/{id:int}/pergunta", static async (IMediator mediator, [FromBody] CreatePerguntaEspecialistaRequest request, [FromRoute] int id, CancellationToken cancellationToken)
+        routes.MapPost("/{id:int}/perguntas", static async (IMediator mediator, [FromBody] CreatePerguntaEspecialistaRequest request, [FromRoute] int id, CancellationToken cancellationToken)
             =>
         {
             if (id != request.EspecialistaId)

@@ -34,6 +34,11 @@ public record EspecialistaLocalAtendimentoResponse(
                 local.Whatsapp);
 
     public static IReadOnlyList<EspecialistaLocalAtendimentoResponse>? MapFromEntity(IEnumerable<Domain.Entities.EspecialistaLocalAtendimento> collection)
-        => collection is null || !collection.Any() ? default! : collection.Select(c => MapFromEntity(c)).ToList();
+        => collection is null || !collection.Any() 
+            ? default! 
+            : collection
+                .Where(c => !string.IsNullOrWhiteSpace(c.Logradouro))
+                .Select(c => MapFromEntity(c))
+                .ToList();
 }
 

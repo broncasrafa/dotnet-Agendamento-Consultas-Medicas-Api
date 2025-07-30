@@ -16,7 +16,7 @@ public class EspecialidadeRepository : BaseRepository<Especialidade>, IEspeciali
         => await _Context.Especialidades
                     .AsNoTracking()
                     .Include(g => g.EspecialidadeGrupo)
-                    .Where(c => c.Nome.Contains(name))
+                    .Where(c => EF.Functions.Collate(c.Nome, "Latin1_General_CI_AS").Contains(name))
                     .ToListAsync();
 
     public new async ValueTask<IReadOnlyList<Especialidade>> GetAllAsync()

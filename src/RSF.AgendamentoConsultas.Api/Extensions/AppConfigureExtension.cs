@@ -52,6 +52,7 @@ internal static class AppConfigureExtension
         app.MapPerguntasRespostasEndpoints();
         app.MapPerguntasRespostasReacoesEndpoints();
         app.MapAccountEndpoints();
+        app.MapSearchesEndpoints();
 
         return app;
     }

@@ -69,7 +69,6 @@ public class BaseRepository<T> : IBaseRepository<T> where T : class
     public async ValueTask<int> SaveChangesAsync() 
         => await Context.SaveChangesAsync().ConfigureAwait(false);
 
-
     public async ValueTask<PagedResult<TResult>> BindQueryPagedAsync<TResult>(IQueryable<TResult> query, int pageNumber, int pageSize)
     {
         var totalCount = await query.CountAsync();
@@ -83,5 +82,40 @@ public class BaseRepository<T> : IBaseRepository<T> where T : class
         Console.WriteLine(sql);
 
         return new PagedResult<TResult>(data: paginatedData, totalCount: totalCount, pageSize, pageNumber);
+    }
+
+
+    public async Task<IEnumerable<T>> GetAllAsync(Expression<Func<T, bool>>? expression, Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy = null, List<string>? includes = null)
+    {
+        IQueryable<T> query = Context.Set<T>();
+        if (expression != null)
+            query = query.Where(expression);
+
+        if (includes != null && includes.Any())
+        {
+            foreach (var include in includes)
+            {
+                query = EntityFrameworkQueryableExtensions.Include(query, include);
+            }
+        }
+        if (orderBy != null)
+            query = orderBy(query);
+
+        return await EntityFrameworkQueryableExtensions.ToListAsync(query).ConfigureAwait(false);
+    }
+
+    public async Task<T> GetAsync(Expression<Func<T, bool>> expression, List<string>? includes = null)
+    {
+        IQueryable<T> query = Context.Set<T>();
+
+        if (includes != null && includes.Any())
+        {
+            foreach (var include in includes)
+            {
+                query = EntityFrameworkQueryableExtensions.Include(query, include);
+            }
+        }
+
+        return await EntityFrameworkQueryableExtensions.FirstOrDefaultAsync(query, expression).ConfigureAwait(false);
     }
 }
