@@ -219,7 +219,7 @@ internal static class EspecialistaEndpoints
            .RequireAuthorization(ETipoRequireAuthorization.AdminOrEspecialista.GetEnumDescription())
            .WithOpenApi();
 
-        routes.MapPost("/{id:int}/perguntas", static async (IMediator mediator, [FromBody] CreatePerguntaEspecialistaRequest request, [FromRoute] int id, CancellationToken cancellationToken)
+        routes.MapPost("/{id:int}/perguntas", static async (IMediator mediator, [FromBody] AddPerguntaEspecialistaRequest request, [FromRoute] int id, CancellationToken cancellationToken)
             =>
         {
             if (id != request.EspecialistaId)
@@ -228,7 +228,7 @@ internal static class EspecialistaEndpoints
             return await mediator.SendCommand(request, cancellationToken: cancellationToken);
         })
            .WithName("AddEspecialistaPergunta")
-           .Accepts<CreatePerguntaEspecialistaRequest>("application/json")
+           .Accepts<AddPerguntaEspecialistaRequest>("application/json")
            .Produces<ApiResponse<bool>>(StatusCodes.Status200OK)
            .Produces<ProblemDetails>(StatusCodes.Status400BadRequest)
            .Produces<ProblemDetails>(StatusCodes.Status404NotFound)

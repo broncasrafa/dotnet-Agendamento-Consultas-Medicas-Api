@@ -16,8 +16,6 @@ public class UpdateAuthenticatedUserInfoRequestValidator : AbstractValidator<Upd
         RuleFor(c => c.Email).Cascade(CascadeMode.Stop)
             .EmailValidations();
 
-        RuleFor(c => c.Username)
-            .NotEmpty().WithMessage("O Username é obrigatório, não deve ser nulo ou vazio")
-            .MinimumLength(6).WithMessage("O Username deve ter no mínimo 6 caracteres");
+        RuleFor(c => c.Username).NotNullOrEmptyValidators("Username", minLength: 6);
     }
 }

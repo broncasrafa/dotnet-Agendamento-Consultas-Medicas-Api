@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using RSF.AgendamentoConsultas.Core.Application.Validators;
 
 namespace RSF.AgendamentoConsultas.Core.Application.Features.Cidade.Query.GetById;
 
@@ -6,8 +7,6 @@ public class SelectCidadeByIdRequestValidator : AbstractValidator<SelectCidadeBy
 {
     public SelectCidadeByIdRequestValidator()
     {
-        RuleFor(x => x.Id)
-            .GreaterThan(0)
-            .WithMessage("O ID da cidade deve ser maior que 0");
+        RuleFor(x => x.Id).IdValidators("cidade");
     }
 }

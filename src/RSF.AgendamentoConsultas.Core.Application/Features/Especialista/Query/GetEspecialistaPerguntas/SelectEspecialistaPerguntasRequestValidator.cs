@@ -9,8 +9,5 @@ public class SelectEspecialistaPerguntasRequestValidator : AbstractValidator<Sel
     {
         RuleFor(x => x.PageSize).PaginatedFieldValidators("PageSize");
         RuleFor(x => x.PageNum).PaginatedFieldValidators("PageNum");
-
-        RuleFor(x => x.PageNum)
-            .GreaterThan(0).WithMessage("PageNum deve ser que zero.");
     }
 }

@@ -13,7 +13,6 @@ public class ResetPasswordRequestValidator : AbstractValidator<ResetPasswordRequ
         RuleFor(c => c.NewPassword).Cascade(CascadeMode.Stop)
             .PasswordValidations();
 
-        RuleFor(c => c.ResetCode)
-            .NotEmpty().WithMessage("O Código de Reset de senha é obrigatório, não deve ser nulo ou vazio");
+        RuleFor(c => c.ResetCode).NotNullOrEmptyValidators("Código de Reset de senha");
     }
 }

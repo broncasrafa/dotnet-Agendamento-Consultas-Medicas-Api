@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using RSF.AgendamentoConsultas.Core.Application.Validators;
 
 namespace RSF.AgendamentoConsultas.Core.Application.Features.Especialidade.Query.GetById;
 
@@ -6,8 +7,6 @@ public class SelectEspecialidadeByIdRequestValidator : AbstractValidator<SelectE
 {
     public SelectEspecialidadeByIdRequestValidator()
     {
-        RuleFor(x => x.Id)
-            .GreaterThan(0)
-            .WithMessage("O ID da especialidade deve ser maior que 0");
+        RuleFor(x => x.Id).IdValidators("especialidade");
     }
 }

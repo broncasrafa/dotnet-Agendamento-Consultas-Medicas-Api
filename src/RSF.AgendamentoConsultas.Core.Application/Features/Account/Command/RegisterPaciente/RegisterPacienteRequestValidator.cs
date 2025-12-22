@@ -17,8 +17,7 @@ public class RegisterPacienteRequestValidator : AbstractValidator<RegisterPacien
             .EmailValidations();
 
         RuleFor(c => c.Username)
-            .NotEmpty().WithMessage("O Username é obrigatório, não deve ser nulo ou vazio")
-            .MinimumLength(6).WithMessage("O Username deve ter no mínimo 6 caracteres");
+            .NotNullOrEmptyValidators("Username", minLength: 6);
 
         RuleFor(c => c.Telefone).Cascade(CascadeMode.Stop)
             .TelefoneValidators();

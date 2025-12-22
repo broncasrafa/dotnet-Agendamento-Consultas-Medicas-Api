@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using RSF.AgendamentoConsultas.Core.Application.Validators;
 
 namespace RSF.AgendamentoConsultas.Core.Application.Features.Avaliacao.Query.GetAvaliacaoById;
 
@@ -6,8 +7,6 @@ public class SelectAvaliacaoByIdRequestValidator : AbstractValidator<SelectAvali
 {
     public SelectAvaliacaoByIdRequestValidator()
     {
-        RuleFor(x => x.Id)
-            .GreaterThan(0)
-            .WithMessage("O ID da avaliação deve ser maior que 0");
+        RuleFor(x => x.Id).IdValidators("avaliação");
     }
 }

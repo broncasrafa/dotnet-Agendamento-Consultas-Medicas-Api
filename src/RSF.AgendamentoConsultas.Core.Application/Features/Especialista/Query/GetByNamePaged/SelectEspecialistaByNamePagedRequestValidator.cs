@@ -9,10 +9,8 @@ public class SelectEspecialistaByNamePagedRequestValidator : AbstractValidator<S
     {
         RuleFor(x => x.PageSize).PaginatedFieldValidators("PageSize");
         RuleFor(x => x.PageNum).PaginatedFieldValidators("PageNum");
-
         RuleFor(x => x.Name)
-            .NotEmpty().WithMessage("O nome não pode ser nulo ou vazio.")
-            .MinimumLength(2).WithMessage("O nome deve ter pelo menos 2 caracteres.")
+            .NotNullOrEmptyValidators("nome", minLength: 2)
             .Matches(@"^[a-zA-ZÀ-ÿ\s]+$").WithMessage("O nome deve conter apenas letras e espaços.");
     }
 }

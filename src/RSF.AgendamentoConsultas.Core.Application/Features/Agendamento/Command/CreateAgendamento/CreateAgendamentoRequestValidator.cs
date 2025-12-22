@@ -8,25 +8,11 @@ public class CreateAgendamentoRequestValidator : AbstractValidator<CreateAgendam
 {
     public CreateAgendamentoRequestValidator()
     {
-        RuleFor(x => x.EspecialistaId)
-            .GreaterThan(0)
-            .WithMessage("O ID do Especialista deve ser maior que 0");
-
-        RuleFor(x => x.EspecialidadeId)
-            .GreaterThan(0)
-            .WithMessage("O ID da Especialidade deve ser maior que 0");
-
-        RuleFor(x => x.LocalAtendimentoId)
-            .GreaterThan(0)
-            .WithMessage("O ID do Local de atendimento deve ser maior que 0");
-
-        RuleFor(x => x.TipoConsultaId)
-            .GreaterThan(0)
-            .WithMessage("O ID do Tipo de Consulta deve ser maior que 0");
-
-        RuleFor(x => x.TipoAgendamentoId)
-            .GreaterThan(0)
-            .WithMessage("O ID do Tipo de Agendamento deve ser maior que 0");
+        RuleFor(x => x.EspecialistaId).IdValidators("Especialista");
+        RuleFor(x => x.EspecialidadeId).IdValidators("Especialidade");
+        RuleFor(x => x.LocalAtendimentoId).IdValidators("Local de atendimento");
+        RuleFor(x => x.TipoConsultaId).IdValidators("Tipo de Consulta");
+        RuleFor(x => x.TipoAgendamentoId).IdValidators("Tipo de Agendamento");
 
         RuleFor(x => x.DataConsulta)
             .NotEmpty()
@@ -37,32 +23,26 @@ public class CreateAgendamentoRequestValidator : AbstractValidator<CreateAgendam
                 .WithMessage("A data da consulta deve estar no formato 'yyyy-MM-dd'");
 
         RuleFor(x => x.HorarioConsulta)
-            .NotEmpty()
-                .WithMessage("O horário da consulta é obrigatório, não pode ser nulo ou vazio.")
+            .NotNullOrEmptyValidators("horário da consulta")
             .Matches(@"^(?:[01]\d|2[0-3]):[0-5]\d$")
                 .WithMessage("O horário da consulta deve estar no formato 'HH:mm' e ser um horário válido.");
 
-        RuleFor(c => c.MotivoConsulta)
-            .NotEmpty().WithMessage("O Motivo da consulta é obrigatório, não deve ser nulo ou vazio")
-            .MinimumLength(5).WithMessage("O Motivo da consulta deve ter pelo menos 5 caracteres");
+        RuleFor(c => c.MotivoConsulta).NotNullOrEmptyValidators("Motivo da consulta", minLength: 5);
 
         RuleFor(c => c.ValorConsulta)
             .ValorMonetarioValidations(field: "valor da consulta")
             .When(c => c.TipoAgendamentoId == (int)ETipoAgendamento.Particular);
 
-        RuleFor(c => c.TelefoneContato)
-            .TelefoneValidators();
+        RuleFor(c => c.TelefoneContato).TelefoneValidators();
 
-        RuleFor(x => x.PacienteId)
-            .GreaterThan(0)
-            .WithMessage("O ID do Paciente deve ser maior que 0");
+        RuleFor(x => x.PacienteId).IdValidators("Paciente");
 
-        RuleFor(x => x.PlanoMedicoId)
-            .GreaterThan(0).When(c => c.TipoAgendamentoId == (int)ETipoAgendamento.Convenio)
-            .WithMessage("O ID do Plano Medico do Paciente/Dependente deve ser maior que 0");
+        RuleFor(x => x.PlanoMedicoId).IdValidators("Plano Medico do Paciente/Dependente", c => c.TipoAgendamentoId == (int)ETipoAgendamento.Convenio);
+            //.GreaterThan(0).When(c => c.TipoAgendamentoId == (int)ETipoAgendamento.Convenio)
+            //.WithMessage("O ID do Plano Medico do Paciente/Dependente deve ser maior que 0");
 
-        RuleFor(x => x.DependenteId)
-            .GreaterThan(0).When(c => c.DependenteId.HasValue)
-            .WithMessage("O ID do Dependente deve ser maior que 0");
+        RuleFor(x => x.DependenteId).IdValidators("Dependente", c => c.DependenteId.HasValue);
+            //.GreaterThan(0).When(c => c.DependenteId.HasValue)
+            //.WithMessage("O ID do Dependente deve ser maior que 0");
     }
 }

@@ -3,7 +3,7 @@ using MediatR;
 
 namespace RSF.AgendamentoConsultas.Core.Application.Features.Especialista.Command.AddPerguntaEspecialista;
 
-public record CreatePerguntaEspecialistaRequest(
+public record AddPerguntaEspecialistaRequest(
     int EspecialistaId,
     int PacienteId,
     string Pergunta,

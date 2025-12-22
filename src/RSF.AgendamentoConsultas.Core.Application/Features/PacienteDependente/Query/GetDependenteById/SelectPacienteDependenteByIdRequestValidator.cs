@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using RSF.AgendamentoConsultas.Core.Application.Validators;
 
 namespace RSF.AgendamentoConsultas.Core.Application.Features.PacienteDependente.Query.GetDependenteById;
 
@@ -6,8 +7,6 @@ public class SelectPacienteDependenteByIdRequestValidator : AbstractValidator<Se
 {
     public SelectPacienteDependenteByIdRequestValidator()
     {
-        RuleFor(x => x.DependenteId)
-            .GreaterThan(0)
-            .WithMessage("O ID do Dependente deve ser maior que 0");
+        RuleFor(x => x.DependenteId).IdValidators("Dependente");
     }
 }

@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using RSF.AgendamentoConsultas.Core.Application.Validators;
 
 namespace RSF.AgendamentoConsultas.Core.Application.Features.Especialista.Command.DeleteConvenioMedico;
 
@@ -6,10 +7,7 @@ public class DeleteConvenioMedicoRequestValidator : AbstractValidator<DeleteConv
 {
     public DeleteConvenioMedicoRequestValidator()
     {
-        RuleFor(c => c.EspecialistaId)
-        .GreaterThan(0).WithMessage("O ID do Especialista deve ser maior que 0");
-
-        RuleFor(c => c.ConvenioMedicoId)
-            .GreaterThan(0).WithMessage("O ID do Convênio Médico deve ser maior que 0");
+        RuleFor(x => x.EspecialistaId).IdValidators("Especialista");
+        RuleFor(x => x.ConvenioMedicoId).IdValidators("Convênio Médico");
     }
 }

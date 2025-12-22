@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using RSF.AgendamentoConsultas.Core.Application.Validators;
 
 namespace RSF.AgendamentoConsultas.Core.Application.Features.Especialista.Command.AddEspecialidade;
 
@@ -6,14 +7,10 @@ public class AddEspecialidadeRequestValidator : AbstractValidator<AddEspecialida
 {
     public AddEspecialidadeRequestValidator()
     {
-        RuleFor(c => c.EspecialistaId)
-            .GreaterThan(0).WithMessage("O ID do Especialista deve ser maior que 0");
-
-        RuleFor(c => c.EspecialidadeId)
-            .GreaterThan(0).WithMessage("O ID da Especialidade deve ser maior que 0");
-
+        RuleFor(x => x.EspecialistaId).IdValidators("Especialista");
+        RuleFor(x => x.EspecialidadeId).IdValidators("Especialidade");
         RuleFor(c => c.TipoEspecialidade)
-            .NotEmpty().WithMessage("O Tipo de Especialidade é obrigatório, não pode ser nulo ou vazio")
+            .NotNullOrEmptyValidators("Tipo de Especialidade")
             .Must(tipo =>
                     tipo.Equals("Principal", StringComparison.InvariantCultureIgnoreCase) ||
                     tipo.Equals("SubEspecialidade", StringComparison.InvariantCultureIgnoreCase))

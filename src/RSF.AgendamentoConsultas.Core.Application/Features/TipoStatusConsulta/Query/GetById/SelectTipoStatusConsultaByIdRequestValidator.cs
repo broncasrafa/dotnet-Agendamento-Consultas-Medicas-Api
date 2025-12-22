@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using RSF.AgendamentoConsultas.Core.Application.Validators;
 
 namespace RSF.AgendamentoConsultas.Core.Application.Features.TipoStatusConsulta.Query.GetById;
 
@@ -6,8 +7,6 @@ public class SelectTipoStatusConsultaByIdRequestValidator : AbstractValidator<Se
 {
     public SelectTipoStatusConsultaByIdRequestValidator()
     {
-        RuleFor(x => x.Id)
-            .GreaterThan(0)
-            .WithMessage("O ID do Tipo de Status da Consulta deve ser maior que 0");
+        RuleFor(x => x.Id).IdValidators("Tipo de Status da Consulta");
     }
 }

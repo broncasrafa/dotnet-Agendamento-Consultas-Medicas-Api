@@ -10,14 +10,13 @@ public class RegisterEspecialistaRequestValidator : AbstractValidator<RegisterEs
     public RegisterEspecialistaRequestValidator()
     {
         RuleFor(c => c.EspecialidadeId).Cascade(CascadeMode.Stop)
-                .GreaterThan(0).WithMessage("O ID do Especialidade deve ser maior que 0");
+                .IdValidators("Especialidade");
 
         RuleFor(c => c.NomeCompleto).Cascade(CascadeMode.Stop)
             .NomeCompletoValidators("usuário");
 
         RuleFor(c => c.Username).Cascade(CascadeMode.Stop)
-            .NotEmpty().WithMessage("O Username é obrigatório, não deve ser nulo ou vazio")
-            .MinimumLength(6).WithMessage("O Username deve ter no mínimo 6 caracteres");
+            .NotNullOrEmptyValidators("Username", minLength: 6);
 
         RuleFor(c => c.Email).Cascade(CascadeMode.Stop)
             .EmailValidations();
@@ -31,8 +30,7 @@ public class RegisterEspecialistaRequestValidator : AbstractValidator<RegisterEs
             .WithMessage("O Tipo de categoria deve ser 'Basic' ou 'Premium'.");
 
         RuleFor(c => c.Licenca).Cascade(CascadeMode.Stop)
-            .NotEmpty().WithMessage("A Licença é obrigatória, não deve ser nulo ou vazia")
-            .MinimumLength(5).WithMessage("A Licença deve ter no mínimo 5 caracteres");
+            .NotNullOrEmptyValidators("Licença", minLength: 5);
 
         RuleFor(c => c.Telefone).Cascade(CascadeMode.Stop)
             .TelefoneValidators();

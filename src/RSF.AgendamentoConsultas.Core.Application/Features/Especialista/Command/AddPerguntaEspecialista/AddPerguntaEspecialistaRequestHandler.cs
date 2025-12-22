@@ -9,7 +9,7 @@ using MediatR;
 
 namespace RSF.AgendamentoConsultas.Core.Application.Features.Especialista.Command.AddPerguntaEspecialista;
 
-public class CreatePerguntaEspecialistaRequestHandler : IRequestHandler<CreatePerguntaEspecialistaRequest, Result<bool>>
+public class AddPerguntaEspecialistaRequestHandler : IRequestHandler<AddPerguntaEspecialistaRequest, Result<bool>>
 {
     private readonly IEspecialistaPerguntaRepository _repository;
     private readonly IPacienteRepository _pacienteRepository;
@@ -18,7 +18,7 @@ public class CreatePerguntaEspecialistaRequestHandler : IRequestHandler<CreatePe
     private readonly IEventBus _eventBus;
     private readonly IConfiguration _configuration;
 
-    public CreatePerguntaEspecialistaRequestHandler(
+    public AddPerguntaEspecialistaRequestHandler(
         IEspecialistaPerguntaRepository repository, 
         IPacienteRepository pacienteRepository,
         IEspecialistaRepository especialistaRepository, 
@@ -34,7 +34,7 @@ public class CreatePerguntaEspecialistaRequestHandler : IRequestHandler<CreatePe
         _configuration = configuration;
     }
 
-    public async Task<Result<bool>> Handle(CreatePerguntaEspecialistaRequest request, CancellationToken cancellationToken)
+    public async Task<Result<bool>> Handle(AddPerguntaEspecialistaRequest request, CancellationToken cancellationToken)
     {
         var especialista = await _especialistaRepository.GetByIdAsync(request.EspecialistaId);
         NotFoundException.ThrowIfNull(especialista, $"Especialista com o ID: '{request.EspecialistaId}' não encontrado");

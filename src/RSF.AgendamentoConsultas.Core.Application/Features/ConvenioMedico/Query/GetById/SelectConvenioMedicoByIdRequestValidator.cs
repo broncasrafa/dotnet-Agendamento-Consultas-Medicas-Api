@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using RSF.AgendamentoConsultas.Core.Application.Validators;
 
 namespace RSF.AgendamentoConsultas.Core.Application.Features.ConvenioMedico.Query.GetById;
 
@@ -6,8 +7,6 @@ public class SelectConvenioMedicoByIdRequestValidator : AbstractValidator<Select
 {
     public SelectConvenioMedicoByIdRequestValidator()
     {
-        RuleFor(x => x.Id)
-            .GreaterThan(0)
-            .WithMessage("O ID do convênio médico deve ser maior que 0");
+        RuleFor(x => x.Id).IdValidators("convênio médico");
     }
 }

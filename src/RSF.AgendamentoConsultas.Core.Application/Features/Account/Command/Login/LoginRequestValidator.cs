@@ -5,7 +5,7 @@ namespace RSF.AgendamentoConsultas.Core.Application.Features.Account.Command.Log
 
 public class LoginRequestValidator : AbstractValidator<LoginRequest>
 {
-    private static readonly string[] ValidTiposAcesso = { "PACIENTE", "PROFISSIONAL", "ADMINISTRADOR", "CONSULTOR" };
+    //private static readonly string[] ValidTiposAcesso = { "PACIENTE", "PROFISSIONAL", "ADMINISTRADOR", "CONSULTOR" };
 
     public LoginRequestValidator()
     {
@@ -13,7 +13,7 @@ public class LoginRequestValidator : AbstractValidator<LoginRequest>
             .EmailValidations();
 
         RuleFor(c => c.Password).Cascade(CascadeMode.Stop)
-            .NotEmpty().WithMessage("Senha é obrigatório, não deve ser nulo ou vazia");
+            .NotNullOrEmptyValidators("Senha");
 
         //RuleFor(x => x.TipoAcesso)
         //    .NotEmpty().WithMessage("O Tipo de Acesso é obrigatório, não deve ser nulo ou vazio")

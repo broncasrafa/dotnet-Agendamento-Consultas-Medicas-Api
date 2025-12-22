@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using RSF.AgendamentoConsultas.Core.Application.Validators;
 
 namespace RSF.AgendamentoConsultas.Core.Application.Features.PerguntasRespostas.Command.CreateResposta;
 
@@ -6,12 +7,8 @@ public class CreateRespostaRequestValidator : AbstractValidator<CreateRespostaRe
 {
     public CreateRespostaRequestValidator()
     {
-        RuleFor(x => x.PerguntaId)
-            .GreaterThan(0)
-            .WithMessage("O ID da Pergunta deve ser maior que 0");
-
+        RuleFor(x => x.PerguntaId).IdValidators("Pergunta");
         RuleFor(c => c.Resposta)
-            .NotEmpty().WithMessage("O texto da Resposta é obrigatório, não deve ser nulo ou vazio")
-            .MinimumLength(5).WithMessage("O texto da Resposta deve ter pelo menos 5 caracteres");
+            .NotNullOrEmptyValidators("texto da Resposta", minLength: 5);
     }
 }

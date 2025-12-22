@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using RSF.AgendamentoConsultas.Core.Application.Validators;
 
 namespace RSF.AgendamentoConsultas.Core.Application.Features.Agendamento.Command.ConfirmAgendamentoByEspecialista;
 
@@ -6,12 +7,7 @@ public class ConfirmAgendamentoByEspecialistaRequestValidator : AbstractValidato
 {
     public ConfirmAgendamentoByEspecialistaRequestValidator()
     {
-        RuleFor(x => x.AgendamentoId)
-            .GreaterThan(0)
-            .WithMessage("O ID do Agendamento deve ser maior que 0");
-
-        RuleFor(x => x.EspecialistaId)
-            .GreaterThan(0)
-            .WithMessage("O ID do Especialista deve ser maior que 0");
+        RuleFor(x => x.AgendamentoId).IdValidators("Agendamento");
+        RuleFor(x => x.EspecialistaId).IdValidators("Especialista");
     }
 }

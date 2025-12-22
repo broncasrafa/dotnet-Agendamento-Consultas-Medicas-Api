@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using RSF.AgendamentoConsultas.Core.Application.Validators;
 
 namespace RSF.AgendamentoConsultas.Core.Application.Features.Account.Command.ConfirmEmail;
 
@@ -6,10 +7,7 @@ public class ConfirmEmailRequestValidator : AbstractValidator<ConfirmEmailReques
 {
     public ConfirmEmailRequestValidator()
     {
-        RuleFor(c => c.UserId)
-            .NotEmpty().WithMessage("O Id do usuário é obrigatório, não deve ser nulo ou vazio");
-
-        RuleFor(c => c.Code)
-            .NotEmpty().WithMessage("O Código de confirmação é obrigatório, não deve ser nulo ou vazio");
+        RuleFor(c => c.UserId).NotNullOrEmptyValidators("usuário");
+        RuleFor(c => c.Code).NotNullOrEmptyValidators("Código de confirmação");
     }
 }

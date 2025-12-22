@@ -9,8 +9,7 @@ public class UpdateEspecialistaRequestValidator : AbstractValidator<UpdateEspeci
 
     public UpdateEspecialistaRequestValidator()
     {
-        RuleFor(c => c.EspecialistaId)
-                .GreaterThan(0).WithMessage("O ID do Especialista deve ser maior que 0");
+        RuleFor(x => x.EspecialistaId).IdValidators("Especialista");
 
         RuleFor(c => c.NomeCompleto).Cascade(CascadeMode.Stop)
             .NomeCompletoValidators(field: "Especialista");
@@ -28,14 +27,10 @@ public class UpdateEspecialistaRequestValidator : AbstractValidator<UpdateEspeci
                 .ValorMonetarioValidations(field: "TelemedicinaPreco");
 
         RuleFor(c => c.ExperienciaProfissional)
-                .MinimumLength(15).WithMessage("A Experiência Profissional deve ter no mínimo 15 caracteres")
-                .MaximumLength(1000).WithMessage("A Experiência Profissional deve ter no máximo 1000 caracteres")
-                .When(x => !string.IsNullOrWhiteSpace(x.ExperienciaProfissional));
+            .NotNullOrEmptyValidators("Experiência Profissional", minLength: 15, maxLength: 1000, predicate: x => !string.IsNullOrWhiteSpace(x.ExperienciaProfissional));
 
         RuleFor(c => c.FormacaoAcademica)
-                .MinimumLength(15).WithMessage("A Formação Acadêmica deve ter no mínimo 15 caracteres")
-                .MaximumLength(1000).WithMessage("A Formação Acadêmica deve ter no máximo 1000 caracteres")
-                .When(x => !string.IsNullOrWhiteSpace(x.FormacaoAcademica));
+            .NotNullOrEmptyValidators("Formação Acadêmica", minLength: 15, maxLength: 1000, predicate: x => !string.IsNullOrWhiteSpace(x.FormacaoAcademica));
     }
 
 

@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using RSF.AgendamentoConsultas.Core.Application.Validators;
 
 namespace RSF.AgendamentoConsultas.Core.Application.Features.Especialista.Command.DeleteLocalAtendimento;
 
@@ -6,10 +7,7 @@ public class DeleteLocalAtendimentoRequestValidator : AbstractValidator<DeleteLo
 {
     public DeleteLocalAtendimentoRequestValidator()
     {
-        RuleFor(c => c.EspecialistaId)
-        .GreaterThan(0).WithMessage("O ID do Especialista deve ser maior que 0");
-
-        RuleFor(c => c.LocalAtendimentoId)
-            .GreaterThan(0).WithMessage("O ID do Local de Atendimento deve ser maior que 0");
+        RuleFor(x => x.EspecialistaId).IdValidators("Especialista");
+        RuleFor(x => x.LocalAtendimentoId).IdValidators("Local de Atendimento");
     }
 }

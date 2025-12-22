@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using RSF.AgendamentoConsultas.Core.Application.Validators;
 
 namespace RSF.AgendamentoConsultas.Core.Application.Features.Pergunta.Query.GetPerguntaByIdRespostas;
 
@@ -6,8 +7,6 @@ public class SelectPerguntaByIdRespostasRequestValidator : AbstractValidator<Sel
 {
     public SelectPerguntaByIdRespostasRequestValidator()
     {
-        RuleFor(x => x.PerguntaId)
-            .GreaterThan(0)
-            .WithMessage("O ID da Pergunta deve ser maior que 0");
+        RuleFor(x => x.PerguntaId).IdValidators("Pergunta");
     }
 }

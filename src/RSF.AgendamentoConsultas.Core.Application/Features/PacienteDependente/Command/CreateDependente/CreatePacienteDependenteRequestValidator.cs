@@ -7,9 +7,7 @@ public class CreatePacienteDependenteRequestValidator : AbstractValidator<Create
 {
     public CreatePacienteDependenteRequestValidator()
     {
-        RuleFor(x => x.PacientePrincipalId)
-            .GreaterThan(0)
-            .WithMessage("O ID do Paciente Principal deve ser maior que 0");
+        RuleFor(x => x.PacientePrincipalId).IdValidators("Paciente Principal");
 
         RuleFor(c => c.NomeCompleto).Cascade(CascadeMode.Stop)
             .NomeCompletoValidators("dependente");

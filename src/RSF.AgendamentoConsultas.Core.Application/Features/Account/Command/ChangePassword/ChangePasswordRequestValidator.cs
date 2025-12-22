@@ -12,6 +12,6 @@ public class ChangePasswordRequestValidator : AbstractValidator<ChangePasswordRe
             .PasswordValidations();
 
         RuleFor(c => c.OldPassword).Cascade(CascadeMode.Stop)
-            .NotEmpty().WithMessage("A senha antiga é obrigatória, não deve ser nulo ou vazia");
+            .NotNullOrEmptyValidators("senha antiga");
     }
 }

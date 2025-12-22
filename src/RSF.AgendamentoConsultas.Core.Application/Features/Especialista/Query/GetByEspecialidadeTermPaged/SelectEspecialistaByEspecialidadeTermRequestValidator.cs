@@ -9,8 +9,6 @@ public class SelectEspecialistaByEspecialidadeTermRequestValidator : AbstractVal
     {
         RuleFor(x => x.PageSize).PaginatedFieldValidators("PageSize");
         RuleFor(x => x.PageNum).PaginatedFieldValidators("PageNum");
-        RuleFor(x => x.EspecialidadeTerm)
-            .NotEmpty().WithMessage("O Termo da especialidade não pode ser nulo ou vazio.")
-            .MinimumLength(2).WithMessage("O Termo da especialidade deve ter pelo menos 2 caracteres.");
+        RuleFor(x => x.EspecialidadeTerm).NotNullOrEmptyValidators(field: "Termo da especialidade", minLength: 2);
     }
 }

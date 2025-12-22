@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using RSF.AgendamentoConsultas.Core.Application.Validators;
 
 namespace RSF.AgendamentoConsultas.Core.Application.Features.Regiao.Query.GetByIdWithEstados;
 
@@ -6,8 +7,6 @@ public class SelectRegiaoByIdWithEstadosRequestValidator : AbstractValidator<Sel
 {
     public SelectRegiaoByIdWithEstadosRequestValidator()
     {
-        RuleFor(x => x.Id)
-            .GreaterThan(0)
-            .WithMessage("O ID da região deve ser maior que 0");
+        RuleFor(x => x.Id).IdValidators("região");
     }
 }

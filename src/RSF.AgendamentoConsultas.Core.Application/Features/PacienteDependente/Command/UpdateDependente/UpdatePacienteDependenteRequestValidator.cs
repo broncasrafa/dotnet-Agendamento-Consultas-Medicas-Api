@@ -7,11 +7,8 @@ public class UpdatePacienteDependenteRequestValidator : AbstractValidator<Update
 {
     public UpdatePacienteDependenteRequestValidator()
     {
-        RuleFor(x => x.DependenteId)
-            .GreaterThan(0).WithMessage("O ID do Dependente deve ser maior que 0");
-
-        RuleFor(x => x.PacientePrincipalId)
-            .GreaterThan(0).WithMessage("O ID do Paciente Principal deve ser maior que 0");
+        RuleFor(x => x.DependenteId).IdValidators("Dependente");
+        RuleFor(x => x.PacientePrincipalId).IdValidators("Paciente Principal");
 
         RuleFor(c => c.NomeCompleto).Cascade(CascadeMode.Stop)
             .NomeCompletoValidators("dependente");

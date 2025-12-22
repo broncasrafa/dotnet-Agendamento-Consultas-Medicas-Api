@@ -1,5 +1,6 @@
-﻿using RSF.AgendamentoConsultas.CrossCutting.Shareable.Enums;
-using FluentValidation;
+﻿using FluentValidation;
+using RSF.AgendamentoConsultas.Core.Application.Validators;
+using RSF.AgendamentoConsultas.CrossCutting.Shareable.Enums;
 
 namespace RSF.AgendamentoConsultas.Core.Application.Features.PerguntasRespostasReacoes.Command.UpdateReacao;
 
@@ -7,17 +8,9 @@ public class UpdateReacaoRespostaRequestValidator : AbstractValidator<UpdateReac
 {
     public UpdateReacaoRespostaRequestValidator()
     {
-        RuleFor(x => x.ReacaoId)
-            .GreaterThan(0)
-            .WithMessage("O ID da Reação deve ser maior que 0");
-
-        RuleFor(x => x.RespostaId)
-            .GreaterThan(0)
-            .WithMessage("O ID da Resposta deve ser maior que 0");
-
-        RuleFor(x => x.PacienteId)
-            .GreaterThan(0)
-            .WithMessage("O ID da Paciente deve ser maior que 0");
+        RuleFor(x => x.ReacaoId).IdValidators("Reação");
+        RuleFor(x => x.RespostaId).IdValidators("Resposta");
+        RuleFor(x => x.PacienteId).IdValidators("Paciente");
 
         RuleFor(x => x.Reacao)
             .NotEmpty().When(x => x.Reacao != null)

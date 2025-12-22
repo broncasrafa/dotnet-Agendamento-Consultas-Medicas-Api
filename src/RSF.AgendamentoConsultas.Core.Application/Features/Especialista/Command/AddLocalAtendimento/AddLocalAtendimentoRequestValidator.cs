@@ -7,34 +7,30 @@ namespace RSF.AgendamentoConsultas.Core.Application.Features.Especialista.Comman
     {
         public AddLocalAtendimentoRequestValidator()
         {
-            RuleFor(c => c.EspecialistaId)
-                .GreaterThan(0).WithMessage("O ID do Especialista deve ser maior que 0");
+            RuleFor(x => x.EspecialistaId).IdValidators("Especialista");
 
-            RuleFor(c => c.Nome)
-                .NotEmpty().WithMessage("O Nome do Local de Atendimento é obrigatório, não deve ser nulo ou vazio")
-                .MinimumLength(6).WithMessage("O Nome do Local de Atendimento deve ter no mínimo 6 caracteres")
-                .MaximumLength(200).WithMessage("O Nome do Local de Atendimento deve ter no máximo 200 caracteres");
+            RuleFor(c => c.Nome).NotNullOrEmptyValidators("Nome do Local de Atendimento", minLength: 6, maxLength: 200);
 
             RuleFor(x => x.Logradouro)
-                .NotEmpty()
-                .MinimumLength(5).WithMessage("O Logradouro deve ter pelo menos 5 caracteres")
-                .MaximumLength(255).WithMessage("O Logradouro deve ter no máximo 255 caracteres")
-                    .When(x => !string.Equals(x.Nome, "Teleconsulta", StringComparison.OrdinalIgnoreCase) &&
-                               !string.Equals(x.Nome, "Telemedicine", StringComparison.OrdinalIgnoreCase))
-                            .WithMessage("O Logradouro é obrigatório, exceto para Teleconsulta ou Telemedicine");
+                .NotNullOrEmptyValidators(
+                    field:"Logradouro", 
+                    minLength: 5, 
+                    maxLength: 255, 
+                    predicate: x => !string.Equals(x.Nome, "Teleconsulta", StringComparison.OrdinalIgnoreCase) &&
+                               !string.Equals(x.Nome, "Telemedicine", StringComparison.OrdinalIgnoreCase), 
+                    message: "O Logradouro é obrigatório, exceto para Teleconsulta ou Telemedicine");
 
             RuleFor(x => x.Complemento)
-                .MinimumLength(3).WithMessage("O Complemento deve ter pelo menos 3 caracteres")
-                .MaximumLength(50).WithMessage("O Complemento deve ter no máximo 50 caracteres")
-                .When(x => !string.IsNullOrWhiteSpace(x.Complemento));
+                .NotNullOrEmptyValidators("Complemento", minLength: 3, maxLength: 50, predicate: x => !string.IsNullOrWhiteSpace(x.Complemento));
 
             RuleFor(x => x.Bairro)
-                .NotEmpty()
-                .MinimumLength(5).WithMessage("O Bairro deve ter pelo menos 5 caracteres")
-                .MaximumLength(100).WithMessage("O Bairro deve ter no máximo 100 caracteres")
-                    .When(x => !string.Equals(x.Nome, "Teleconsulta", StringComparison.OrdinalIgnoreCase) &&
-                               !string.Equals(x.Nome, "Telemedicine", StringComparison.OrdinalIgnoreCase))
-                            .WithMessage("O Bairro é obrigatório, exceto para Teleconsulta ou Telemedicine");
+                .NotNullOrEmptyValidators(
+                    field: "Bairro", 
+                    minLength: 5, 
+                    maxLength: 100,
+                    predicate: x => !string.Equals(x.Nome, "Teleconsulta", StringComparison.OrdinalIgnoreCase) &&
+                               !string.Equals(x.Nome, "Telemedicine", StringComparison.OrdinalIgnoreCase),
+                    message: "O Bairro é obrigatório, exceto para Teleconsulta ou Telemedicine");
 
             RuleFor(x => x.Cep)
                 .NotEmpty()
@@ -44,13 +40,22 @@ namespace RSF.AgendamentoConsultas.Core.Application.Features.Especialista.Comman
                                !string.Equals(x.Nome, "Telemedicine", StringComparison.OrdinalIgnoreCase))
                             .WithMessage("O CEP é obrigatório, exceto para Teleconsulta ou Telemedicine");
 
+            //RuleFor(x => x.Cidade)
+            //    .NotEmpty()
+            //    .MinimumLength(3).WithMessage("O Cidade deve ter pelo menos 3 caracteres")
+            //    .MaximumLength(100).WithMessage("O Cidade deve ter no máximo 100 caracteres")
+            //        .When(x => !string.Equals(x.Nome, "Teleconsulta", StringComparison.OrdinalIgnoreCase) &&
+            //                   !string.Equals(x.Nome, "Telemedicine", StringComparison.OrdinalIgnoreCase))
+            //                .WithMessage("O Cidade é obrigatório, exceto para Teleconsulta ou Telemedicine");
             RuleFor(x => x.Cidade)
-                .NotEmpty()
-                .MinimumLength(3).WithMessage("O Cidade deve ter pelo menos 3 caracteres")
-                .MaximumLength(100).WithMessage("O Cidade deve ter no máximo 100 caracteres")
-                    .When(x => !string.Equals(x.Nome, "Teleconsulta", StringComparison.OrdinalIgnoreCase) &&
-                               !string.Equals(x.Nome, "Telemedicine", StringComparison.OrdinalIgnoreCase))
-                            .WithMessage("O Cidade é obrigatório, exceto para Teleconsulta ou Telemedicine");
+                .NotNullOrEmptyValidators(
+                    field: "Cidade",
+                    minLength: 3,
+                    maxLength: 100,
+                    predicate: x => !string.Equals(x.Nome, "Teleconsulta", StringComparison.OrdinalIgnoreCase) &&
+                               !string.Equals(x.Nome, "Telemedicine", StringComparison.OrdinalIgnoreCase),
+                    message: "A Cidade é obrigatório, exceto para Teleconsulta ou Telemedicine"
+                );
 
             RuleFor(x => x.Estado)
                 .UfValidations().When(x => !string.Equals(x.Nome, "Teleconsulta", StringComparison.OrdinalIgnoreCase) &&
@@ -61,12 +66,10 @@ namespace RSF.AgendamentoConsultas.Core.Application.Features.Especialista.Comman
                 .ValorMonetarioValidations(field: "Preco");            
 
             RuleFor(c => c.TipoAtendimento)
-                .MinimumLength(6).WithMessage("O Tipo de Atendimento deve ter no mínimo 6 caracteres")
-                .MaximumLength(200).WithMessage("O Tipo de Atendimento deve ter no máximo 200 caracteres")
-                .When(x => !string.IsNullOrWhiteSpace(x.TipoAtendimento));
+                .NotNullOrEmptyValidators("Tipo de Atendimento", minLength: 6, maxLength: 200, predicate: x => !string.IsNullOrWhiteSpace(x.TipoAtendimento));
 
             RuleFor(x => x.Telefone)
-                .NotEmpty().WithMessage("O Telefone é obrigatório, não deve ser nulo ou vazio")
+                .NotNullOrEmptyValidators(field:"O Telefone é obrigatório, não deve ser nulo ou vazio")
                 .Matches(@"^(\d+;?)*$").WithMessage("O Telefone deve conter apenas números e ponto-e-vírgula (';') para separar vários números de telefone");
 
             RuleFor(x => x.Whatsapp)
