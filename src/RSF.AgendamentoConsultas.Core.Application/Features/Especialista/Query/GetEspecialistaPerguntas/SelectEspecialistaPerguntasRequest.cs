@@ -5,7 +5,7 @@ using OperationResult;
 
 namespace RSF.AgendamentoConsultas.Core.Application.Features.Especialista.Query.GetEspecialistaPerguntas;
 
-public record SelectEspecialistaPerguntasRequest(int EspecialistaId, int PageSize = 10, int PageNum = 1) 
+public record SelectEspecialistaPerguntasRequest(int EspecialistaId, int PageSize = 15, int PageNum = 1) 
     : IRequest<Result<PagedResult<PerguntaResponse>>>
 {
 }

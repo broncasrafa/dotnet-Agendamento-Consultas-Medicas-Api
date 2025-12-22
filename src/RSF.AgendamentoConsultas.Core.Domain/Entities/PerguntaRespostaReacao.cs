@@ -55,7 +55,6 @@ public class PerguntaRespostaReacao
     private void Validate()
     {
         DomainValidation.IdentifierGreaterThanZero(RespostaId, nameof(RespostaId));
-        DomainValidation.IdentifierGreaterThanZero(PacienteId, nameof(PacienteId));
-        //if (!string.IsNullOrWhiteSpace(Reacao)) DomainValidation.PossiblesValidTypes(TypeValids.VALID_REACOES, value: Reacao, nameof(Reacao));        
+        DomainValidation.IdentifierGreaterThanZero(PacienteId, nameof(PacienteId));      
     }
 }

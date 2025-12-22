@@ -62,11 +62,11 @@ internal static class EspecialistaEndpoints
         
         routes.MapGet("/filter", static async (
             IMediator mediator, 
-            CancellationToken cancellationToken,
             [FromQuery] string cidade, 
             [FromQuery] int? especialidadeId,
             [FromQuery] int page = 1, 
-            [FromQuery] int items = 10)
+            [FromQuery] int items = 15,
+            CancellationToken cancellationToken = default)
             => await mediator.SendCommand(new SelectEspecialistaByFiltersPagedRequest(especialidadeId, cidade, items, page), cancellationToken: cancellationToken))
             .WithName("GetEspecialistasByFiltersPaged")
             .Produces<PagedResult<EspecialistaResponse>>(StatusCodes.Status200OK)

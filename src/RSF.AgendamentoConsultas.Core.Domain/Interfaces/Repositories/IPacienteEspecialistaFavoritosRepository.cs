@@ -6,6 +6,6 @@ namespace RSF.AgendamentoConsultas.Core.Domain.Interfaces.Repositories;
 
 public interface IPacienteEspecialistaFavoritosRepository : IBaseRepository<PacienteEspecialistaFavoritos>
 {
-    ValueTask<PagedResult<Especialista>> GetAllPagedAsync(int pacienteId, int pageNumber = 1, int pageSize = 10);
+    ValueTask<PagedResult<Especialista>> GetAllPagedAsync(int pacienteId, int pageNumber, int pageSize);
     ValueTask<PacienteEspecialistaFavoritos> GetByIdsAsync(int pacienteId, int especialistaId);
 }

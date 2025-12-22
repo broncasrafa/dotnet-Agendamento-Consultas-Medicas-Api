@@ -1,5 +1,5 @@
-﻿using RSF.AgendamentoConsultas.Core.Domain.Validation;
-using FluentValidation;
+﻿using FluentValidation;
+using RSF.AgendamentoConsultas.Core.Application.Validators;
 
 namespace RSF.AgendamentoConsultas.Core.Application.Features.Especialista.Query.GetEspecialistaPerguntas;
 
@@ -7,12 +7,8 @@ public class SelectEspecialistaPerguntasRequestValidator : AbstractValidator<Sel
 {
     public SelectEspecialistaPerguntasRequestValidator()
     {
-        RuleFor(x => x.EspecialistaId)
-            .GreaterThan(0).WithMessage("O Id do Especialista deve ser que zero.");
-
-        RuleFor(x => x.PageSize)
-            .GreaterThan(0).WithMessage("PageSize deve ser maior que zero.")
-            .Must(pageSize => TypeValids.VALID_PAGE_SIZES.Contains(pageSize)).WithMessage("PageSize deve ser 5, 10, 20, 50 ou 100.");
+        RuleFor(x => x.PageSize).PaginatedFieldValidators("PageSize");
+        RuleFor(x => x.PageNum).PaginatedFieldValidators("PageNum");
 
         RuleFor(x => x.PageNum)
             .GreaterThan(0).WithMessage("PageNum deve ser que zero.");

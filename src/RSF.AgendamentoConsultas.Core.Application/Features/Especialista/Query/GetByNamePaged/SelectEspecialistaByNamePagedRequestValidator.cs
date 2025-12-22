@@ -1,19 +1,14 @@
 ﻿using FluentValidation;
+using RSF.AgendamentoConsultas.Core.Application.Validators;
 
 namespace RSF.AgendamentoConsultas.Core.Application.Features.Especialista.Query.GetByNamePaged;
 
 public class SelectEspecialistaByNamePagedRequestValidator : AbstractValidator<SelectEspecialistaByNamePagedRequest>
 {
-    private static readonly int[] validPageSizes = [5, 10, 20, 50, 100];
-
     public SelectEspecialistaByNamePagedRequestValidator()
     {
-        RuleFor(x => x.PageSize)
-            .GreaterThan(0).WithMessage("PageSize deve ser maior que zero.")
-            .Must(pageSize => validPageSizes.Contains(pageSize)).WithMessage("PageSize deve ser 5, 10, 20, 50 ou 100.");
-
-        RuleFor(x => x.PageNum)
-            .GreaterThan(0).WithMessage("PageNum deve ser que zero.");
+        RuleFor(x => x.PageSize).PaginatedFieldValidators("PageSize");
+        RuleFor(x => x.PageNum).PaginatedFieldValidators("PageNum");
 
         RuleFor(x => x.Name)
             .NotEmpty().WithMessage("O nome não pode ser nulo ou vazio.")

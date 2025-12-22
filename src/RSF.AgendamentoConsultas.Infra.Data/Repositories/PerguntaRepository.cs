@@ -30,7 +30,7 @@ public class PerguntaRepository : BaseRepository<Pergunta>, IPerguntaRepository
         .Include(es => es.Especialidade).ThenInclude(g => g.EspecialidadeGrupo)
         .FirstOrDefaultAsync(c => c.PerguntaId == perguntaId && c.EspecialidadeId == especialidadeId);
 
-    public async ValueTask<PagedResult<Pergunta>> GetAllPagedAsync(int pageNumber = 1, int pageSize = 10)
+    public async ValueTask<PagedResult<Pergunta>> GetAllPagedAsync(int pageNumber, int pageSize)
     {
         var query = _Context.Perguntas
                         .AsNoTracking()
@@ -44,7 +44,7 @@ public class PerguntaRepository : BaseRepository<Pergunta>, IPerguntaRepository
         return await BindQueryPagedAsync(query, pageNumber, pageSize, orderBy: c => c.PerguntaId);
     }
 
-    public async ValueTask<PagedResult<Pergunta>> GetByListaPerguntaIdsPagedAsync(List<int> perguntaIds, int pageNumber = 1, int pageSize = 10)
+    public async ValueTask<PagedResult<Pergunta>> GetByListaPerguntaIdsPagedAsync(List<int> perguntaIds, int pageNumber, int pageSize)
     {
         var query = _Context.Perguntas
                         .AsNoTracking()

@@ -15,7 +15,7 @@ public class EspecialistaRepository : BaseRepository<Especialista>, IEspecialist
     public EspecialistaRepository(AppDbContext context) : base(context) => _Context = context;
 
 
-    public async ValueTask<PagedResult<Especialista>> GetAllPagedAsync(int pageNumber = 1, int pageSize = 10)
+    public async ValueTask<PagedResult<Especialista>> GetAllPagedAsync(int pageNumber, int pageSize)
     {
         var query = _Context.Especialistas
                         .Include(c => c.Especialidades).ThenInclude(e => e.Especialidade).ThenInclude(g => g.EspecialidadeGrupo)
@@ -29,7 +29,7 @@ public class EspecialistaRepository : BaseRepository<Especialista>, IEspecialist
         return await BindQueryPagedAsync(query, pageNumber, pageSize, orderBy: c => c.EspecialistaId);
     }
 
-    public async ValueTask<PagedResult<Especialista>> GetAllByNamePagedAsync(string name, int pageNumber = 1, int pageSize = 10)
+    public async ValueTask<PagedResult<Especialista>> GetAllByNamePagedAsync(string name, int pageNumber, int pageSize)
     {
         var query = _Context.Especialistas
                         .Include(c => c.Especialidades).ThenInclude(e => e.Especialidade).ThenInclude(g => g.EspecialidadeGrupo)
@@ -43,7 +43,7 @@ public class EspecialistaRepository : BaseRepository<Especialista>, IEspecialist
         return await BindQueryPagedAsync(query, pageNumber, pageSize, orderBy: c => c.EspecialistaId);
     }
 
-    public async ValueTask<PagedResult<Especialista>> GetAllByFiltersPagedAsync(int? especialidadeId, string cidade, int pageNumber = 1, int pageSize = 10)
+    public async ValueTask<PagedResult<Especialista>> GetAllByFiltersPagedAsync(int? especialidadeId, string cidade, int pageNumber, int pageSize)
     {
         var query = _Context.Especialistas.AsNoTracking()
                 .Include(c => c.Especialidades).ThenInclude(e => e.Especialidade).ThenInclude(g => g.EspecialidadeGrupo)
@@ -67,7 +67,7 @@ public class EspecialistaRepository : BaseRepository<Especialista>, IEspecialist
         return await BindQueryPagedAsync(query, pageNumber, pageSize, orderBy: c => c.EspecialistaId);
     }
 
-    public async ValueTask<PagedResult<Especialista>> GetAllByEspecialidadeTermPagedAsync(string especialidadeTerm, int pageNumber = 1, int pageSize = 10)
+    public async ValueTask<PagedResult<Especialista>> GetAllByEspecialidadeTermPagedAsync(string especialidadeTerm, int pageNumber, int pageSize)
     {
         var query = _Context.Especialistas.AsNoTracking()
                 .Include(c => c.Especialidades).ThenInclude(e => e.Especialidade).ThenInclude(g => g.EspecialidadeGrupo)

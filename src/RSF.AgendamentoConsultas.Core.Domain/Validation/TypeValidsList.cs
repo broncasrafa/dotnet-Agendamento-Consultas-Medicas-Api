@@ -21,6 +21,4 @@ public static class TypeValids
         (int)ETipoStatusConsulta.ExpiradoProfissional,
         (int)ETipoStatusConsulta.ExpiradoPaciente,
     ];
-    public static readonly string[] VALID_REACOES = ["Like", "Dislike"];
-    public static readonly int[] VALID_PAGE_SIZES = [5, 10, 20, 50, 100];
 }

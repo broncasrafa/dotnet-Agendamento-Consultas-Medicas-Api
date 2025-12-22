@@ -13,7 +13,7 @@ public class PacienteEspecialistaFavoritosRepository : BaseRepository<PacienteEs
 
     public PacienteEspecialistaFavoritosRepository(AppDbContext context) : base(context) => _Context = context;
 
-    public async ValueTask<PagedResult<Especialista>> GetAllPagedAsync(int pacienteId, int pageNumber = 1, int pageSize = 10)
+    public async ValueTask<PagedResult<Especialista>> GetAllPagedAsync(int pacienteId, int pageNumber, int pageSize)
     {
         var query = _Context.Favoritos.AsNoTracking()
             .Include(e => e.Especialista).ThenInclude(e => e.Especialidades).ThenInclude(e => e.Especialidade)

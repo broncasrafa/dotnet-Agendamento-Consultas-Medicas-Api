@@ -5,4 +5,4 @@ using OperationResult;
 
 namespace RSF.AgendamentoConsultas.Core.Application.Features.Pergunta.Query.GetAllPaged;
 
-public record SelectPerguntaPagedRequest(int PageSize = 10, int PageNum = 1) : IRequest<Result<PagedResult<PerguntaResponse>>>;
+public record SelectPerguntaPagedRequest(int PageSize = 15, int PageNum = 1) : IRequest<Result<PagedResult<PerguntaResponse>>>;
