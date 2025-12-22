@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using RSF.AgendamentoConsultas.Api.Extensions;
 using RSF.AgendamentoConsultas.Api.Models;
-using RSF.AgendamentoConsultas.Core.Application.Features.PerguntasRespostas.Responses;
-using RSF.AgendamentoConsultas.Core.Application.Features.PerguntasRespostas.Query.GetRespostasById;
 using RSF.AgendamentoConsultas.Core.Application.Features.PerguntasRespostas.Command.CreateResposta;
+using RSF.AgendamentoConsultas.Core.Application.Features.PerguntasRespostas.Query.GetRespostasById;
+using RSF.AgendamentoConsultas.Core.Application.Features.PerguntasRespostas.Responses;
+using RSF.AgendamentoConsultas.Core.Application.Features.PerguntasRespostas.Command.Like;
+using RSF.AgendamentoConsultas.Core.Application.Features.PerguntasRespostas.Command.Dislike;
 using RSF.AgendamentoConsultas.CrossCutting.Shareable.Enums;
 using RSF.AgendamentoConsultas.CrossCutting.Shareable.Extensions;
 using MediatR;
@@ -30,6 +32,20 @@ internal static class PerguntasRespostasEndpoints
             .WithSummary("Adicionar uma Resposta a pergunta feita ao Especialista pelo ID especificado da Pergunta")
             .RequireAuthorization(ETipoRequireAuthorization.AdminOrEspecialista.GetEnumDescription())
             .WithOpenApi();
+
+        routes.MapPost("/like", static async (IMediator mediator, [FromBody] CreateLikeRespostaRequest request, CancellationToken cancellationToken)
+            => await mediator.SendCommand(request, cancellationToken: cancellationToken))
+            .WithName("LikeResposta")
+            .Accepts<CreateLikeRespostaRequest>("application/json")
+            .Produces<ApiResponse<bool>>(StatusCodes.Status200OK)
+            .Produces<ProblemDetails>(StatusCodes.Status400BadRequest)
+            .Produces<ProblemDetails>(StatusCodes.Status404NotFound)
+            .Produces<ProblemDetails>(StatusCodes.Status401Unauthorized)
+            .Produces<ProblemDetails>(StatusCodes.Status403Forbidden)
+            .WithDescription("Dar um like na Resposta")
+            .WithSummary("Dar um like na Resposta")
+            .RequireAuthorization(ETipoRequireAuthorization.AdminOrPaciente.GetEnumDescription())
+            .WithOpenApi();        
         #endregion
 
         #region [ GET ]        
@@ -41,6 +57,22 @@ internal static class PerguntasRespostasEndpoints
             .Produces<ProblemDetails>(StatusCodes.Status404NotFound)
             .WithDescription("Obter os dados da Resposta a pergunta feita ao Especialista pelo ID especificado")
             .WithSummary("Obter os dados da Resposta a pergunta feita ao Especialista pelo ID especificado")
+            .WithOpenApi();
+        #endregion
+
+        #region [ DELETE ]
+        routes.MapDelete("/dislike", static async (IMediator mediator, [FromBody] CreateDislikeRespostaRequest request, CancellationToken cancellationToken)
+            => await mediator.SendCommand(request, cancellationToken: cancellationToken))
+            .WithName("DislikeResposta")
+            .Accepts<CreateDislikeRespostaRequest>("application/json")
+            .Produces<ApiResponse<bool>>(StatusCodes.Status200OK)
+            .Produces<ProblemDetails>(StatusCodes.Status400BadRequest)
+            .Produces<ProblemDetails>(StatusCodes.Status404NotFound)
+            .Produces<ProblemDetails>(StatusCodes.Status401Unauthorized)
+            .Produces<ProblemDetails>(StatusCodes.Status403Forbidden)
+            .WithDescription("Dar um dislike na Resposta")
+            .WithSummary("Dar um dislike na Resposta")
+            .RequireAuthorization(ETipoRequireAuthorization.AdminOrPaciente.GetEnumDescription())
             .WithOpenApi();
         #endregion
 

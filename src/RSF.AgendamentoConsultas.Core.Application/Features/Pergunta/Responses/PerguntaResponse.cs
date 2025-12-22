@@ -17,7 +17,7 @@ public class PerguntaResponse
     public IReadOnlyList<RespostaResponse> Respostas { get; private set; }
 
 
-    public static PerguntaResponse MapFromEntity(Domain.Entities.Pergunta entity)
+    public static PerguntaResponse MapFromEntity(Domain.Entities.Pergunta entity, int? pacienteId = null)
         => entity is null ? default! : new PerguntaResponse
         {
             Id = entity.PerguntaId,
@@ -32,11 +32,11 @@ public class PerguntaResponse
                 Nome = entity.Especialidade.NomePlural,
                 Grupo = entity.Especialidade.EspecialidadeGrupo?.NomePlural!
             },
-            Respostas = RespostaResponse.MapFromEntity(entity.Respostas)
+            Respostas = RespostaResponse.MapFromEntity(entity.Respostas, pacienteId)
         };
 
-    public static IReadOnlyList<PerguntaResponse>? MapFromEntity(IEnumerable<Domain.Entities.Pergunta> convenios)
-        => convenios is null || !convenios.Any() ? null : convenios.Select(MapFromEntity).ToList();
+    public static IReadOnlyList<PerguntaResponse>? MapFromEntity(IEnumerable<Domain.Entities.Pergunta> collection, int? pacienteId = null)
+        => collection is null || !collection.Any() ? null : collection.Select(c => MapFromEntity(c, pacienteId)).ToList();
 
     internal static PagedResult<PerguntaResponse> MapFromEntityPaged(PagedResult<Domain.Entities.Pergunta> pagedResult, int pageNumber, int pageSize)
     {

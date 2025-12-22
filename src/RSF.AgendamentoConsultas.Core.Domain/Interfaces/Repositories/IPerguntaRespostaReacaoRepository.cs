@@ -5,4 +5,5 @@ namespace RSF.AgendamentoConsultas.Core.Domain.Interfaces.Repositories;
 
 public interface IPerguntaRespostaReacaoRepository : IBaseRepository<PerguntaRespostaReacao>
 {
+    Task<int> DeleteReactionPerguntaRespostaAsync(int respostaId, int pacienteId);
 }

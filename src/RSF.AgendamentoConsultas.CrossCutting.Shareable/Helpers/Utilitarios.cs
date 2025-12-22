@@ -48,7 +48,7 @@ public static class Utilitarios
     /// </summary>
     /// <param name="data">datetime a ser formatada</param>
     public static string DataFormatadaExtenso(DateTime data)
-        => data.ToString("dddd, dd 'de' MMMM 'às' HH:mm", new System.Globalization.CultureInfo("pt-BR"));
+        => data.ToString("dddd, dd 'de' MMMM 'de' yyyy 'às' HH:mm", new System.Globalization.CultureInfo("pt-BR"));
 
 
     /// <summary>

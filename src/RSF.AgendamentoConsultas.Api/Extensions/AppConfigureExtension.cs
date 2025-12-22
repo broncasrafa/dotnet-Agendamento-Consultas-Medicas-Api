@@ -50,7 +50,6 @@ internal static class AppConfigureExtension
         app.MapAgendamentoConsultaEndpoints();
         app.MapPerguntasEndpoints();
         app.MapPerguntasRespostasEndpoints();
-        app.MapPerguntasRespostasReacoesEndpoints();
         app.MapAccountEndpoints();
         app.MapSearchesEndpoints();
 
@@ -70,7 +69,6 @@ internal static class AppConfigureExtension
                 c.ShowExtensions();
                 c.ShowCommonExtensions();
                 c.EnableDeepLinking();
-
                 //c.InjectStylesheet("/css/swagger-ui/swagger-dark.css");
             });
         }

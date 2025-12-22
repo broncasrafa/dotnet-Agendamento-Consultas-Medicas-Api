@@ -26,6 +26,7 @@ public class AppDbContext : DbContext
     public DbSet<AgendamentoConsulta> Agendamentos { get; set; }
     public DbSet<Pergunta> Perguntas { get; set; }
     public DbSet<PerguntaResposta> Respostas { get; set; }
+    public DbSet<PerguntaRespostaReacao> ReacoesRespostas { get; set; }
     public DbSet<PacienteEspecialistaFavoritos> Favoritos { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

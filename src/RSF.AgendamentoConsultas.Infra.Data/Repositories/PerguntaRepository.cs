@@ -17,7 +17,7 @@ public class PerguntaRepository : BaseRepository<Pergunta>, IPerguntaRepository
         .AsNoTracking()
         .Include(c => c.Paciente)
         .Include(r => r.Respostas).ThenInclude(e => e.Especialista).ThenInclude(c => c.Especialidades).ThenInclude(g => g.Especialidade)
-        .Include(r => r.Respostas).ThenInclude(rc => rc.Reacoes).ThenInclude(p => p.Paciente)
+        .Include(r => r.Respostas).ThenInclude(rc => rc.Reacoes)
         .Include(es => es.Especialidade).ThenInclude(g => g.EspecialidadeGrupo)
         .FirstOrDefaultAsync(c => c.PerguntaId == id);
 
