@@ -67,6 +67,20 @@ public class EspecialistaRepository : BaseRepository<Especialista>, IEspecialist
         return await BindQueryPagedAsync(query, pageNumber, pageSize, orderBy: c => c.EspecialistaId);
     }
 
+    public async ValueTask<PagedResult<Especialista>> GetAllByEspecialidadeTermPagedAsync(string especialidadeTerm, int pageNumber = 1, int pageSize = 10)
+    {
+        var query = _Context.Especialistas.AsNoTracking()
+                .Include(c => c.Especialidades).ThenInclude(e => e.Especialidade).ThenInclude(g => g.EspecialidadeGrupo)
+                .Include(c => c.ConveniosMedicosAtendidos).ThenInclude(x => x.ConvenioMedico)
+                .Include(c => c.LocaisAtendimento)
+                .Include(c => c.Avaliacoes).ThenInclude(p => p.Paciente)
+                .Include(c => c.Avaliacoes).ThenInclude(t => t.Marcacao)
+                .Where(es => es.Especialidades.Any(ee => EF.Functions.Collate(ee.Especialidade.Term, "SQL_Latin1_General_CP1_CI_AI") == especialidadeTerm))
+                .AsQueryable();
+
+        return await BindQueryPagedAsync(query, pageNumber, pageSize, orderBy: c => c.EspecialistaId);
+    }
+
     public async ValueTask<IReadOnlyList<Especialista>> GetByNameAsync(string name)
         => await _Context.Especialistas
                     .AsNoTracking()

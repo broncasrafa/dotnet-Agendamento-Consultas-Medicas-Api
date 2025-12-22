@@ -18,10 +18,14 @@ public class EspecialistaEspecialidadeConfiguration : IEntityTypeConfiguration<E
 
         builder.HasOne(ee => ee.Especialista)
             .WithMany(e => e.Especialidades)
-            .HasForeignKey(ee => ee.EspecialistaId);
+            .HasForeignKey(ee => ee.EspecialistaId)
+            .OnDelete(DeleteBehavior.Restrict);
 
         builder.HasOne(ee => ee.Especialidade)
-            .WithMany()
-            .HasForeignKey(ee => ee.EspecialidadeId);
+            .WithMany(e => e.EspecialistasEspecialidade)
+            .HasForeignKey(ee => ee.EspecialidadeId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        builder.HasIndex(e => new { e.EspecialistaId, e.EspecialidadeId }).IsUnique();
     }
 }

@@ -1,14 +1,20 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using RSF.AgendamentoConsultas.Api.Models;
+﻿using MediatR;
+
+using Microsoft.AspNetCore.Mvc;
+
 using RSF.AgendamentoConsultas.Api.Extensions;
+using RSF.AgendamentoConsultas.Api.Models;
 using RSF.AgendamentoConsultas.Core.Application.Features.Especialidade.Query.GetAll;
 using RSF.AgendamentoConsultas.Core.Application.Features.Especialidade.Query.GetById;
 using RSF.AgendamentoConsultas.Core.Application.Features.Especialidade.Query.GetByName;
+using RSF.AgendamentoConsultas.Core.Application.Features.Especialidade.Responses;
 using RSF.AgendamentoConsultas.Core.Application.Features.EspecialidadeGrupo.Query.GetAll;
 using RSF.AgendamentoConsultas.Core.Application.Features.EspecialidadeGrupo.Query.GetById;
-using RSF.AgendamentoConsultas.Core.Application.Features.Especialidade.Responses;
 using RSF.AgendamentoConsultas.Core.Application.Features.EspecialidadeGrupo.Responses;
-using MediatR;
+using RSF.AgendamentoConsultas.Core.Application.Features.Especialista.Query.GetByEspecialidadeTermPaged;
+using RSF.AgendamentoConsultas.Core.Application.Features.Especialista.Query.GetByFilterPaged;
+using RSF.AgendamentoConsultas.Core.Application.Features.Especialista.Responses;
+using RSF.AgendamentoConsultas.CrossCutting.Shareable.Results;
 
 namespace RSF.AgendamentoConsultas.Api.Endpoints;
 
@@ -57,6 +63,16 @@ internal static class EspecialidadesEndpoints
             .Produces<ProblemDetails>(StatusCodes.Status404NotFound)
             .WithDescription("Obter o Grupo de Especialidade pelo ID especificado")
             .WithSummary("Obter o Grupo de Especialidade pelo ID especificado")
+            .WithOpenApi();
+
+        routes.MapGet("/{term}/especialistas", static async (IMediator mediator, [FromRoute] string term, [FromQuery] int page = 1, [FromQuery] int items = 15, CancellationToken cancellationToken = default)
+            => await mediator.SendCommand(new SelectEspecialistaByEspecialidadeTermRequest(term, items, page), cancellationToken: cancellationToken))
+            .WithName("GetEspecialistasByEspecialidadeTermPaged")
+            .Produces<PagedResult<EspecialistaResponse>>(StatusCodes.Status200OK)
+            .Produces<ProblemDetails>(StatusCodes.Status404NotFound)
+            .WithDescription("Obter a lista paginada de Especialistas da Especialidade especificada")
+            .WithSummary("Obter a lista paginada de Especialistas da Especialidade especificada")
+            .AllowAnonymous()
             .WithOpenApi();
 
         return routes;

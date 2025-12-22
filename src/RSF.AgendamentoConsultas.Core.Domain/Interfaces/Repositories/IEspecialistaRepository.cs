@@ -13,11 +13,11 @@ public interface IEspecialistaRepository : IBaseRepository<Especialista>
     ValueTask<Especialista> GetByIdWithConveniosMedicosAsync(int id);
     ValueTask<Especialista> GetByIdWithAvaliacoesAsync(int id);
     ValueTask<Especialista> GetByIdWithLocaisAtendimentoAsync(int id);
-    //ValueTask<Especialista> GetByIdWithTagsAsync(int id);
     ValueTask<Especialista> GetByIdWithRespostasAsync(int id);
     ValueTask<PagedResult<Especialista>> GetAllPagedAsync(int pageNumber = 1, int pageSize = 10);
     ValueTask<PagedResult<Especialista>> GetAllByNamePagedAsync(string name, int pageNumber = 1, int pageSize = 10);
     ValueTask<PagedResult<Especialista>> GetAllByFiltersPagedAsync(int? especialidadeId, string cidade, int pageNumber = 1, int pageSize = 10);
+    ValueTask<PagedResult<Especialista>> GetAllByEspecialidadeTermPagedAsync(string especialidadeTerm, int pageNumber = 1, int pageSize = 10);
     ValueTask<IReadOnlyList<Especialista>> GetAllByEspecialidadeIdAsync(int especialidadeId);
     ValueTask<IReadOnlyList<Especialista>> GetByNameAsync(string name);
     ValueTask<IReadOnlyList<Tags>> GetAllMarcacoesEspecialistaByIdAsync(int id);

@@ -23,6 +23,7 @@ public class AppDbContext : DbContext
     public DbSet<TipoAgendamento> TiposAgendamento { get; set; }
     public DbSet<Paciente> Pacientes { get; set; }
     public DbSet<Especialista> Especialistas { get; set; }
+    public DbSet<EspecialistaEspecialidade> EspecialistaEspecialidades { get; set; }
     public DbSet<AgendamentoConsulta> Agendamentos { get; set; }
     public DbSet<Pergunta> Perguntas { get; set; }
     public DbSet<PerguntaResposta> Respostas { get; set; }
