@@ -26,7 +26,7 @@ public class EspecialistaRepository : BaseRepository<Especialista>, IEspecialist
                         .Include(c => c.PerguntasEspecialista)
                     .AsQueryable();
 
-        return await BindQueryPagedAsync(query, pageNumber, pageSize);
+        return await BindQueryPagedAsync(query, pageNumber, pageSize, orderBy: c => c.EspecialistaId);
     }
 
     public async ValueTask<PagedResult<Especialista>> GetAllByNamePagedAsync(string name, int pageNumber = 1, int pageSize = 10)
@@ -40,7 +40,7 @@ public class EspecialistaRepository : BaseRepository<Especialista>, IEspecialist
                         .Include(c => c.PerguntasEspecialista)
                         .Where(c => EF.Functions.Collate(c.Nome, "Latin1_General_CI_AS").Contains(name))
                         .AsQueryable();
-        return await BindQueryPagedAsync(query, pageNumber, pageSize);
+        return await BindQueryPagedAsync(query, pageNumber, pageSize, orderBy: c => c.EspecialistaId);
     }
 
     public async ValueTask<PagedResult<Especialista>> GetAllByFiltersPagedAsync(int? especialidadeId, string cidade, int pageNumber = 1, int pageSize = 10)
@@ -62,9 +62,9 @@ public class EspecialistaRepository : BaseRepository<Especialista>, IEspecialist
         }
 
         // 🔹 Paginação otimizada para evitar timeout
-        query = query.OrderBy(e => e.EspecialistaId); // Ordem por ID melhora performance do banco
+        //query = query.OrderBy(e => e.EspecialistaId); // Ordem por ID melhora performance do banco
 
-        return await BindQueryPagedAsync(query, pageNumber, pageSize);
+        return await BindQueryPagedAsync(query, pageNumber, pageSize, orderBy: c => c.EspecialistaId);
     }
 
     public async ValueTask<IReadOnlyList<Especialista>> GetByNameAsync(string name)

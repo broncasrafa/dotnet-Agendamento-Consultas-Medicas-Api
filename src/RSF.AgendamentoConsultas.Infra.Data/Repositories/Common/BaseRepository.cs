@@ -69,18 +69,19 @@ public class BaseRepository<T> : IBaseRepository<T> where T : class
     public async ValueTask<int> SaveChangesAsync() 
         => await Context.SaveChangesAsync().ConfigureAwait(false);
 
-    public async ValueTask<PagedResult<TResult>> BindQueryPagedAsync<TResult>(IQueryable<TResult> query, int pageNumber, int pageSize)
+    public async ValueTask<PagedResult<TResult>> BindQueryPagedAsync<TResult, TKey>(IQueryable<TResult> query, int pageNumber, int pageSize, Expression<Func<TResult, TKey>> orderBy)
     {
-        var totalCount = await query.CountAsync();
+        var orderedQuery = query.OrderBy(orderBy);
 
-        var paginatedData = await query
+        var totalCount = await orderedQuery.CountAsync();
+
+        var paginatedData = await orderedQuery
             .Skip((pageNumber - 1) * pageSize)
             .Take(pageSize)
             .ToListAsync();
 
-        var sql = query.ToQueryString();
-        Console.WriteLine(sql);
-
+        //var sql = query.ToQueryString();
+        //Console.WriteLine(sql);
         return new PagedResult<TResult>(data: paginatedData, totalCount: totalCount, pageSize, pageNumber);
     }
 

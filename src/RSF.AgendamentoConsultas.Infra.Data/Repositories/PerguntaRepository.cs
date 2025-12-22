@@ -41,7 +41,7 @@ public class PerguntaRepository : BaseRepository<Pergunta>, IPerguntaRepository
                         .Include(es => es.Especialidade).ThenInclude(g => g.EspecialidadeGrupo)
                         .AsQueryable();
 
-        return await BindQueryPagedAsync(query, pageNumber, pageSize);
+        return await BindQueryPagedAsync(query, pageNumber, pageSize, orderBy: c => c.PerguntaId);
     }
 
     public async ValueTask<PagedResult<Pergunta>> GetByListaPerguntaIdsPagedAsync(List<int> perguntaIds, int pageNumber = 1, int pageSize = 10)
@@ -55,6 +55,6 @@ public class PerguntaRepository : BaseRepository<Pergunta>, IPerguntaRepository
                         .Where(c => perguntaIds.Contains(c.PerguntaId))
                         .AsQueryable();
 
-        return await BindQueryPagedAsync(query, pageNumber, pageSize);
+        return await BindQueryPagedAsync(query, pageNumber, pageSize, orderBy: c => c.PerguntaId);
     }
 }

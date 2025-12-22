@@ -21,7 +21,7 @@ public class PacienteEspecialistaFavoritosRepository : BaseRepository<PacienteEs
             .Select(c => c.Especialista)
             .AsQueryable();
 
-        return await BindQueryPagedAsync(query, pageNumber, pageSize);
+        return await BindQueryPagedAsync(query, pageNumber, pageSize, orderBy: c => c.EspecialistaId);
     }
 
     public async ValueTask<PacienteEspecialistaFavoritos> GetByIdsAsync(int pacienteId, int especialistaId)
