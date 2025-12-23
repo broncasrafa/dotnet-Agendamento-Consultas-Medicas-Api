@@ -9,6 +9,7 @@ public interface IEspecialistaRepository : IBaseRepository<Especialista>
     new ValueTask<Especialista> GetByIdAsync(int id);
     ValueTask<Especialista> GetByEmailAsync(string email);
     ValueTask<Especialista> GetByUserIdAsync(string userId);
+    ValueTask<Especialista> GetByUserIdAsync(Guid userId);
     ValueTask<Especialista> GetByIdWithEspecialidadesAsync(int id);
     ValueTask<Especialista> GetByIdWithConveniosMedicosAsync(int id);
     ValueTask<Especialista> GetByIdWithAvaliacoesAsync(int id);

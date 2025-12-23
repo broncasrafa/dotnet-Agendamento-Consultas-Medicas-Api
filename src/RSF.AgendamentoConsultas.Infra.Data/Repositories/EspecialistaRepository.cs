@@ -96,7 +96,7 @@ public class EspecialistaRepository : BaseRepository<Especialista>, IEspecialist
                 .Include(c => c.Avaliacoes).ThenInclude(t => t.Marcacao)
                 .Include(c => c.PerguntasEspecialista)
                 .FirstOrDefaultAsync(c => c.EspecialistaId == id);
-
+    
     public async ValueTask<Especialista> GetByEmailAsync(string email)
         => await _Context.Especialistas.AsNoTracking()
                 .Include(c => c.Especialidades).ThenInclude(e => e.Especialidade).ThenInclude(g => g.EspecialidadeGrupo)
@@ -110,6 +110,16 @@ public class EspecialistaRepository : BaseRepository<Especialista>, IEspecialist
         => await _Context.Especialistas.AsNoTracking()
         .Include(a => a.ConsultasAtendidas.Where(st => st.StatusConsultaId == (int)ETipoStatusConsulta.Solicitado || st.StatusConsultaId == (int)ETipoStatusConsulta.Confirmado))
         .FirstOrDefaultAsync(c => c.UserId == userId);
+
+    public async ValueTask<Especialista> GetByUserIdAsync(Guid userId)
+        => await _Context.Especialistas.AsNoTracking()
+                .Include(c => c.Especialidades).ThenInclude(e => e.Especialidade).ThenInclude(g => g.EspecialidadeGrupo)
+                .Include(c => c.ConveniosMedicosAtendidos).ThenInclude(x => x.ConvenioMedico)
+                .Include(c => c.LocaisAtendimento)
+                .Include(c => c.Avaliacoes).ThenInclude(p => p.Paciente)
+                .Include(c => c.Avaliacoes).ThenInclude(t => t.Marcacao)
+                .Include(c => c.PerguntasEspecialista)
+                .FirstOrDefaultAsync(c => EF.Functions.Collate(c.UserId, "Latin1_General_CI_AS").Equals(userId.ToString()));
 
     public async ValueTask<Especialista> GetByIdWithEspecialidadesAsync(int id)
         => await _Context.Especialistas.AsNoTracking()

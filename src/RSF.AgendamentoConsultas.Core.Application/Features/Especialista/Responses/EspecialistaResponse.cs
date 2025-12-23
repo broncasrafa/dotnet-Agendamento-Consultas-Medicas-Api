@@ -1,11 +1,11 @@
-﻿using RSF.AgendamentoConsultas.Core.Application.Features.Especialidade.Responses;
-using RSF.AgendamentoConsultas.CrossCutting.Shareable.Results;
+﻿using RSF.AgendamentoConsultas.CrossCutting.Shareable.Results;
 
 namespace RSF.AgendamentoConsultas.Core.Application.Features.Especialista.Responses;
 
 public class EspecialistaResponse
 {
     public int Id { get; set; }
+    public string UserId { get; set; }
     public string Tipo { get; set; }
     public string Nome { get; set; }
     public string Licenca { get; set; }
@@ -40,6 +40,7 @@ public class EspecialistaResponse
         return new EspecialistaResponse
         {
             Id = entity.EspecialistaId,
+            UserId = entity.UserId,
             Tipo = entity.Tipo,
             Nome = entity.Nome,
             Licenca = entity.Licenca,

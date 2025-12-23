@@ -30,6 +30,7 @@ using RSF.AgendamentoConsultas.CrossCutting.Shareable.Exceptions;
 using RSF.AgendamentoConsultas.CrossCutting.Shareable.Enums;
 using RSF.AgendamentoConsultas.CrossCutting.Shareable.Extensions;
 using MediatR;
+using RSF.AgendamentoConsultas.Core.Application.Features.Especialista.Query.GetByUserId;
 
 namespace RSF.AgendamentoConsultas.Api.Endpoints;
 
@@ -84,6 +85,16 @@ internal static class EspecialistaEndpoints
             .Produces<ProblemDetails>(StatusCodes.Status404NotFound)
             .WithDescription("Obter os dados do Especialista pelo ID especificado")
             .WithSummary("Obter os dados do Especialista pelo ID especificado")
+            .AllowAnonymous()
+            .WithOpenApi();
+
+        routes.MapGet("/{userId:Guid}", static async (IMediator mediator, [FromRoute] Guid userId, CancellationToken cancellationToken)
+            => await mediator.SendCommand(new SelectEspecialistaByUserIdRequest(userId), cancellationToken: cancellationToken))
+            .WithName("GetOneEspecialistaByUserId")
+            .Produces<ApiResponse<EspecialistaResponse>>(StatusCodes.Status200OK)
+            .Produces<ProblemDetails>(StatusCodes.Status404NotFound)
+            .WithDescription("Obter os dados do Especialista pelo User ID especificado")
+            .WithSummary("Obter os dados do Especialista pelo User ID especificado")
             .AllowAnonymous()
             .WithOpenApi();
 
